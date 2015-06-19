@@ -7,7 +7,7 @@ For Android, iOS support is planned!
 
 
 ## Prerequisites
-Check if you have Android-17 installed (required for building the ZXing library), run this from the command prompt:
+Check if you have Android-19 installed (required for building the ZXing library), run this from the command prompt:
 ```
 android list targets
 ```
