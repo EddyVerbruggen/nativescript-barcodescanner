@@ -7,20 +7,24 @@ For Android, iOS support is planned!
 
 
 ## Installation
-From the command prompt go to your app's `app` folder and execute:
-
-IT'S NOT ON NPM YET, SO IGNORE THIS :)
-
+Make sure you have at least NativeScript version 1.1.1 because it makes configuration a little easier.
 ```
-npm install nativescript-barcodescanner
+nativescript --version
 ```
 
-Download the ZXing library (TODO: link) and add it to your project:
+If that's less than 1.1.1, do:
 ```
-tns library add android </path/to/barcodescanner>/LibraryProject
+sudo -g install nativescript
 ```
 
-Add this to your /platforms/android/AndroidManifest.xml in /manifest:
+Then from the command prompt go to your app's `app` folder and execute:
+
+Install the ZXing library (for your convenience bundled in this plugin) for Android in your project:
+```
+tns library add android </path/to/barcodescanner/plugin>/LibraryProject
+```
+
+Add this to your /platforms/android/AndroidManifest.xml in /manifest if it isn't there yet:
 
 ```xml
   <uses-permission android:name="android.permission.CAMERA" />
@@ -29,7 +33,7 @@ Add this to your /platforms/android/AndroidManifest.xml in /manifest:
   <uses-feature android:name="android.hardware.camera" android:required="false" />
 ```
 
-Add this to your /platforms/android/AndroidManifest.xml in /manifest/application:
+And this should go into your /platforms/android/AndroidManifest.xml in /manifest/application:
 
 ```xml
     <activity
@@ -48,7 +52,7 @@ Add this to your /platforms/android/AndroidManifest.xml in /manifest/application
 
 ## Usage
 
-### getVersionName
+### scan
 
 ```js
   var barcodescanner = require("./node_modules/nativescript-barcodescanner/barcodescanner");
