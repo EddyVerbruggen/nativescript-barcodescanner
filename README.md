@@ -6,6 +6,20 @@ Scan a barcode (or a QR code, or a lot of other formats really)
 For Android, iOS support is planned!
 
 
+## Prerequisites
+Check if you have Android-17 installed (required for building the ZXing library), run this from the command prompt:
+```
+android list targets
+```
+
+If it's not listed, run:
+```
+android
+```
+
+.. and install Android 4.2.2 > SDK Platform
+
+
 ## Installation
 From the command prompt go to your app's `app` folder and execute:
 ```
@@ -14,7 +28,7 @@ npm install https://github.com/EddyVerbruggen/nativescript-barcodescanner
 
 Still from the app folder, install the ZXing library for Android in your project:
 ```
-tns library add node_modules/nativescript-barcodescanner/platforms/android/LibraryProject
+tns library add android node_modules/nativescript-barcodescanner/platforms/android/LibraryProject
 ```
 
 Add this to your /platforms/android/AndroidManifest.xml in /manifest if it isn't there yet:

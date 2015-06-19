@@ -1,5 +1,5 @@
 {
-  "name": "nativescript-barcodescanner",
+  "name": "barcodescanner",
   "version": "0.0.1",
   "description": "A barcodescanner module for use in NativeScript apps. It currently supports scanning a barcode on Android only.",
   "main": "barcodescanner.js",
