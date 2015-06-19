@@ -12,9 +12,9 @@ From the command prompt go to your app's `app` folder and execute:
 npm install https://github.com/EddyVerbruggen/nativescript-barcodescanner
 ```
 
-Install the ZXing library ([download it here](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/master/platforms/android/LibraryProject)) for Android in your project:
+Still from the app folder, install the ZXing library for Android in your project:
 ```
-tns library add android </path/to/downloaded/LibraryProject>
+tns library add node_modules/nativescript-barcodescanner/platforms/android/LibraryProject
 ```
 
 Add this to your /platforms/android/AndroidManifest.xml in /manifest if it isn't there yet:
