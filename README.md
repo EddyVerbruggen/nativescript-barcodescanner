@@ -28,7 +28,7 @@ npm install https://github.com/EddyVerbruggen/nativescript-barcodescanner
 
 Still from the app folder, install the ZXing library for Android in your project:
 ```
-tns library add android node_modules/nativescript-barcodescanner/platforms/android/LibraryProject
+tns library add android node_modules/barcodescanner/platforms/android/LibraryProject
 ```
 
 Add this to your /platforms/android/AndroidManifest.xml in /manifest if it isn't there yet:
@@ -62,7 +62,7 @@ And this should go into your /platforms/android/AndroidManifest.xml in /manifest
 ### scan
 
 ```js
-  var barcodescanner = require("./node_modules/nativescript-barcodescanner/barcodescanner");
+  var barcodescanner = require("./node_modules/barcodescanner/barcodescanner");
 
   barcodescanner.scan({
     message: "Go scan something",
