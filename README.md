@@ -7,21 +7,14 @@ For Android, iOS support is planned!
 
 
 ## Installation
-Make sure you have at least NativeScript version 1.1.1 because it makes configuration a little easier.
+From the command prompt go to your app's `app` folder and execute:
 ```
-nativescript --version
-```
-
-If that's less than 1.1.1, do:
-```
-sudo -g install nativescript
+npm install https://github.com/EddyVerbruggen/nativescript-barcodescanner
 ```
 
-Then from the command prompt go to your app's `app` folder and execute:
-
-Install the ZXing library (for your convenience bundled in this plugin) for Android in your project:
+Install the ZXing library ([download it here](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/master/platforms/android/LibraryProject)) for Android in your project:
 ```
-tns library add android </path/to/barcodescanner/plugin>/LibraryProject
+tns library add android </path/to/downloaded/LibraryProject>
 ```
 
 Add this to your /platforms/android/AndroidManifest.xml in /manifest if it isn't there yet:
