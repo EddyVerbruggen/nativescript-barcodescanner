@@ -6,19 +6,17 @@
 
   <uses-feature android:name="android.hardware.camera" android:required="false" />
 
-  <!-- TODO move this inside the <application/> tag, next to the other <activity/> tags:
-    <activity
-        android:name="com.google.zxing.client.android.CaptureActivity"
-        android:clearTaskOnLaunch="true"
-        android:configChanges="orientation|keyboardHidden"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-        android:windowSoftInputMode="stateAlwaysHidden"
-        android:exported="false">
-      <intent-filter>
-        <action android:name="com.google.zxing.client.android.SCAN"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-  -->
+  <activity
+      android:name="com.google.zxing.client.android.CaptureActivity"
+      android:clearTaskOnLaunch="true"
+      android:configChanges="orientation|keyboardHidden"
+      android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+      android:windowSoftInputMode="stateAlwaysHidden"
+      android:exported="false">
+    <intent-filter>
+      <action android:name="com.google.zxing.client.android.SCAN"/>
+      <category android:name="android.intent.category.DEFAULT"/>
+    </intent-filter>
+  </activity>
 
 </manifest>
