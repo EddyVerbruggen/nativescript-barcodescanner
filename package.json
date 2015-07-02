@@ -1,9 +1,27 @@
 {
-  "name": "barcodescanner",
-  "version": "0.0.2",
+  "name": "nativescript-barcodescanner",
+  "version": "0.0.3",
+  "description" : "TODO",
+  "main" : "barcodescanner.js",
   "nativescript": {
     "platforms": {
       "android": "1.1.0"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner.git"
+  },
+  "keywords": [
+    "NativeScript"
+  ],
+  "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/blob/master/LICENSE"
+  },
+  "bugs": {
+    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/issues"
+  },
+  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner"
 }
