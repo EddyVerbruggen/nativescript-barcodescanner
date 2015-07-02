@@ -21,9 +21,9 @@ android
 
 
 ## Installation
-From the command prompt go to your app's `app` folder and execute:
+From the command prompt go to your app's `app` folder(!) and execute:
 ```
-npm install https://github.com/EddyVerbruggen/nativescript-barcodescanner
+tns plugin add nativescript-barcodescanner
 ```
 
 Still from the app folder, install the ZXing library for Android in your project:
