@@ -6,6 +6,7 @@
 
   <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+  <!-- TODO move this activity to manifest/application ! -->
   <activity
       android:name="com.google.zxing.client.android.CaptureActivity"
       android:clearTaskOnLaunch="true"
