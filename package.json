@@ -1,20 +1,21 @@
 {
-  "name": "barcodescanner",
-  "version": "0.0.1",
-  "description": "A barcodescanner module for use in NativeScript apps. It currently supports scanning a barcode on Android only.",
-  "main": "barcodescanner.js",
+  "name": "nativescript-barcodescanner",
+  "version": "0.0.3",
+  "description" : "TODO",
+  "main" : "barcodescanner.js",
+  "nativescript": {
+    "platforms": {
+      "android": "1.1.0"
+    }
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eddyverbruggen/nativescript-barcodescanner.git"
+    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner.git"
   },
   "keywords": [
     "NativeScript"
   ],
-  "author": {
-    "name": "Eddy Verbruggen",
-    "email": "eddyverbruggen@gmail.com",
-    "url": "http://x-services.nl/"
-  },
+  "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
   "license": {
     "type": "MIT",
     "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/blob/master/LICENSE"
@@ -22,6 +23,5 @@
   "bugs": {
     "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/issues"
   },
-  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
-  "readmeFilename": "README.md"
+  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner"
 }

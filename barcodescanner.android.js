@@ -1,9 +1,10 @@
+var barcodescanner = require("./barcodescanner-common");
 var appModule = require("application");
 var context = appModule.android.context;
 
 var SCANNER_REQUEST_CODE = 444;
 
-exports.scan = function (arg) {
+barcodescanner.scan = function(arg) {
   return new Promise(function (resolve, reject) {
     try {
       // the intent name should match the filter name in AndroidManifest.xml, don't change it
@@ -52,3 +53,6 @@ exports.scan = function (arg) {
     }
   });
 };
+
+// TODO doesn't common do that already?
+module.exports = barcodescanner;
