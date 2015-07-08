@@ -2,9 +2,7 @@
 
 Scan a barcode (or a QR code, or a lot of other formats really)
 
-
 For Android, iOS support is planned!
-
 
 ## Prerequisites
 Check if you have Android-19 installed (required for building the ZXing library), run this from the command prompt:
@@ -20,7 +18,32 @@ android
 .. and install Android 4.2.2 > SDK Platform
 
 
-## Installation
+## Instructions for nativescript-cli 1.1.3+
+Installation with `tns --version` 1.1.2 and lower is a bit harder,
+but when using a newer version it's way simpler.
+At the moment of writing 1.1.3 is not yet released, but you can use [nativescript master](https://github.com/nativescript/nativescript-cli) of course.
+So if you're impatient like me and don't want to install this plugin the hard way, upgrade your cli:
+
+```
+git clone git@github.com:NativeScript/nativescript-cli.git
+cd nativescript-cli
+git submodule init
+git submodule update
+npm i
+grunt
+npm link
+```
+
+Now, from the command prompt go to your app's root folder and execute:
+```
+tns plugin add nativescript-barcodescanner
+```
+
+That's it :)
+
+
+
+## Instructions for nativescript-cli <= 1.1.2
 From the command prompt go to your app's `app` folder(!) and execute:
 ```
 tns plugin add nativescript-barcodescanner
@@ -61,11 +84,11 @@ You will find this `activity` *outside* the `/manifest/application` section of `
     showFlipCameraButton: true
   }).then(
       function(result) {
-        console.log("Scan format: " + result.format);
-        console.log("Scan text:   " + result.text);
+        console.log("~~~~~~~~~~~ Scan format: " + result.format);
+        console.log("~~~~~~~~~~~ Scan text:   " + result.text);
       },
       function(error) {
-        console.log("Scan error: " + error);
+        console.log("~~~~~~~~~~~ Scan error: " + error);
       }
   )
 ```
