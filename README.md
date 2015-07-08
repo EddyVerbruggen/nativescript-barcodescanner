@@ -19,9 +19,8 @@ android
 
 
 ## Instructions for nativescript-cli 1.1.3+
-Installation with `tns --version` 1.1.2 and lower is a bit harder,
-but when using a newer version it's way simpler.
-At the moment of writing 1.1.3 is not yet released, but you can use [nativescript master](https://github.com/nativescript/nativescript-cli) of course.
+Installation with `tns --version` 1.1.3 and up is way easier,
+but at the moment of writing 1.1.3 is not yet released, but you can use [nativescript-cli master](https://github.com/nativescript/nativescript-cli) of course.
 So if you're impatient like me and don't want to install this plugin the hard way, upgrade your cli:
 
 ```
@@ -44,6 +43,8 @@ That's it :)
 
 
 ## Instructions for nativescript-cli <= 1.1.2
+So you're taking the harder path to barcodescanning heaven. Alright, follow these instructions closely!
+
 From the command prompt go to your app's `app` folder(!) and execute:
 ```
 tns plugin add nativescript-barcodescanner
