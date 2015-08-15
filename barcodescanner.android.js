@@ -4,6 +4,13 @@ var context = appModule.android.context;
 
 var SCANNER_REQUEST_CODE = 444;
 
+barcodescanner.available = function () {
+  return new Promise(function (resolve) {
+    // TODO a real implementation, like on iOS
+    resolve(true);
+  });
+};
+
 barcodescanner.scan = function(arg) {
   return new Promise(function (resolve, reject) {
     try {
@@ -54,5 +61,4 @@ barcodescanner.scan = function(arg) {
   });
 };
 
-// TODO doesn't common do that already?
 module.exports = barcodescanner;

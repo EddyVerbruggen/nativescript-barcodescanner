@@ -2,9 +2,11 @@
 
 Scan a barcode (or a QR code, or a lot of other formats really)
 
-For Android, iOS support is planned!
-
 ## Prerequisites
+Make sure you're using nativescript-cli 1.1.3 or up.
+Instructions for older versions have been dropped from this readme.
+
+## Prerequisites for Android
 Check if you have Android-19 installed (required for building the ZXing library), run this from the command prompt:
 ```
 android list targets
@@ -18,78 +20,50 @@ android
 .. and install Android 4.2.2 > SDK Platform
 
 
-## Instructions for nativescript-cli 1.1.3+
-Installation with `tns --version` 1.1.3 and up is way easier,
-but at the moment of writing 1.1.3 is not yet released, but you can use [nativescript-cli master](https://github.com/nativescript/nativescript-cli) of course.
-So if you're impatient like me and don't want to install this plugin the hard way, upgrade your cli:
-
-```
-git clone git@github.com:NativeScript/nativescript-cli.git
-cd nativescript-cli
-git submodule init
-git submodule update
-npm i
-grunt
-npm link
-```
-
-Now, from the command prompt go to your app's root folder and execute:
+## Installation
+From the command prompt go to your app's root folder and execute:
 ```
 tns plugin add nativescript-barcodescanner
 ```
 
-That's it :)
+### iOS post-installation step
+Due to [this issue](https://github.com/NativeScript/ios-runtime/pull/266) in NativeScript frameworks installed
+from an iOS plugin are not correctly resolved. As a temporary fix you need to edit your `project.pbxproj` file
+and add the full path to the framework like `"\"/Users/eddyverbruggen/barcodescannertest/lib/iOS/BarcodeScannerFramework\"",`
+to both `FRAMEWORK_SEARCH_PATHS` sections (near the bottom of the file) or your project can't use the plugin
+and will crash if it does.
 
-
-
-## Instructions for nativescript-cli <= 1.1.2
-So you're taking the harder path to barcodescanning heaven. Alright, follow these instructions closely!
-
-From the command prompt go to your app's `app` folder(!) and execute:
-```
-tns plugin add nativescript-barcodescanner
-```
-
-Still from the app folder, install the ZXing library for Android in your project:
-```
-tns library add android ../node_modules/nativescript-barcodescanner/platforms/android/LibraryProject
-```
-
-You will find this `activity` *outside* the `/manifest/application` section of `/platforms/android/AndroidManifest.xml`, move it *inside*:
-
-```xml
-    <activity
-        android:name="com.google.zxing.client.android.CaptureActivity"
-        android:clearTaskOnLaunch="true"
-        android:configChanges="orientation|keyboardHidden"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-        android:windowSoftInputMode="stateAlwaysHidden"
-        android:exported="false">
-      <intent-filter>
-        <action android:name="com.google.zxing.client.android.SCAN"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-```
 
 ## Usage
 
-### scan
-
+### function: scan
 ```js
   var barcodescanner = require("nativescript-barcodescanner");
 
   barcodescanner.scan({
-    message: "Go scan something",
-    preferFrontCamera: false,
-    showFlipCameraButton: true
+    cancelLabel: "Stop scanning", // iOS only, default 'Close'
+    message: "Go scan something", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
+    preferFrontCamera: false,     // Android only, default false
+    showFlipCameraButton: true    // Android only, default false (on iOS it's always available)
   }).then(
       function(result) {
-        console.log("~~~~~~~~~~~ Scan format: " + result.format);
-        console.log("~~~~~~~~~~~ Scan text:   " + result.text);
+        console.log("Scan format: " + result.format);
+        console.log("Scan text:   " + result.text);
       },
       function(error) {
-        console.log("~~~~~~~~~~~ Scan error: " + error);
+        console.log("No scan: " + error);
       }
   )
+```
+
+### function: available
+Note that the Android implementation will always return `true` at the moment.
+```js
+  var barcodescanner = require("nativescript-barcodescanner");
+
+  barcodescanner.available().then(
+      function(avail) {
+        console.log("Available? " + avail);
+      }
+  );
 ```
