@@ -3,8 +3,7 @@
 Scan a barcode (or a QR code, or a lot of other formats really)
 
 ## Prerequisites
-Make sure you're using nativescript-cli 1.1.3 or up.
-Instructions for older versions have been dropped from this readme.
+NativeScript 1.2.3 (`tns --version`) has solved many build issues, so please upgrade if you need to.
 
 ## Prerequisites for Android
 Check if you have Android-19 installed (required for building the ZXing library), run this from the command prompt:
@@ -25,14 +24,6 @@ From the command prompt go to your app's root folder and execute:
 ```
 tns plugin add nativescript-barcodescanner
 ```
-
-### iOS post-installation step
-Due to [this issue](https://github.com/NativeScript/ios-runtime/pull/266) in NativeScript frameworks installed
-from an iOS plugin are not correctly resolved. As a temporary fix you need to edit your `project.pbxproj` file
-and add the full path to the framework like `"\"/Users/eddyverbruggen/barcodescannertest/lib/iOS/BarcodeScannerFramework\"",`
-to both `FRAMEWORK_SEARCH_PATHS` sections (near the bottom of the file) or your project can't use the plugin
-and will crash if it does.
-
 
 ## Usage
 
