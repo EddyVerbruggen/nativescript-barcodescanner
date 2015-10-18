@@ -3,21 +3,9 @@
 Scan a barcode (or a QR code, or a lot of other formats really)
 
 ## Prerequisites
-NativeScript 1.2.3 (`tns --version`) has solved many build issues, so please upgrade if you need to.
+NativeScript 1.2.3+ for iOS, 1.3.0+ for Android (`tns --version`), so please upgrade if you need to.
 
-## Prerequisites for Android
-Check if you have Android-19 installed (required for building the ZXing library), run this from the command prompt:
-```
-android list targets
-```
-
-If it's not listed, run:
-```
-android
-```
-
-.. and install Android 4.2.2 > SDK Platform
-
+If -for some reason- you need to build for {N} 1.2 on Android, please [use this branch](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/nativescript-pre-1.3).
 
 ## Installation
 From the command prompt go to your app's root folder and execute:
