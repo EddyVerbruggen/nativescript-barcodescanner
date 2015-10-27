@@ -1,36 +1,73 @@
 var observable = require("data/observable");
 var barcodescanner = require("nativescript-barcodescanner");
-var HelloWorldModel = (function (_super) {
-  __extends(HelloWorldModel, _super);
-  function HelloWorldModel() {
+var dialogs = require("ui/dialogs");
+var DemoAppModel = (function (_super) {
+  __extends(DemoAppModel, _super);
+  function DemoAppModel() {
     _super.call(this);
-    this.counter = 42;
-    this.set("message", this.counter + " taps left");
   }
 
-  HelloWorldModel.prototype.tapAction = function () {
-    this.counter--;
-    barcodescanner.scan({
-      cancelLabel: "Stop scanning", // iOS only, default 'Close' 
-      message: "Go scan something", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.' 
-      preferFrontCamera: false,     // Android only, default false 
-      showFlipCameraButton: true    // Android only, default false (on iOS it's always available) 
-    }).then(
-        function (result) {
-          console.log("Scan format: " + result.format);
-          console.log("Scan text:   " + result.text);
-        },
-        function (error) {
-          console.log("No scan: " + error);
+  DemoAppModel.prototype.doCheckAvailable = function () {
+    barcodescanner.available().then(
+        function(avail) {
+          dialogs.alert({
+            title: "Scanning available?",
+            message: avail ? "YES" : "NO",
+            okButtonText: "OK"
+          })
         }
-    );
-    if (this.counter <= 0) {
-      this.set("message", "Hoorraaay! You unlocked the NativeScript clicker achievement!");
-    } else {
-      this.set("message", this.counter + " taps left");
-    }
+    )
   };
-  return HelloWorldModel;
+
+  DemoAppModel.prototype.scan = function (front, flip) {
+    barcodescanner.scan({
+      cancelLabel: "Stop scanning", // iOS only, default 'Close'
+      message: "Go scan something", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
+      preferFrontCamera: front,     // Android only, default false
+      showFlipCameraButton: flip    // Android only, default false (on iOS it's always available)
+    }).then(
+        function(result) {
+          dialogs.alert({
+            title: "Scan result",
+            message: "Format: " + result.format + ",\nValue: " + result.text,
+            okButtonText: "OK"
+          })
+        },
+        function(errorMessage) {
+          console.log("No scan. " + errorMessage);
+        }
+    )
+  };
+
+  DemoAppModel.prototype.doScanWithFrontCamera = function () {
+    this.scan(true, false);
+  };
+
+  DemoAppModel.prototype.doScanWithBackCamera = function () {
+    this.scan(false, true);
+  };
+
+  DemoAppModel.prototype.doCheckHasCameraPermission = function () {
+    barcodescanner.hasCameraPermission().then(
+        function(granted) {
+          dialogs.alert({
+            title: "Permission granted?",
+            message: granted ? "YES" : "NO",
+            okButtonText: "OK"
+          })
+        }
+    )
+  };
+
+  DemoAppModel.prototype.doRequestCameraPermission = function () {
+    barcodescanner.requestCameraPermission().then(
+        function() {
+          console.log("Camera permission requested");
+        }
+    )
+  };
+
+  return DemoAppModel;
 })(observable.Observable);
-exports.HelloWorldModel = HelloWorldModel;
-exports.mainViewModel = new HelloWorldModel();
+exports.DemoAppModel = DemoAppModel;
+exports.mainViewModel = new DemoAppModel();
