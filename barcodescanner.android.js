@@ -3,17 +3,47 @@ var appModule = require("application");
 var context = appModule.android.context;
 
 var SCANNER_REQUEST_CODE = 444;
+var CAMERA_PERMISSION_REQUEST_CODE = 555;
 
-barcodescanner.available = function () {
+barcodescanner._cameraPermissionGranted = function () {
+  var hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
+  if (!hasPermission) {
+    hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ==
+    android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.foregroundActivity, android.Manifest.permission.CAMERA);
+  }
+  return hasPermission;
+};
+
+barcodescanner.hasCameraPermission = function () {
   return new Promise(function (resolve) {
-    // TODO a real implementation, like on iOS
-    resolve(true);
+    resolve(barcodescanner._cameraPermissionGranted());
+  });
+};
+
+barcodescanner.requestCameraPermission = function () {
+  return new Promise(function (resolve) {
+    if (!barcodescanner._cameraPermissionGranted()) {
+      // in a future version we could hook up the callback and change this flow a bit
+      android.support.v4.app.ActivityCompat.requestPermissions(
+          appModule.android.foregroundActivity,
+          [android.Manifest.permission.CAMERA],
+          CAMERA_PERMISSION_REQUEST_CODE);
+      // this is not the nicest solution as the user needs to initiate scanning again after granting permission,
+      // so enhance this in a future version, but it's ok for now
+      resolve();
+    }
   });
 };
 
 barcodescanner.scan = function(arg) {
   return new Promise(function (resolve, reject) {
     try {
+      if (!barcodescanner._cameraPermissionGranted()) {
+        barcodescanner.requestCameraPermission();
+        reject("Permission needed");
+        return;
+      }
+
       // the intent name should match the filter name in AndroidManifest.xml, don't change it
       var intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
 
