@@ -50,7 +50,7 @@ barcodescanner.scan = function(arg) {
       // limit searching for a valid Intent to this package only
       intent.setPackage(context.getPackageName());
 
-      if (arg != null) {
+      if (arg !== null) {
         // shown at the bottom of the scan UI, default is: "Place a barcode inside the viewfinder rectangle to scan it."
         if (arg.message) {
           intent.putExtra("PROMPT_MESSAGE", arg.message);
@@ -63,7 +63,7 @@ barcodescanner.scan = function(arg) {
         }
       }
 
-      if (intent.resolveActivity(appModule.android.context.getPackageManager()) != null) {
+      if (intent.resolveActivity(appModule.android.context.getPackageManager()) !== null) {
         var previousResult = appModule.android.onActivityResult;
         appModule.android.onActivityResult = function (requestCode, resultCode, data) {
           appModule.android.onActivityResult = previousResult;
