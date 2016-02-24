@@ -18,24 +18,24 @@ tns plugin add nativescript-barcodescanner
 ## Supported barcode types
 
 ### iOS and Android
-Code39
-Code93
-Code128
-EAN8
-EAN13
-QR
-UPC_E
+* Code39
+* Code93
+* Code128
+* EAN8
+* EAN13
+* QR
+* UPC_E
 
 ### iOS only
-Aztec
-PDF417
+* Aztec
+* PDF417
 
 ### Android only
-DATA_MATRIX
-CODABAR
-ITF
-RSS14
-UPC_A
+* DATA_MATRIX
+* CODABAR
+* ITF
+* RSS14
+* UPC_A
 
 ## Usage
 
