@@ -16,7 +16,7 @@ barcodescanner.hasCameraPermission = function () {
 
 barcodescanner.requestCameraPermission = function () {
   return new Promise(function (resolve) {
-    resolve(true);
+    resolve();
   });
 };
 

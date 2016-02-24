@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner.js",
   "nativescript": {
@@ -18,13 +18,18 @@
     "Barcode",
     "Barcode Scanner",
     "Aztec",
+    "Codabar",
     "Code39",
     "Code93",
     "Code128",
+    "Data Matrix",
     "EAN8",
     "EAN13",
+    "ITF",
     "PDF417",
     "QR",
+    "RSS14",
+    "UPCA",
     "UPCE"
   ],
   "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
