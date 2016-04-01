@@ -1,15 +1,16 @@
 var barcodescanner = require("./barcodescanner-common");
 var appModule = require("application");
-var context = appModule.android.context;
 
 var SCANNER_REQUEST_CODE = 444;
 var CAMERA_PERMISSION_REQUEST_CODE = 555;
+
+barcodescanner.rememberedContext = null;
 
 barcodescanner._cameraPermissionGranted = function () {
   var hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
   if (!hasPermission) {
     hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ==
-    android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.foregroundActivity, android.Manifest.permission.CAMERA);
+    android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.currentContext, android.Manifest.permission.CAMERA);
   }
   return hasPermission;
 };
@@ -25,7 +26,7 @@ barcodescanner.requestCameraPermission = function () {
     if (!barcodescanner._cameraPermissionGranted()) {
       // in a future version we could hook up the callback and change this flow a bit
       android.support.v4.app.ActivityCompat.requestPermissions(
-          appModule.android.foregroundActivity,
+          appModule.android.currentContext,
           [android.Manifest.permission.CAMERA],
           CAMERA_PERMISSION_REQUEST_CODE);
       // this is not the nicest solution as the user needs to initiate scanning again after granting permission,
@@ -48,7 +49,7 @@ barcodescanner.scan = function(arg) {
       var intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
 
       // limit searching for a valid Intent to this package only
-      intent.setPackage(context.getPackageName());
+      intent.setPackage(appModule.android.context.getPackageName());
 
       if (arg !== null) {
         // shown at the bottom of the scan UI, default is: "Place a barcode inside the viewfinder rectangle to scan it."
@@ -66,6 +67,10 @@ barcodescanner.scan = function(arg) {
       if (intent.resolveActivity(appModule.android.context.getPackageManager()) !== null) {
         var previousResult = appModule.android.onActivityResult;
         appModule.android.onActivityResult = function (requestCode, resultCode, data) {
+          if (barcodescanner.rememberedContext !== null) {
+            appModule.android.currentContext = barcodescanner.rememberedContext;
+            barcodescanner.rememberedContext = null;
+          }
           appModule.android.onActivityResult = previousResult;
           if (requestCode === SCANNER_REQUEST_CODE) {
             if (resultCode === android.app.Activity.RESULT_OK) {
@@ -78,8 +83,10 @@ barcodescanner.scan = function(arg) {
             }
           }
         };
-
-        appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
+        
+        // we need to cache and restore the context, otherwise the dialogs module will be broken (and possibly other things as well)
+        barcodescanner.rememberedContext = appModule.android.currentContext;
+        appModule.android.currentContext.startActivityForResult(intent, SCANNER_REQUEST_CODE);
       } else {
         // this is next to impossible
         reject("Configuration error");
