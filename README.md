@@ -97,6 +97,6 @@ Note that `hasCameraPermission` will return true when:
   );
 ```
 
-Note that the `scan` function will also check fr permission and ask for it if it wasn't previously granted.
+Note that the `scan` function will also check for permission and ask for it if it wasn't previously granted.
 If you're relying on that, then you should know that since we're not catching the consent result
 the user will then need to allow camera access and launch the scanner again.
