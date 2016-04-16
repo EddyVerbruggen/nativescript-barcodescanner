@@ -18,8 +18,6 @@ tns plugin add nativescript-barcodescanner
 * EAN13
 * QR
 * UPC_E
-
-### iOS only
 * Aztec
 * PDF417
 
