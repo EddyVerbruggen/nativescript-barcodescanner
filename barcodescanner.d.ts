@@ -30,6 +30,13 @@ declare module "nativescript-barcodescanner" {
        * Android only (on iOS the button is always shown).
        */
       showFlipCameraButton?: boolean;
+
+      /**
+       * Optionally lock the orientation to 'portrait' or 'landscape'.
+       * Default: "sensor", which follows the current device rotation.
+       * Android only.
+       */
+      orientation?: string;
     }
 
     export function available(): Promise<boolean>;

@@ -57,12 +57,25 @@ barcodescanner.scan = function(arg) {
           intent.putExtra("PROMPT_MESSAGE", arg.message);
         }
         if (arg.preferFrontCamera === true) {
-          intent.putExtra(com.google.zxing.client.android.Intents.Scan.PREFER_FRONTCAMERA, true);
+          // if no front cam is found this will fall back to the back camera
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.CAMERA_ID, 1);
         }
         if (arg.showFlipCameraButton === true) {
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, true);
         }
+        if (arg.orientation) {
+          // if not set, sensor orientation is used (rotates with the device)
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.ORIENTATION_LOCK, arg.orientation);
+        }
       }
+
+      // TODO pass in 'formats', can also be done easily for iOS
+      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.SCAN_FORMATS, "QR_CODE");
+      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
+
+      // rectangle size can be controlled as well (but don't bother as of yet)
+      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.WIDTH, 200);
+      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.HEIGHT, 200);
 
       if (intent.resolveActivity(appModule.android.context.getPackageManager()) !== null) {
         var previousResult = appModule.android.onActivityResult;
@@ -75,8 +88,8 @@ barcodescanner.scan = function(arg) {
           if (requestCode === SCANNER_REQUEST_CODE) {
             if (resultCode === android.app.Activity.RESULT_OK) {
               resolve({
-                format : data.getStringExtra("SCAN_RESULT_FORMAT"),
-                text : data.getStringExtra("SCAN_RESULT")
+                format : data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT),
+                text : data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT)
               });
             } else {
               reject("Scan aborted");
