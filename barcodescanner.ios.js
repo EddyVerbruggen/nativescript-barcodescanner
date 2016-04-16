@@ -8,7 +8,7 @@ barcodescanner.available = function () {
 };
 
 // TODO consider giving camera PERMISSION beforehand: https://github.com/yannickl/QRCodeReaderViewController/issues/4,
-// would  fit well with the Android 6 implementation.
+// would fit well with the Android 6 implementation.
 barcodescanner.scan = function (arg) {
   return new Promise(function (resolve, reject) {
     try {
