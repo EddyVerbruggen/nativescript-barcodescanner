@@ -18,8 +18,8 @@ tns plugin add nativescript-barcodescanner
 * EAN_13
 * QR_CODE
 * UPC_E
-* AZTEC
-* PDF_417
+* AZTEC (on Android only when passed in explicity via `formats`)
+* PDF_417 (on Android only when passed in explicity via `formats`)
 
 ### Android only
 * DATA_MATRIX
