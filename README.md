@@ -11,21 +11,22 @@ tns plugin add nativescript-barcodescanner
 ## Supported barcode types
 
 ### iOS and Android
-* Code39
-* Code93
-* Code128
-* EAN8
-* EAN13
-* QR
+* CODE_39
+* CODE_93
+* CODE_128
+* EAN_8
+* EAN_13
+* QR_CODE
 * UPC_E
-* Aztec
-* PDF417
+* AZTEC
+* PDF_417
 
 ### Android only
 * DATA_MATRIX
 * CODABAR
+* MAXICODE
 * ITF
-* RSS14
+* RSS_14
 * UPC_A
 
 ## Usage
@@ -35,6 +36,7 @@ tns plugin add nativescript-barcodescanner
   var barcodescanner = require("nativescript-barcodescanner");
 
   barcodescanner.scan({
+    formats: "QR_CODE,PDF_417",   // Pass in of you want to restrict scanning to certain types
     cancelLabel: "Stop scanning", // iOS only, default 'Close'
     message: "Go scan something", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     preferFrontCamera: false,     // Android only, default false

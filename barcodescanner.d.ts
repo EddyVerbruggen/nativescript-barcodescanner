@@ -4,6 +4,12 @@ declare module "nativescript-barcodescanner" {
      */
     export interface ScanOptions {
       /**
+       * A comma sep. string of barcode types: "QR_CODE,PDF_417"
+       * Default: empty, so all types of codes can be scanned.
+       */
+      formats?: string;
+
+      /**
        * The label of the button used to close the scanner.
        * Default: "Close".
        * iOS only.

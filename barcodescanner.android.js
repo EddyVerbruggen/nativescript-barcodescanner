@@ -67,11 +67,11 @@ barcodescanner.scan = function(arg) {
           // if not set, sensor orientation is used (rotates with the device)
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.ORIENTATION_LOCK, arg.orientation);
         }
+        if (arg.formats) {
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
+          // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
+        }
       }
-
-      // TODO pass in 'formats', can also be done easily for iOS
-      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.SCAN_FORMATS, "QR_CODE");
-      // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
 
       // rectangle size can be controlled as well (but don't bother as of yet)
       // intent.putExtra(com.google.zxing.client.android.Intents.Scan.WIDTH, 200);
@@ -80,6 +80,7 @@ barcodescanner.scan = function(arg) {
       if (intent.resolveActivity(appModule.android.context.getPackageManager()) !== null) {
         var previousResult = appModule.android.onActivityResult;
         appModule.android.onActivityResult = function (requestCode, resultCode, data) {
+          console.log("---- barcode result!");
           if (barcodescanner.rememberedContext !== null) {
             appModule.android.currentContext = barcodescanner.rememberedContext;
             barcodescanner.rememberedContext = null;
@@ -88,7 +89,9 @@ barcodescanner.scan = function(arg) {
           if (requestCode === SCANNER_REQUEST_CODE) {
             if (resultCode === android.app.Activity.RESULT_OK) {
               resolve({
+                // format : data.getStringExtra("SCAN_RESULT_FORMAT"),
                 format : data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT),
+                // text : data.getStringExtra("SCAN_RESULT")
                 text : data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT)
               });
             } else {
