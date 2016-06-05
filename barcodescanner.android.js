@@ -51,26 +51,26 @@ barcodescanner.scan = function(arg) {
       // limit searching for a valid Intent to this package only
       intent.setPackage(appModule.android.context.getPackageName());
 
-      if (arg !== null) {
-        // shown at the bottom of the scan UI, default is: "Place a barcode inside the viewfinder rectangle to scan it."
-        if (arg.message) {
-          intent.putExtra("PROMPT_MESSAGE", arg.message);
-        }
-        if (arg.preferFrontCamera === true) {
-          // if no front cam is found this will fall back to the back camera
-          intent.putExtra(com.google.zxing.client.android.Intents.Scan.CAMERA_ID, 1);
-        }
-        if (arg.showFlipCameraButton === true) {
-          intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, true);
-        }
-        if (arg.orientation) {
-          // if not set, sensor orientation is used (rotates with the device)
-          intent.putExtra(com.google.zxing.client.android.Intents.Scan.ORIENTATION_LOCK, arg.orientation);
-        }
-        if (arg.formats) {
-          intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
-          // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
-        }
+      arg = arg || {};
+
+      // shown at the bottom of the scan UI, default is: "Place a barcode inside the viewfinder rectangle to scan it."
+      if (arg.message) {
+        intent.putExtra("PROMPT_MESSAGE", arg.message);
+      }
+      if (arg.preferFrontCamera === true) {
+        // if no front cam is found this will fall back to the back camera
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.CAMERA_ID, 1);
+      }
+      if (arg.showFlipCameraButton === true) {
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, true);
+      }
+      if (arg.orientation) {
+        // if not set, sensor orientation is used (rotates with the device)
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.ORIENTATION_LOCK, arg.orientation);
+      }
+      if (arg.formats) {
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
+        // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
       }
 
       // rectangle size can be controlled as well (but don't bother as of yet)
