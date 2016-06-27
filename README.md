@@ -2,12 +2,6 @@
 
 Scan a barcode (or a QR code, or a lot of other formats really)
 
-## Installation
-From the command prompt go to your app's root folder and execute:
-```
-tns plugin add nativescript-barcodescanner
-```
-
 ## Supported barcode types
 
 ### iOS and Android
@@ -28,6 +22,28 @@ tns plugin add nativescript-barcodescanner
 * ITF
 * RSS_14
 * UPC_A
+
+## Installation
+From the command prompt go to your app's root folder and execute:
+```
+tns plugin add nativescript-barcodescanner
+```
+
+## iOS runtime permission reason
+You probably have seen a permission popup like this before (this plugin will trigger one as well, automatically):
+
+<img src="ios_permission_custom_reason.png" width="271px" height="167px"/>
+
+iOS 10+ requires not only this popup, but also a _reason_. In this case it's  "Custom message from App_Resources".
+
+You can provide your own reason for accessing the camera by adding something like this to `app/App_Resources/ios/Info.plist`:
+
+```xml
+  <key>NSCameraUsageDescription</key>
+  <string>My reason justifying fooling around with your camera</string>
+```
+
+_To not crash your app in case you forgot to provide the reason this plugin adds an empty reason to the `.plist` during build. This value gets overridden by anything you specified yourself. You're welcome._
 
 ## Usage
 
@@ -50,7 +66,7 @@ tns plugin add nativescript-barcodescanner
       function(error) {
         console.log("No scan: " + error);
       }
-  )
+  );
 ```
 
 ### function: available
