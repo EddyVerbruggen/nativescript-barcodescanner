@@ -10,7 +10,7 @@ barcodescanner._cameraPermissionGranted = function () {
   var hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
   if (!hasPermission) {
     hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ==
-    android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.currentContext, android.Manifest.permission.CAMERA);
+        android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.currentContext, android.Manifest.permission.CAMERA);
   }
   return hasPermission;
 };
@@ -77,7 +77,7 @@ barcodescanner.scan = function(arg) {
       // intent.putExtra(com.google.zxing.client.android.Intents.Scan.WIDTH, 200);
       // intent.putExtra(com.google.zxing.client.android.Intents.Scan.HEIGHT, 200);
 
-      if (intent.resolveActivity(appModule.android.context.getPackageManager()) !== null) {
+      if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
         var previousResult = appModule.android.onActivityResult;
         appModule.android.onActivityResult = function (requestCode, resultCode, data) {
           console.log("---- barcode result!");
@@ -99,7 +99,7 @@ barcodescanner.scan = function(arg) {
             }
           }
         };
-        
+
         // we need to cache and restore the context, otherwise the dialogs module will be broken (and possibly other things as well)
         barcodescanner.rememberedContext = appModule.android.currentContext;
         appModule.android.currentContext.startActivityForResult(intent, SCANNER_REQUEST_CODE);
