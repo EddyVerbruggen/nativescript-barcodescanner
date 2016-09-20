@@ -1,5 +1,6 @@
 var barcodescanner = require("./barcodescanner-common");
 var frame = require("ui/frame");
+var utils = require("utils/utils");
 
 barcodescanner.available = function () {
   return new Promise(function (resolve) {
@@ -86,11 +87,13 @@ var QRCodeReaderDelegateImpl = (function (_super) {
     return this;
   };
   QRCodeReaderDelegateImpl.prototype.readerDidCancel = function (reader) {
-    UIApplication.sharedApplication().keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+    var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+    app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
     this._callback(reader);
   };
   QRCodeReaderDelegateImpl.prototype.readerDidScanResultForType = function (reader, text, type) {
-    UIApplication.sharedApplication().keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+    var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+    app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
     this._callback(reader, text, type);
   };
   QRCodeReaderDelegateImpl.ObjCProtocols = [QRCodeReaderDelegate];
