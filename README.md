@@ -24,6 +24,8 @@ Scan a barcode (or a QR code, or a lot of other formats really)
 * UPC_A
 
 ## Installation
+Make sure you're using __NativeScript 2.3.0 or higher__. Run `npm install -g nativescript` if not.
+
 From the command prompt go to your app's root folder and execute:
 ```
 tns plugin add nativescript-barcodescanner
