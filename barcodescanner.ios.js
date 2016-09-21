@@ -18,6 +18,7 @@ barcodescanner.scan = function (arg) {
     try {
       arg = arg || {};
       var closeButtonLabel = arg.cancelLabel || "Close";
+      var isContinuous = typeof arg.continuousScanCallback === "function";
 
       var types = [];
       if (arg.formats) {
@@ -45,15 +46,20 @@ barcodescanner.scan = function (arg) {
       bs.modalPresentationStyle = UIModalPresentationFormSheet;
 
       // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-      var delegate = QRCodeReaderDelegateImpl.new().initWithCallback(function (reader, text, type) {
+      var delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, function (reader, text, format) {
         // invoke the callback / promise
         if (text === undefined) {
           reject("Scan aborted");
         } else {
-          resolve({
-            format : type,
+          var result = {
+            format : format,
             text : text
-          });
+          };
+          if (isContinuous) {
+            arg.continuousScanCallback(result);
+          } else {
+            resolve(result);
+          }
         }
         // Remove the local variable for the delegate.
         delegate = undefined;
@@ -67,8 +73,23 @@ barcodescanner.scan = function (arg) {
           vc.presentViewControllerAnimatedCompletion(bs, true, null);
         }
       }
+      if (isContinuous) {
+        resolve();
+      }
     } catch (ex) {
       console.log("Error in barcodescanner.scan: " + ex);
+      reject(ex);
+    }
+  });
+};
+
+barcodescanner.stop = function (arg) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+      app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+      resolve();
+    } catch (ex) {
       reject(ex);
     }
   });
@@ -83,7 +104,8 @@ var QRCodeReaderDelegateImpl = (function (_super) {
   QRCodeReaderDelegateImpl.new = function () {
     return _super.new.call(this);
   };
-  QRCodeReaderDelegateImpl.prototype.initWithCallback = function (callback) {
+  QRCodeReaderDelegateImpl.prototype.initWithCallback = function (isContinuous, callback) {
+    this._isContinuous = isContinuous;
     this._callback = callback;
     return this;
   };
@@ -93,9 +115,20 @@ var QRCodeReaderDelegateImpl = (function (_super) {
     this._callback(reader);
   };
   QRCodeReaderDelegateImpl.prototype.readerDidScanResultForType = function (reader, text, type) {
-    var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-    app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-    this._callback(reader, text, type);
+    if (this._isContinuous) {
+      if (!this._scannedArray) {
+        this._scannedArray = [];
+      }
+      // don't report duplicates
+      if (this._scannedArray.indexOf("[" + text + "][" + type + "]") == -1) {
+        this._scannedArray.push("[" + text + "][" + type + "]");
+        this._callback(reader, text, type);
+      }
+    } else {
+      var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+      app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+      this._callback(reader, text, type);
+    }
   };
   QRCodeReaderDelegateImpl.ObjCProtocols = [QRCodeReaderDelegate];
   return QRCodeReaderDelegateImpl;

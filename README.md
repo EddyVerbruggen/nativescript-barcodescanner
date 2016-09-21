@@ -2,6 +2,8 @@
 
 Scan a barcode (or a QR code, or a lot of other formats really)
 
+> Looking for a demo? [Look no further!](https://github.com/EddyVerbruggen/nativescript-barcodescanner-demo)
+
 ## Supported barcode types
 
 ### iOS and Android
@@ -49,7 +51,7 @@ _To not crash your app in case you forgot to provide the reason this plugin adds
 
 ## Usage
 
-### function: scan
+### function: scan (single mode)
 ```js
   var barcodescanner = require("nativescript-barcodescanner");
 
@@ -64,6 +66,38 @@ _To not crash your app in case you forgot to provide the reason this plugin adds
       function(result) {
         console.log("Scan format: " + result.format);
         console.log("Scan text:   " + result.text);
+      },
+      function(error) {
+        console.log("No scan: " + error);
+      }
+  );
+```
+
+### function: scan (bulk / continuous mode)
+By popular demand version 1.4.0 added bulk mode.
+The scanner will continuously report scanned codes back to your code,
+but it will only be dismissed if the user tells it to, or you call `stop` programmatically.
+
+The plugin handles duplicates for you so don't worry about checking those;
+every result withing the same scan session is unique.
+
+Here's an example of scanning 3 unique QR codes and then stopping scanning programmatically.
+You'll notice that the Promise will no longer receive the result as there may be many results:
+```js
+  var count = 0;
+  barcodescanner.scan({
+    formats: "QR_CODE",
+    // this callback will be invoked for every unique scan in realtime!
+    continuousScanCallback: function (result) {
+      count++;
+      console.log(result.format + ": " + result.text + " (count: " + count + ")");
+      if (count == 3) {
+        barcodescanner.stop();
+      }
+    }
+  }).then(
+      function() {
+        console.log("We're now reporting scan results in 'continuousScanCallback'");
       },
       function(error) {
         console.log("No scan: " + error);
