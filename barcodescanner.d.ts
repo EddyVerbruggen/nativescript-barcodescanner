@@ -31,6 +31,17 @@ declare module "nativescript-barcodescanner" {
       preferFrontCamera?: boolean;
 
       /**
+       * By default the scanned object is returned in the Promise,
+       * but if you want to scan continuously (until you call 'stop'),
+       * you can provide a callback function that receives the same object
+       * as the Promise would, but every time something is scanned.
+       * 
+       * This function doesn't report duplicates in the same scanning session,
+       * you're welcome ;)
+       */
+      continuousScanCallback?: Function;
+
+      /**
        * While scanning for a barcode show a button to flip to the other camera (front or back).
        * Default: false, so no flip button is shown.
        * Android only (on iOS the button is always shown).
@@ -49,4 +60,8 @@ declare module "nativescript-barcodescanner" {
     export function hasCameraPermission(): Promise<boolean>;
     export function requestCameraPermission(): Promise<boolean>;
     export function scan(options: ScanOptions): Promise<any>;
+    /**
+     * Stop scanning, particularly useful when 'scan' was used with 'continuousScanCallback'
+     */
+    export function stop(): Promise<any>;
 }
