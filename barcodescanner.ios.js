@@ -4,11 +4,14 @@ var utils = require("utils/utils");
 
 barcodescanner.available = function () {
   return new Promise(function (resolve) {
-    resolve(QRCodeReader.isAvailable());
+    // since this would also request permission...
+    //   resolve(QRCodeReader.isAvailable());
+    // ... and it's extremely likely to be 'true' anyway, I decided to hardcode this:
+    resolve(true);
   });
 };
 
-// TODO consider giving camera PERMISSION beforehand: https://github.com/yannickl/QRCodeReaderViewController/issues/4,
+// TODO consider asking camera PERMISSION beforehand: https://github.com/yannickl/QRCodeReaderViewController/issues/4,
 // would fit well with the Android 6 implementation.
 barcodescanner.scan = function (arg) {
   return new Promise(function (resolve, reject) {
@@ -21,7 +24,6 @@ barcodescanner.scan = function (arg) {
         var formats = arg.formats.split(",");
         for (var f in formats) {
           var format = formats[f].trim();
-          console.log("---- format: " + format);
           if (format === "QR_CODE") types.push(AVMetadataObjectTypeQRCode);
           else if (format === "PDF_417") types.push(AVMetadataObjectTypePDF417Code);
           else if (format === "AZTEC") types.push(AVMetadataObjectTypeAztecCode);
@@ -38,7 +40,6 @@ barcodescanner.scan = function (arg) {
           AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
           AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
       }
-      
 
       var bs = QRCodeReaderViewController.readerWithCancelButtonTitleMetadataObjectTypes(closeButtonLabel, types);
       bs.modalPresentationStyle = UIModalPresentationFormSheet;
