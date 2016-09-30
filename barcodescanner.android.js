@@ -1,12 +1,12 @@
 var barcodescanner = require("./barcodescanner-common");
 var appModule = require("application");
+var camModule = require("camera");
 
 var SCANNER_REQUEST_CODE = 444;
 var CAMERA_PERMISSION_REQUEST_CODE = 555;
 var broadcastManager;
 
 barcodescanner.rememberedContext = null;
-
 
 barcodescanner._cameraPermissionGranted = function () {
   var hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
@@ -15,6 +15,18 @@ barcodescanner._cameraPermissionGranted = function () {
         android.support.v4.content.ContextCompat.checkSelfPermission(appModule.android.currentContext, android.Manifest.permission.CAMERA);
   }
   return hasPermission;
+};
+
+barcodescanner.available = function () {
+  return new Promise(function (resolve, reject) {
+    try {
+      resolve(camModule.isAvailable());
+    } catch (ex) {
+      console.log("Error in barcodescanner.available: " + ex);
+      // let's just assume it's ok
+      resolve(true);
+    }
+  });
 };
 
 barcodescanner.hasCameraPermission = function () {
@@ -135,7 +147,7 @@ barcodescanner.scan = function(arg) {
             }
           }
         };
-        
+
         // we need to cache and restore the context, otherwise the dialogs module will be broken (and possibly other things as well)
         barcodescanner.rememberedContext = appModule.android.currentContext;
         appModule.android.currentContext.startActivityForResult(intent, SCANNER_REQUEST_CODE);
