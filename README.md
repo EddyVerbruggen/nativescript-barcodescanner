@@ -106,7 +106,9 @@ You'll notice that the Promise will no longer receive the result as there may be
 ```
 
 ### function: available
-Note that the Android implementation will always return `true` at the moment.
+Note that the iOS implementation will always return `true` at the moment,
+on Android we actually check for a camera to be available.
+
 ```js
   var barcodescanner = require("nativescript-barcodescanner");
 
