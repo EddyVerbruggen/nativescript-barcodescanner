@@ -3,6 +3,7 @@
   "version": "1.4.1",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner.js",
+  "typings": "barcodescanner.d.ts",
   "nativescript": {
     "platforms": {
       "android": "2.3.0",
