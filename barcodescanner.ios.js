@@ -2,20 +2,83 @@ var barcodescanner = require("./barcodescanner-common");
 var frame = require("ui/frame");
 var utils = require("utils/utils");
 
+barcodescanner._enableTorch = function () {
+  var device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
+  device.lockForConfiguration(null);
+  device.setTorchModeOnWithLevelError(AVCaptureMaxAvailableTorchLevel, null);
+  device.flashMode = AVCaptureFlashMode.AVCaptureFlashModeOn;
+  device.unlockForConfiguration();
+};
+
+barcodescanner._disableTorch = function () {
+  var device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
+  device.lockForConfiguration(null);
+  device.torchMode = AVCaptureTorchMode.AVCaptureTorchModeOff;
+  device.flashMode = AVCaptureFlashMode.AVCaptureFlashModeOff;
+  device.unlockForConfiguration();
+};
+
+barcodescanner._removeVolumeObserver = function () {
+  try {
+    barcodescanner._audioSession.removeObserverForKeyPath(barcodescanner._observer, "outputVolume");
+  } catch (ignore) {
+  }
+};
+
+barcodescanner._addVolumeObserver = function () {
+  barcodescanner._audioSession = utils.ios.getter(AVAudioSession, AVAudioSession.sharedInstance);
+  barcodescanner._audioSession.setActiveError(true, null);
+  barcodescanner._currentVolume = barcodescanner._audioSession.outputVolume;
+  barcodescanner._audioSession.addObserverForKeyPathOptionsContext(barcodescanner._observer, "outputVolume", 0, null);
+};
+
 barcodescanner.available = function () {
   return new Promise(function (resolve) {
-    // since this would also request permission...
-    //   resolve(QRCodeReader.isAvailable());
+    // since this would also request permission on iOS 10
+      // resolve(QRCodeReader.isAvailable());
     // ... and it's extremely likely to be 'true' anyway, I decided to hardcode this:
     resolve(true);
   });
 };
 
-// TODO consider asking camera PERMISSION beforehand: https://github.com/yannickl/QRCodeReaderViewController/issues/4,
-// would fit well with the Android 6 implementation.
+barcodescanner._hasCameraPermission = function () {
+  var authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
+  return authStatus == AVAuthorizationStatusAuthorized;
+};
+
+barcodescanner._hasDeniedCameraPermission = function () {
+  var authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
+  return authStatus == AVAuthorizationStatusDenied || authStatus == AVAuthorizationStatusRestricted;
+};
+
+barcodescanner.hasCameraPermission = function () {
+  return new Promise(function (resolve) {
+    resolve(barcodescanner._hasCameraPermission());
+  });
+};
+
+barcodescanner.requestCameraPermission = function () {
+  return new Promise(function (resolve) {
+    // this will trigger the prompt on iOS 10
+    QRCodeReader.isAvailable();
+    resolve();
+  });
+};
+
 barcodescanner.scan = function (arg) {
   return new Promise(function (resolve, reject) {
     try {
+      // only need for denied permission as conveniently, this method will auto-request permission upon scan
+      if (barcodescanner._hasDeniedCameraPermission()) {
+        if (arg.openSettingsIfPermissionWasPreviouslyDenied) {
+          utils.ios.getter(UIApplication, UIApplication.sharedApplication).openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
+        }
+        reject("The user previously denied permission to access the camera.");
+        return;
+      }
+
+      barcodescanner._addVolumeObserver();
+
       arg = arg || {};
       var closeButtonLabel = arg.cancelLabel || "Close";
       var isContinuous = typeof arg.continuousScanCallback === "function";
@@ -88,6 +151,7 @@ barcodescanner.stop = function (arg) {
     try {
       var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+      barcodescanner._removeVolumeObserver();
       resolve();
     } catch (ex) {
       reject(ex);
@@ -112,6 +176,7 @@ var QRCodeReaderDelegateImpl = (function (_super) {
   QRCodeReaderDelegateImpl.prototype.readerDidCancel = function (reader) {
     var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
     app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+    barcodescanner._removeVolumeObserver();
     this._callback(reader);
   };
   QRCodeReaderDelegateImpl.prototype.readerDidScanResultForType = function (reader, text, type) {
@@ -127,11 +192,34 @@ var QRCodeReaderDelegateImpl = (function (_super) {
     } else {
       var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+      barcodescanner._removeVolumeObserver();
       this._callback(reader, text, type);
     }
   };
   QRCodeReaderDelegateImpl.ObjCProtocols = [QRCodeReaderDelegate];
   return QRCodeReaderDelegateImpl;
 })(NSObject);
+
+var ObserverClass = (function (_super) {
+    __extends(ObserverClass, _super);
+    function ObserverClass() {
+        _super.apply(this, arguments);
+    }
+    ObserverClass.prototype.observeValueForKeyPathOfObjectChangeContext = function (path, obj, change, context) {
+      if (path === "outputVolume") {
+        var volumeLevel = utils.ios.getter(MPMusicPlayerController, MPMusicPlayerController.applicationMusicPlayer).volume;
+        if (volumeLevel > barcodescanner._currentVolume) {
+          // volume up button pressed, so enable torch
+          barcodescanner._enableTorch();
+        } else {
+          // volume down button pressed, so disable torch
+          barcodescanner._disableTorch();
+        }
+        barcodescanner._currentVolume = volumeLevel;
+      }
+    };
+    return ObserverClass;
+}(NSObject));
+barcodescanner._observer = ObserverClass.alloc();
 
 module.exports = barcodescanner;

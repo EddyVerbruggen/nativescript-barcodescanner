@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner.js",
   "nativescript": {
@@ -20,6 +20,8 @@
     "Bulk",
     "Bulk Scan",
     "Continuous",
+    "Flashlight",
+    "Torch",
     "Aztec",
     "Codabar",
     "Code39",
