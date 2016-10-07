@@ -122,14 +122,14 @@ on Android we actually check for a camera to be available.
 ```
 
 ### function: hasCameraPermission / requestCameraPermission
-On Android 6 you need to request permission to use the camera at runtime when targeting API level 23+.
+On Android 6+ you need to request permission to use the camera at runtime when targeting API level 23+.
 Even if the `uses-permission` tag for the Camera is present in `AndroidManifest.xml`.
 
-Note that `hasCameraPermission` will return true when:
-* You're running this on iOS, or
-* You're targeting an API level lower than 23, or
-* You're using Android < 6, or
-* You've already granted permission.
+On iOS 10+ there's something similar going on.
+
+Since version 1.5.0 you can let the plugin handle this for you
+(if need be a prompt will be shown to the user when the scanner launches),
+but if for some reason you want to handle permissions yourself you can use these functions.
 
 ```js
   barcodescanner.hasCameraPermission().then(
@@ -146,10 +146,6 @@ Note that `hasCameraPermission` will return true when:
       }
   );
 ```
-
-Note that the `scan` function will also check for permission and ask for it if it wasn't previously granted.
-If you're relying on that, then you should know that since we're not catching the consent result
-the user will then need to allow camera access and launch the scanner again.
 
 ## Changelog
 1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
