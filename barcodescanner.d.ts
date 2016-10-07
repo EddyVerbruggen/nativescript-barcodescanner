@@ -54,11 +54,30 @@ declare module "nativescript-barcodescanner" {
        * Android only.
        */
       orientation?: string;
+
+      /**
+       * On iOS you can send the user to the settings app if access was previously denied.
+       * Default: false
+       */
+      openSettingsIfPermissionWasPreviouslyDenied?: boolean;
     }
 
     export function available(): Promise<boolean>;
+
+    /**
+     * Deprecated as this is now all handled automatically for you.
+     */
     export function hasCameraPermission(): Promise<boolean>;
+
+    /**
+     * Deprecated as this is now all handled automatically for you.
+     */
     export function requestCameraPermission(): Promise<boolean>;
+
+    /**
+     * Start scanning, with many options.
+     * Will automatically request permission for you if not granted previously.
+     */
     export function scan(options: ScanOptions): Promise<any>;
     /**
      * Stop scanning, particularly useful when 'scan' was used with 'continuousScanCallback'

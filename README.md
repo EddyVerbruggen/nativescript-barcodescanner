@@ -50,6 +50,7 @@ You can provide your own reason for accessing the camera by adding something lik
 _To not crash your app in case you forgot to provide the reason this plugin adds an empty reason to the `.plist` during build. This value gets overridden by anything you specified yourself. You're welcome._
 
 ## Usage
+Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 
 ### function: scan (single mode)
 ```js
@@ -57,11 +58,12 @@ _To not crash your app in case you forgot to provide the reason this plugin adds
 
   barcodescanner.scan({
     formats: "QR_CODE,PDF_417",   // Pass in of you want to restrict scanning to certain types
-    cancelLabel: "Stop scanning", // iOS only, default 'Close'
-    message: "Go scan something", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
+    cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+    message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     preferFrontCamera: false,     // Android only, default false
     showFlipCameraButton: true,   // Android only, default false (on iOS it's always available)
-    orientation: "landscape"      // Android only, optionally lock the orientation to either "portrait" or "landscape"
+    orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"
+    openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then(
       function(result) {
         console.log("Scan format: " + result.format);
@@ -148,3 +150,7 @@ Note that `hasCameraPermission` will return true when:
 Note that the `scan` function will also check for permission and ask for it if it wasn't previously granted.
 If you're relying on that, then you should know that since we're not catching the consent result
 the user will then need to allow camera access and launch the scanner again.
+
+## Changelog
+1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
+1.4.0  Bulk scanning
