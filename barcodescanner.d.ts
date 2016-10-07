@@ -23,37 +23,38 @@ declare namespace barcodeScanner {
       /**
        * The label of the button used to close the scanner.
        * Default: "Close".
-       * iOS only.
        */
       cancelLabel?: string;
+      /**
+       * You can send the user to the settings app if access was previously denied.
+       * Default: false
+       */
+      openSettingsIfPermissionWasPreviouslyDenied?: boolean;
     }
 
     interface Android extends Common {
       /**
        * The message shown when looking for something to scan.
        * Default: "Place a barcode inside the viewfinder rectangle to scan it."
-       * Android only.
        */
       message?: string;
 
       /**
        * Start the scanner with the front camera?
        * Default: false, so the back camera is used.
-       * Android only.
        */
       preferFrontCamera?: boolean;
 
       /**
        * While scanning for a barcode show a button to flip to the other camera (front or back).
        * Default: false, so no flip button is shown.
-       * Android only (on iOS the button is always shown).
+       * Note that on iOS the button is always shown.
        */
       showFlipCameraButton?: boolean;
 
       /**
        * Optionally lock the orientation to 'portrait' or 'landscape'.
        * Default: "sensor", which follows the current device rotation.
-       * Android only.
        */
       orientation?: string;
     }
@@ -67,8 +68,19 @@ declare namespace barcodeScanner {
 
   interface BarcodeScanner {
     available(): Promise<boolean>;
+    /**
+     * Not recommended to use this as it's all handled automatically for you.
+     */
     hasCameraPermission(): Promise<boolean>;
+    /**
+     * Not recommended to use this as it's all handled automatically for you.
+     */
     requestCameraPermission(): Promise<boolean>;
+    /**
+     * Start scanning, with many options.
+     * Will automatically request permission for you if not granted previously.
+     * Note that during a scan users can use the volume buttons to toggle the torch.
+     */
     scan(options: ScanOptions): Promise<any>;
     /**
      * Stop scanning, particularly useful when 'scan' was used with 'continuousScanCallback'
