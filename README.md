@@ -147,6 +147,60 @@ but if for some reason you want to handle permissions yourself you can use these
   );
 ```
 
+### Usage with `nativescript-angular`
+
+When using Angular 2, it is best to inject dependencies into your classes.  Here is an example of how you
+can set up `nativescript-barcodescanner` in an Angular 2 app with dependency injection.
+
+1. Set up an [opaque token](https://angular.io/docs/ts/latest/guide/dependency-injection.html#!#dependency-injection-tokens)
+    ```ts
+    //barcodescanner.ts
+    import { OpaqueToken } from '@angular/core';
+    import * as scanner from 'nativescript-barcodescanner';
+
+    export const BARCODE_SCANNER = new OpaqueToken('barcodescanner');
+
+    //These are re-exported for convenience (so you don't have to import from two places)
+    export const barcodescanner = scanner;
+    export type BarcodeScanner = scanner.BarcodeScanner;
+    export type ScanOptions = scanner.ScanOptions;
+    export type IosScanOptions = scanner.ScanOptions.IOS;
+    export type AndroidScanOptions = scanner.ScanOptions.Android;
+    ```
+1. Register the provider with your module
+    ```ts
+    //app.module.ts
+    import { NgModule, ValueProvider } from '@angular/core';
+    import { BARCODE_SCANNER, barcodescanner } from './barcodescanner';
+    //other imports
+
+    @NgModule({
+      //bootstrap, declarations, imports, etc.
+      providers: [
+        <ValueProvider>{ provide: BARCODE_SCANNER, useValue: barcodescanner }
+      ]
+    })
+    export class AppModule {}
+    ```
+1. Inject it into your component
+    ```ts
+    //my-component.ts
+    import { Component, Inject } from '@angular/core';
+    import { BARCODE_SCANNER, BarcodeScanner } from './barcodescanner';
+    //other imports
+
+    @Component({ ... })
+    export class MyComponent {
+      constructor(@Inject(BARCODE_SCANNER) private barcodeScanner: BarcodeScanner) {
+      }
+
+      //use the barcodescanner wherever you need it. See general usage above.
+      scanBarcode() {
+        this.barcodeScanner.scan({ ... });
+      }
+    }
+    ```
+
 ## Changelog
 1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
 1.4.0  Bulk scanning
