@@ -1,7 +1,6 @@
 # NativeScript BarcodeScanner
-(Bulk)scan QR / barcodes
 
-Want a quick demo?
+#### Want a quick demo?
 * git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
 * cd barcodedemo
 * npm run setup
@@ -237,6 +236,6 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 ## Changelog
-2.0.0  Conversion to TypeScript (note that the JS require syntax is now slightly different!)
-1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
-1.4.0  Bulk scanning
+* 2.0.0  Conversion to TypeScript (note that the JS require syntax is now slightly different!)
+* 1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
+* 1.4.0  Bulk scanning
