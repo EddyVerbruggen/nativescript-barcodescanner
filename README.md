@@ -53,8 +53,37 @@ _To not crash your app in case you forgot to provide the reason this plugin adds
 Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 
 ### function: scan (single mode)
+
+#### TypeScript
 ```js
-  var barcodescanner = require("nativescript-barcodescanner");
+  import {BarcodeScanner} from "nativescript-barcodescanner";
+  let barcodescanner = new BarcodeScanner();
+
+  barcodescanner.scan({
+    formats: "QR_CODE, EAN_13",
+    cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+    message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
+    preferFrontCamera: front,     // Android only, default false
+    showFlipCameraButton: flip,   // Android only, default false (on iOS it's always available)
+    orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
+    openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
+  }).then((result) => {
+      // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
+      alert({
+        title: "Scan result",
+        message: "Format: " + result.format + ",\nValue: " + result.text,
+        okButtonText: "OK"
+      });
+    }, (errorMessage) => {
+      console.log("No scan. " + errorMessage);
+    }
+  );
+```
+
+#### JavaScript
+```js
+  var BarcodeScanner = require("nativescript-barcodescanner").BarcodeScanner;
+  var barcodescanner = new BarcodeScanner();
 
   barcodescanner.scan({
     formats: "QR_CODE,PDF_417",   // Pass in of you want to restrict scanning to certain types

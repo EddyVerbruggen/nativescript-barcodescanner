@@ -1,6 +1,6 @@
 import {Observable} from "data/observable";
 import {alert} from "ui/dialogs";
-import {BarcodeScanner, ScanOptions} from "nativescript-barcodescanner";
+import {BarcodeScanner} from "nativescript-barcodescanner";
 
 export class HelloWorldModel extends Observable {
   public message: string;
