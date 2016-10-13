@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 
 /**
- * The camera switch button.
- * @since 2.0.0
+ * The toggle toch button.
+ * @since 4.0.0
  */
-@interface QRCameraSwitchButton : UIButton
+@interface QRToggleTorchButton : UIButton
 
 #pragma mark - Managing Properties
 /** @name Managing Properties */

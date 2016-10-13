@@ -1,6 +1,44 @@
 "use strict";
+var content_view_1 = require("ui/content-view");
 var utils = require("utils/utils");
 var frame = require("ui/frame");
+var BarcodeScannerView = (function (_super) {
+    __extends(BarcodeScannerView, _super);
+    function BarcodeScannerView() {
+        _super.call(this);
+        var closeButtonLabel = "bla";
+        var types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
+            AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+            AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
+        this._reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+        var torch = false;
+        var flip = false;
+        var startScanningAtLoad = true;
+        var isContinuous = false;
+        var delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, function (reader, text, format) {
+            delegate = undefined;
+        });
+        console.log("--- ios: " + this._ios);
+        this._ios = this._reader.previewLayer;
+        this._reader.startScanning();
+    }
+    Object.defineProperty(BarcodeScannerView.prototype, "ios", {
+        get: function () {
+            return this._ios;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BarcodeScannerView.prototype, "continuous", {
+        set: function (value) {
+            this._continuous = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return BarcodeScannerView;
+}(content_view_1.ContentView));
+exports.BarcodeScannerView = BarcodeScannerView;
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this._hasCameraPermission = function () {
@@ -124,8 +162,15 @@ var BarcodeScanner = (function () {
                         AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
                         AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
                 }
-                var bs = QRCodeReaderViewController.readerWithCancelButtonTitleMetadataObjectTypes(closeButtonLabel, types);
-                bs.modalPresentationStyle = 2;
+                var reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+                if (arg.preferFrontCamera && reader.hasFrontDevice()) {
+                    reader.switchDeviceInput();
+                }
+                var torch = arg.showTorchButton;
+                var flip = arg.showFlipCameraButton;
+                var startScanningAtLoad = true;
+                self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, reader, startScanningAtLoad, flip, torch);
+                self._scanner.modalPresentationStyle = 2;
                 var delegate_1 = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous_1, function (reader, text, format) {
                     if (text === undefined) {
                         self._removeVolumeObserver();
@@ -146,12 +191,12 @@ var BarcodeScanner = (function () {
                     }
                     delegate_1 = undefined;
                 });
-                bs.delegate = delegate_1;
+                self._scanner.delegate = delegate_1;
                 var topMostFrame = frame.topmost();
                 if (topMostFrame) {
                     var vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
                     if (vc) {
-                        vc.presentViewControllerAnimatedCompletion(bs, true, null);
+                        vc.presentViewControllerAnimatedCompletion(self._scanner, true, null);
                     }
                 }
                 if (isContinuous_1) {

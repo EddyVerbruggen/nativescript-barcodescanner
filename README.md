@@ -65,8 +65,9 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     formats: "QR_CODE, EAN_13",
     cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
-    preferFrontCamera: front,     // Android only, default false
-    showFlipCameraButton: flip,   // Android only, default false (on iOS it's always available)
+    showFlipCameraButton: true,   // default false
+    preferFrontCamera: false,     // default false
+    showTorchButton: true,        // iOS only, default false
     orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then((result) => {
@@ -91,8 +92,9 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     formats: "QR_CODE,PDF_417",   // Pass in of you want to restrict scanning to certain types
     cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
-    preferFrontCamera: false,     // Android only, default false
-    showFlipCameraButton: true,   // Android only, default false (on iOS it's always available)
+    showFlipCameraButton: true,   // default false
+    preferFrontCamera: false,     // default false
+    showTorchButton: true,        // iOS only, default false
     orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then(
@@ -236,6 +238,7 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 ## Changelog
+* __2.1.0__  iOS now also honors the `preferFrontCamera` and `showFlipCameraButton` settings. Also, added `showTorchButton` (iOS only for now). 
 * __2.0.0__  Conversion to TypeScript (note that the JS require syntax is now slightly different!).
 * __1.5.0__  Auto-permission handling. Use the volume up/down buttons to toggle the torch.
 * __1.4.0__  Bulk scanning.

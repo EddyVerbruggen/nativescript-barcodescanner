@@ -15,6 +15,18 @@ export interface CommonScanOptions {
    * you're welcome ;)
    */
   continuousScanCallback?: Function;
+
+  /**
+   * Start the scanner with the front camera?
+   * Default: false, so the back camera is used.
+   */
+  preferFrontCamera?: boolean;
+
+  /**
+   * While scanning for a barcode show a button to flip to the other camera (front or back).
+   * Default: false
+   */
+  showFlipCameraButton?: boolean;
 }
 
 export interface IOS extends CommonScanOptions {
@@ -28,6 +40,11 @@ export interface IOS extends CommonScanOptions {
    * Default: false
    */
   openSettingsIfPermissionWasPreviouslyDenied?: boolean;
+
+  /**
+   * Default: false
+   */
+  showTorchButton?: boolean;
 }
 
 export interface Android extends CommonScanOptions {
@@ -36,19 +53,6 @@ export interface Android extends CommonScanOptions {
    * Default: "Place a barcode inside the viewfinder rectangle to scan it."
    */
   message?: string;
-
-  /**
-   * Start the scanner with the front camera?
-   * Default: false, so the back camera is used.
-   */
-  preferFrontCamera?: boolean;
-
-  /**
-   * While scanning for a barcode show a button to flip to the other camera (front or back).
-   * Default: false, so no flip button is shown.
-   * Note that on iOS the button is always shown.
-   */
-  showFlipCameraButton?: boolean;
 
   /**
    * Optionally lock the orientation to 'portrait' or 'landscape'.
