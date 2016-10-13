@@ -1,8 +1,11 @@
 # NativeScript BarcodeScanner
+(Bulk)scan QR / barcodes
 
-Scan a barcode (or a QR code, or a lot of other formats really)
-
-> Looking for a demo? [Look no further!](https://github.com/EddyVerbruggen/nativescript-barcodescanner-demo)
+Want a quick demo?
+* git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
+* cd barcodedemo
+* npm run setup
+* npm run demo.android (or demo.ios / demo.ios.device)
 
 ## Supported barcode types
 
@@ -105,8 +108,7 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 ```
 
 ### function: scan (bulk / continuous mode)
-By popular demand version 1.4.0 added bulk mode.
-The scanner will continuously report scanned codes back to your code,
+In this mode the scanner will continuously report scanned codes back to your code,
 but it will only be dismissed if the user tells it to, or you call `stop` programmatically.
 
 The plugin handles duplicates for you so don't worry about checking those;
@@ -114,6 +116,8 @@ every result withing the same scan session is unique.
 
 Here's an example of scanning 3 unique QR codes and then stopping scanning programmatically.
 You'll notice that the Promise will no longer receive the result as there may be many results:
+
+#### JavaScript
 ```js
   var count = 0;
   barcodescanner.scan({
@@ -140,6 +144,7 @@ You'll notice that the Promise will no longer receive the result as there may be
 Note that the iOS implementation will always return `true` at the moment,
 on Android we actually check for a camera to be available.
 
+#### JavaScript
 ```js
   var barcodescanner = require("nativescript-barcodescanner");
 
@@ -160,6 +165,7 @@ Since version 1.5.0 you can let the plugin handle this for you
 (if need be a prompt will be shown to the user when the scanner launches),
 but if for some reason you want to handle permissions yourself you can use these functions.
 
+#### JavaScript
 ```js
   barcodescanner.hasCameraPermission().then(
       function(granted) {
@@ -231,5 +237,6 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 ## Changelog
+2.0.0  Conversion to TypeScript (note that the JS require syntax is now slightly different!)
 1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
 1.4.0  Bulk scanning
