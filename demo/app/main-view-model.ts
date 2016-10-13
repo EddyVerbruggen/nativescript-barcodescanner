@@ -51,12 +51,16 @@ export class HelloWorldModel extends Observable {
     this.scan(true, false);
   };
 
+  public doScanWithTorch() {
+    this.scan(false, true, true, "portrait");
+  };
+
   public doScanPortrait() {
-    this.scan(false, true, "portrait");
+    this.scan(false, true, false, "portrait");
   };
 
   public doScanLandscape() {
-    this.scan(false, true, "landscape");
+    this.scan(false, true, false, "landscape");
   };
 
   public doContinuousScan() {
@@ -88,23 +92,26 @@ export class HelloWorldModel extends Observable {
     });
   };
 
-  private scan(front: boolean, flip: boolean, orientation?: string) {
+  private scan(front: boolean, flip: boolean, torch?: boolean, orientation?: string) {
     this.barcodeScanner.scan({
       formats: "QR_CODE, EAN_13",
       cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
       message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
       preferFrontCamera: front,     // Android only, default false
-      showFlipCameraButton: flip,   // Android only, default false (on iOS it's always available)
+      showFlipCameraButton: flip,   // default false
+      showTorchButton: torch,       // iOS only, default false
       orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
       openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
     }).then(
       function(result) {
         // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
-        alert({
-          title: "Scan result",
-          message: "Format: " + result.format + ",\nValue: " + result.text,
-          okButtonText: "OK"
-        });
+        setTimeout(function() {
+          alert({
+            title: "Scan result",
+            message: "Format: " + result.format + ",\nValue: " + result.text,
+            okButtonText: "OK"
+          });
+        }, 500);
       },
       function(errorMessage) {
         console.log("No scan. " + errorMessage);

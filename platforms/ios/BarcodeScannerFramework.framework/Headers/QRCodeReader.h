@@ -11,12 +11,18 @@
 /** @name Creating and Inializing QRCode Readers */
 
 /**
+ * @abstract Initializes a reader with the `QRCode` metadata object type.
+ * @since 4.1.0
+ */
+- (nonnull id)init;
+
+/**
  * @abstract Initializes a reader with a list of metadata object types.
  * @param metadataObjectTypes An array of strings identifying the types of
  * metadata objects to process.
  * @since 3.0.0
  */
-- (id)initWithMetadataObjectTypes:(NSArray *)metadataObjectTypes;
+- (nonnull id)initWithMetadataObjectTypes:(nonnull NSArray *)metadataObjectTypes;
 
 /**
  * @abstract Creates a reader with a list of metadata object types.
@@ -25,7 +31,7 @@
  * @see initWithMetadataObjectTypes:
  * @since 3.0.0
  */
-+ (instancetype)readerWithMetadataObjectTypes:(NSArray *)metadataObjectTypes;
++ (nonnull instancetype)readerWithMetadataObjectTypes:(nonnull NSArray *)metadataObjectTypes;
 
 #pragma mark - Checking the Reader Availabilities
 /** @name Checking the Reader Availabilities */
@@ -44,7 +50,7 @@
  * are supported by the current device.
  * @since 3.2.0
  */
-+ (BOOL)supportsMetadataObjectTypes:(NSArray *)metadataObjectTypes;
++ (BOOL)supportsMetadataObjectTypes:(nonnull NSArray *)metadataObjectTypes;
 
 #pragma mark - Checking the Metadata Items Types
 /** @name Checking the Metadata Items Types */
@@ -54,7 +60,7 @@
  * process.
  * @since 3.0.0
  */
-@property (strong, nonatomic, readonly) NSArray *metadataObjectTypes;
+@property (strong, nonatomic, readonly) NSArray * _Nonnull metadataObjectTypes;
 
 #pragma mark - Viewing the Camera
 /** @name Viewing the Camera */
@@ -64,7 +70,7 @@
  * by an input device.
  * @since 3.0.0
  */
-@property (strong, nonatomic, readonly) AVCaptureVideoPreviewLayer *previewLayer;
+@property (strong, nonatomic, readonly) AVCaptureVideoPreviewLayer * _Nonnull previewLayer;
 
 #pragma mark - Controlling the Reader
 /** @name Controlling the Reader */
@@ -104,6 +110,19 @@
  */
 - (BOOL)hasFrontDevice;
 
+/**
+ * @abstract Returns true whether a torch is available.
+ * @return true if a torch is available.
+ * @since 4.0.0
+ */
+- (BOOL)isTorchAvailable;
+
+/**
+ * @abstract Toggles torch on the default device.
+ * @since 4.0.0
+ */
+- (void)toggleTorch;
+
 #pragma mark - Getting Inputs and Outputs
 /** @name Getting Inputs and Outputs */
 
@@ -112,14 +131,14 @@
  * the default device input (generally the back camera).
  * @since 3.5.0
  */
-@property (readonly) AVCaptureDeviceInput *defaultDeviceInput;
+@property (readonly) AVCaptureDeviceInput * _Nonnull defaultDeviceInput;
 
 /**
  * @abstract Accessing to the `AVCaptureDeviceInput` object representing
  * the front device input.
  * @since 3.5.0
  */
-@property (readonly) AVCaptureDeviceInput *frontDeviceInput;
+@property (readonly) AVCaptureDeviceInput * _Nullable frontDeviceInput;
 
 /**
  * @abstract Accessing to the `AVCaptureMetadataOutput` object.
@@ -127,7 +146,7 @@
  * the scan to the overlay one for example.
  * @since 3.5.0
  */
-@property (readonly) AVCaptureMetadataOutput *metadataOutput;
+@property (readonly) AVCaptureMetadataOutput * _Nonnull metadataOutput;
 
 #pragma mark - Managing the Orientation
 /** @name Managing the Orientation */
@@ -153,6 +172,6 @@
  * is nil.
  * @since 3.0.0
  */
-- (void)setCompletionWithBlock:(void (^) (NSString *resultAsString, NSString *typeAsString))completionBlock;
+- (void)setCompletionWithBlock:(nullable void (^) (NSString * _Nullable resultAsString, NSString * _Nullable typeAsString))completionBlock;
 
 @end

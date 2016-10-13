@@ -7,7 +7,7 @@ var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this.broadcastManager = null;
         this.rememberedContext = null;
-        this._cameraPermissionGranted = function () {
+        this.wasCameraPermissionGranted = function () {
             var hasPermission = android.os.Build.VERSION.SDK_INT < 23;
             if (!hasPermission) {
                 hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ===
@@ -15,21 +15,21 @@ var BarcodeScanner = (function () {
             }
             return hasPermission;
         };
-        this._requestCameraPermission = function (onPermissionGranted, reject) {
-            this._onPermissionGranted = onPermissionGranted;
-            this._reject = reject;
+        this.requestCameraPermissionInternal = function (onPermissionGranted, reject) {
+            this.onPermissionGranted = onPermissionGranted;
+            this.onPermissionRejected = reject;
             android.support.v4.app.ActivityCompat.requestPermissions(appModule.android.currentContext, [android.Manifest.permission.CAMERA], 234);
         };
         var self = this;
         appModule.android.on(appModule.AndroidApplication.activityRequestPermissionsEvent, function (args) {
             for (var i = 0; i < args.permissions.length; i++) {
                 if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_DENIED) {
-                    self._reject("Please allow access to the Camera and try again.");
+                    self.onPermissionRejected("Please allow access to the Camera and try again.");
                     return;
                 }
             }
-            if (self._onPermissionGranted) {
-                self._onPermissionGranted();
+            if (self.onPermissionGranted) {
+                self.onPermissionGranted();
             }
             else {
                 console.log("No after-permission callback function specified for requestCode " + args.requestCode + ". That's a bug in the nativescript-barcodescanner plugin, please report it!");
@@ -51,7 +51,7 @@ var BarcodeScanner = (function () {
     BarcodeScanner.prototype.hasCameraPermission = function () {
         var self = this;
         return new Promise(function (resolve) {
-            var granted = self._cameraPermissionGranted();
+            var granted = self.wasCameraPermissionGranted();
             resolve(granted);
         });
     };
@@ -60,7 +60,7 @@ var BarcodeScanner = (function () {
         var self = this;
         return new Promise(function (resolve, reject) {
             try {
-                self._requestCameraPermission(resolve, reject);
+                self.requestCameraPermissionInternal(resolve, reject);
             }
             catch (ex) {
                 console.log("Error in barcodescanner.requestCameraPermission: " + ex);
@@ -75,8 +75,8 @@ var BarcodeScanner = (function () {
             try {
                 var stopIntent = new android.content.Intent("barcode-scanner-stop");
                 self.broadcastManager.sendBroadcast(stopIntent);
-                self.broadcastManager.unregisterReceiver(self._onReceiveCallback);
-                self._onReceiveCallback = undefined;
+                self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
+                self.onScanReceivedCallback = undefined;
                 resolve();
             }
             catch (ex) {
@@ -112,24 +112,24 @@ var BarcodeScanner = (function () {
                     if (!self.broadcastManager) {
                         self.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(com.tns.NativeScriptApplication.getInstance());
                     }
-                    self._continuousScanCallback = arg.continuousScanCallback;
+                    self.onContinuousScanResult = arg.continuousScanCallback;
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
-                    self._scannedArray = [];
+                    self.uniquelyScannedCodes = new Array();
                     var CallbackReceiver = android.content.BroadcastReceiver.extend({
                         onReceive: function (context, data) {
                             var format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
                             var text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
-                            if (self._scannedArray.indexOf("[" + text + "][" + format + "]") == -1) {
-                                self._scannedArray.push("[" + text + "][" + format + "]");
-                                self._continuousScanCallback({
+                            if (self.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") == -1) {
+                                self.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
+                                self.onContinuousScanResult({
                                     format: format,
                                     text: text
                                 });
                             }
                         }
                     });
-                    self._onReceiveCallback = new CallbackReceiver();
-                    self.broadcastManager.registerReceiver(self._onReceiveCallback, new android.content.IntentFilter("bulk-barcode-result"));
+                    self.onScanReceivedCallback = new CallbackReceiver();
+                    self.broadcastManager.registerReceiver(self.onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
                 }
                 if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
                     var previousResult_1 = appModule.android.onActivityResult;
@@ -141,8 +141,8 @@ var BarcodeScanner = (function () {
                         appModule.android.onActivityResult = previousResult_1;
                         if (requestCode === SCANNER_REQUEST_CODE) {
                             if (isContinuous) {
-                                self.broadcastManager.unregisterReceiver(self._onReceiveCallback);
-                                self._onReceiveCallback = undefined;
+                                self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
+                                self.onScanReceivedCallback = undefined;
                             }
                             else {
                                 if (resultCode === android.app.Activity.RESULT_OK) {
@@ -169,8 +169,8 @@ var BarcodeScanner = (function () {
                     reject("Configuration error");
                 }
             };
-            if (!self._cameraPermissionGranted()) {
-                self._requestCameraPermission(onPermissionGranted, reject);
+            if (!self.wasCameraPermissionGranted()) {
+                self.requestCameraPermissionInternal(onPermissionGranted, reject);
                 return;
             }
             onPermissionGranted();

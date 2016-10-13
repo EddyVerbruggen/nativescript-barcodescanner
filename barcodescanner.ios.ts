@@ -1,13 +1,70 @@
 import {ScanOptions} from "./barcodescanner.common";
+import {ContentView} from "ui/content-view";
 import * as utils from "utils/utils";
 import * as frame from "ui/frame";
 
 declare let QRCodeReader, QRCodeReaderViewController, QRCodeReaderDelegate: any;
 
+/* attempting XML declared scanner.. needs work ;)
+export class BarcodeScannerView extends ContentView {
+
+  private _reader: any;
+  private _scanner: any;
+  private _ios: any;
+  private _continuous: boolean;
+
+  constructor() {
+    super();
+
+    // let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
+    // if (authStatus !== AVAuthorizationStatus.Authorized) {
+    // }
+
+    let closeButtonLabel = "bla";
+    let types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
+          AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+          AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
+
+    this._reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+
+    let torch = false;
+    let flip = false;
+    let startScanningAtLoad = true;
+    // this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, this._reader, startScanningAtLoad, flip, torch);
+    // this._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+
+    // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
+
+    let isContinuous = false;
+    let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, (reader: string, text: string, format: string) => {
+      // Remove the local variable for the delegate.
+      delegate = undefined;
+    });
+    // this._scanner.delegate = delegate;
+
+    console.log("--- ios: " + this._ios);
+    this._ios = this._reader.previewLayer; // TODO
+
+    // instead of a delegate we can use setCompletionWithBlock: https://github.com/yannickl/QRCodeReaderViewController/blob/master/QRCodeReaderViewController/QRCodeReader.h#L201
+
+    this._reader.startScanning();
+  }
+
+  get ios(): any {
+    return this._ios;
+  }
+
+  set continuous(value: boolean) {
+    this._continuous = value;
+  }
+}
+*/
+
 export class BarcodeScanner {
 
   private _observer: NSObject;
   private _currentVolume: any;
+  private _scanner: any;
 
   constructor() {
     this._observer = VolumeObserverClass.alloc();
@@ -38,6 +95,7 @@ export class BarcodeScanner {
     }
   };
 
+  // TODO the lib actually has toggleTorch: https://github.com/yannickl/QRCodeReaderViewController/blob/9fa79106e1f0839d96d0166c78d7f263b03b3e61/QRCodeReaderViewController/QRCodeReader.h#L150
   private _enableTorch = function () {
     let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
     device.lockForConfiguration();
@@ -132,8 +190,17 @@ export class BarcodeScanner {
             AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
         }
 
-        let bs = QRCodeReaderViewController.readerWithCancelButtonTitleMetadataObjectTypes(closeButtonLabel, types);
-        bs.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+        let reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+
+        if (arg.preferFrontCamera && reader.hasFrontDevice()) {
+          reader.switchDeviceInput();
+        }
+
+        let torch = arg.showTorchButton;
+        let flip = arg.showFlipCameraButton;
+        let startScanningAtLoad = true;
+        self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, reader, startScanningAtLoad, flip, torch);
+        self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
 
@@ -157,14 +224,14 @@ export class BarcodeScanner {
           // Remove the local variable for the delegate.
           delegate = undefined;
         });
-        bs.delegate = delegate;
+        self._scanner.delegate = delegate;
 
         // TODO this means we should be able to embed the QR scanner as well
         let topMostFrame = frame.topmost();
         if (topMostFrame) {
           let vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
           if (vc) {
-            vc.presentViewControllerAnimatedCompletion(bs, true, null);
+            vc.presentViewControllerAnimatedCompletion(self._scanner, true, null);
           }
         }
         if (isContinuous) {
