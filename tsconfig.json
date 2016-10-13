@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "noEmitHelpers": true,
+        "declaration": true,
+        "noLib": true
+    },
+    "files": [
+        "node_modules/typescript/lib/lib.core.d.ts",
+        "manual_typings/base.d.ts",
+        "node_modules/tns-core-modules/tns-core-modules.d.ts",
+        "node_modules/tns-platform-declarations/tns-core-modules/android17.d.ts",
+        "node_modules/tns-platform-declarations/tns-core-modules/ios/ios.d.ts",
+        "node_modules/tns-platform-declarations/tns-core-modules/org.nativescript.widgets.d.ts",
+        "barcodescanner.common.ts",
+        "barcodescanner.android.ts",
+        "barcodescanner.ios.ts"
+    ],
+    "compileOnSave": false,
+    "exclude": [
+        "node_modules",
+        "platforms"
+    ]
+}

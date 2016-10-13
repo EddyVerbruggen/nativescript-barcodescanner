@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner.js",
   "typings": "barcodescanner.d.ts",
@@ -10,11 +10,20 @@
       "ios": "2.3.0"
     }
   },
+  "scripts": {
+    "build": "tsc",
+    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios --device \"iPhone 7\"",
+    "demo.ios.device": "npm run preparedemo && cd demo && tns run ios",
+    "demo.android": "npm run preparedemo && cd demo && tns run android",
+    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-barcodescanner && tns plugin add .. && tns install",
+    "setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin add .. && cd .."
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddyverbruggen/nativescript-barcodescanner.git"
   },
   "keywords": [
+    "ecosystem:nativescript",
     "NativeScript",
     "Barcode",
     "Barcode Scanner",
@@ -46,5 +55,14 @@
   "bugs": {
     "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/issues"
   },
-  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner"
+  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
+  "devDependencies": {
+    "nativescript-dev-typescript": "^0.3.2",
+    "tns-core-modules": "^2.3.0",
+    "tns-platform-declarations": "^2.3.0",
+    "typescript": "^1.8.0"
+  },
+  "dependencies": {
+    "nativescript-theme-core": "^0.1.2"
+  }
 }
