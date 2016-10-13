@@ -236,6 +236,6 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 ## Changelog
-* 2.0.0  Conversion to TypeScript (note that the JS require syntax is now slightly different!)
-* 1.5.0  Automatic permission handling & you can now us the volume up/down buttons to toggle the torch (on both iOS and Android)
-* 1.4.0  Bulk scanning
+* __2.0.0__  Conversion to TypeScript (note that the JS require syntax is now slightly different!).
+* __1.5.0__  Auto-permission handling. Use the volume up/down buttons to toggle the torch.
+* __1.4.0__  Bulk scanning.
