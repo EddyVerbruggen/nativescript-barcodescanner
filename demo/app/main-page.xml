@@ -1,0 +1,47 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="pageLoaded">
+  <TabView class="tab-view">
+    <TabView.items>
+      <TabViewItem title="About">
+        <TabViewItem.view>
+          <StackLayout class="tab-content">
+            <Image margin="10" src="~/res/telerik-logo.png" />
+            <Label class="h3" text="BarcodeScanner plugin demo" />
+            <Label class="body" text="The BarcodeScanner plugin supports extracting data from a large range of barcodes, including QR codes. Your app will receive the type of barcode and the encode value." textWrap="true"/>
+          </StackLayout>
+        </TabViewItem.view>
+      </TabViewItem>
+      <TabViewItem title="Demo">
+        <TabViewItem.view>
+          <ScrollView>
+            <StackLayout class="tab-content">
+              <Label class="h3" text="Checking availability" />
+              <Label class="body" text="It can never hurt to check upfront if a device is capable of scanning a barcode." textWrap="true"/>
+  			      <Button class="btn btn-primary btn-rounded-sm" text="available?" tap="{{ doCheckAvailable }}" />
+
+              <Label class="h3" text="Camera permission" />
+              <Label class="body" text="Android 6+ and iOS 10+ require runtime user consent. The plugin handles it automatically but you can do it manually as well." textWrap="true"/>
+              <Button class="btn btn-outline btn-rounded-sm" text="has permission?" tap="{{ doCheckHasCameraPermission }}" />
+              <Button class="btn btn-primary btn-rounded-sm" text="request permission" tap="{{ doRequestCameraPermission }}" />
+
+              <Label class="h3" text="Scanning (QR & EAN-13)" />
+              <Label class="body" text="You can use the volume buttons to toggle the torch." textWrap="true"/>
+              
+  			      <Button class="btn btn-primary btn-rounded-sm" text="back camera, with flip" tap="{{ doScanWithBackCamera }}" />
+  			      <Button class="btn btn-primary btn-rounded-sm" text="front camera, no flip (Android)" tap="{{ doScanWithFrontCamera }}" />
+
+              <Label class="h3" text="Continuous scanning (see console)" />
+  			      <Button class="btn btn-primary btn-rounded-sm" text="stop after 3 results" tap="{{ doContinuousScanMax3 }}" />
+  			      <Button class="btn btn-primary btn-rounded-sm" text="scan till you drop" tap="{{ doContinuousScan }}" />
+
+              <Android>
+                <Label class="h3" text="Orientation lock" />
+                <Button class="btn btn-primary btn-rounded-sm" text="back camera, portrait" tap="{{ doScanPortrait }}" />
+                <Button class="btn btn-primary btn-rounded-sm" text="back camera, landscape" tap="{{ doScanLandscape }}" />
+              </Android>
+            </StackLayout>
+          </ScrollView>
+        </TabViewItem.view>
+      </TabViewItem>
+    </TabView.items>
+  </TabView>
+</Page>

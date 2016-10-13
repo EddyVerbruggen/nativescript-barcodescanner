@@ -1,0 +1,11 @@
+﻿@import '~/css/core.light.css'; 
+
+.h3 {
+    margin-top: 18;
+    font-weight: bold;
+}
+
+.tab-content {
+    color: #808080;
+    padding: 0 18;
+}
