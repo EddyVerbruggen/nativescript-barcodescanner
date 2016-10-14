@@ -197,11 +197,11 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     export const BARCODE_SCANNER = new OpaqueToken('barcodescanner');
 
     //These are re-exported for convenience (so you don't have to import from two places)
-    export const barcodescanner = scanner;
+    export const barcodescanner = new scanner.BarcodeScanner();
     export type BarcodeScanner = scanner.BarcodeScanner;
     export type ScanOptions = scanner.ScanOptions;
-    export type IosScanOptions = scanner.ScanOptions.IOS;
-    export type AndroidScanOptions = scanner.ScanOptions.Android;
+    export type IosScanOptions = scanner.IOS;
+    export type AndroidScanOptions = scanner.Android;
     ```
 1. Register the provider with your module
     ```ts
