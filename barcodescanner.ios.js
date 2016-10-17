@@ -1,44 +1,6 @@
 "use strict";
-var content_view_1 = require("ui/content-view");
 var utils = require("utils/utils");
 var frame = require("ui/frame");
-var BarcodeScannerView = (function (_super) {
-    __extends(BarcodeScannerView, _super);
-    function BarcodeScannerView() {
-        _super.call(this);
-        var closeButtonLabel = "bla";
-        var types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-            AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
-            AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
-        this._reader = QRCodeReader.readerWithMetadataObjectTypes(types);
-        var torch = false;
-        var flip = false;
-        var startScanningAtLoad = true;
-        var isContinuous = false;
-        var delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, function (reader, text, format) {
-            delegate = undefined;
-        });
-        console.log("--- ios: " + this._ios);
-        this._ios = this._reader.previewLayer;
-        this._reader.startScanning();
-    }
-    Object.defineProperty(BarcodeScannerView.prototype, "ios", {
-        get: function () {
-            return this._ios;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BarcodeScannerView.prototype, "continuous", {
-        set: function (value) {
-            this._continuous = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return BarcodeScannerView;
-}(content_view_1.ContentView));
-exports.BarcodeScannerView = BarcodeScannerView;
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this._hasCameraPermission = function () {
@@ -53,11 +15,17 @@ var BarcodeScanner = (function () {
             this._audioSession = utils.ios.getter(AVAudioSession, AVAudioSession.sharedInstance);
             this._audioSession.setActiveError(true, null);
             this._currentVolume = this._audioSession.outputVolume;
-            this._audioSession.addObserverForKeyPathOptionsContext(this._observer, "outputVolume", 0, null);
+            if (!this._observerActive) {
+                this._audioSession.addObserverForKeyPathOptionsContext(this._observer, "outputVolume", 0, null);
+                this._observerActive = true;
+            }
         };
         this._removeVolumeObserver = function () {
             try {
-                this._audioSession.removeObserverForKeyPath(this._observer, "outputVolume");
+                if (this._observerActive) {
+                    this._observerActive = false;
+                    this._audioSession.removeObserverForKeyPath(this._observer, "outputVolume");
+                }
             }
             catch (ignore) {
             }

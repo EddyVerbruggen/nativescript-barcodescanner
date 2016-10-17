@@ -73,10 +73,16 @@ var BarcodeScanner = (function () {
         var self = this;
         return new Promise(function (resolve, reject) {
             try {
+                if (!self.broadcastManager) {
+                    reject("You found a bug in the plugin, please report that calling stop() failed with this message.");
+                    return;
+                }
                 var stopIntent = new android.content.Intent("barcode-scanner-stop");
                 self.broadcastManager.sendBroadcast(stopIntent);
-                self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
-                self.onScanReceivedCallback = undefined;
+                if (self.onScanReceivedCallback) {
+                    self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
+                    self.onScanReceivedCallback = undefined;
+                }
                 resolve();
             }
             catch (ex) {
@@ -107,11 +113,11 @@ var BarcodeScanner = (function () {
                 if (arg.formats) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
                 }
+                if (!self.broadcastManager) {
+                    self.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(com.tns.NativeScriptApplication.getInstance());
+                }
                 var isContinuous = typeof arg.continuousScanCallback === "function";
                 if (isContinuous) {
-                    if (!self.broadcastManager) {
-                        self.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(com.tns.NativeScriptApplication.getInstance());
-                    }
                     self.onContinuousScanResult = arg.continuousScanCallback;
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
                     self.uniquelyScannedCodes = new Array();

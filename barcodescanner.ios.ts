@@ -63,6 +63,7 @@ export class BarcodeScannerView extends ContentView {
 export class BarcodeScanner {
 
   private _observer: NSObject;
+  private _observerActive: boolean;
   private _currentVolume: any;
   private _scanner: any;
 
@@ -85,12 +86,18 @@ export class BarcodeScanner {
     this._audioSession = utils.ios.getter(AVAudioSession, AVAudioSession.sharedInstance);
     this._audioSession.setActiveError(true, null);
     this._currentVolume = this._audioSession.outputVolume;
-    this._audioSession.addObserverForKeyPathOptionsContext(this._observer, "outputVolume", 0, null);
+    if (!this._observerActive) {
+      this._audioSession.addObserverForKeyPathOptionsContext(this._observer, "outputVolume", 0, null);
+      this._observerActive = true;
+    }
   };
 
   private _removeVolumeObserver = function () {
     try {
-      this._audioSession.removeObserverForKeyPath(this._observer, "outputVolume");
+      if (this._observerActive) {
+        this._observerActive = false;
+        this._audioSession.removeObserverForKeyPath(this._observer, "outputVolume");
+      }
     } catch (ignore) {
     }
   };
