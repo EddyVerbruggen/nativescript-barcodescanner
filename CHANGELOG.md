@@ -3,6 +3,10 @@
 ## [2.1.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.1) (2016-10-17)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...2.1.1)
 
+**Fixed bugs:**
+
+- Stop method doesn't work [\#38](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/38)
+
 **Merged pull requests:**
 
 - Update "Usage with 'nativescript-angular'" docs [\#37](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/37) ([sis0k0](https://github.com/sis0k0))
