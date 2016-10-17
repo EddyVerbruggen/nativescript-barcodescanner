@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/HEAD)
-
-[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...HEAD)
+## [2.1.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.1) (2016-10-17)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...2.1.1)
 
 **Merged pull requests:**
 
