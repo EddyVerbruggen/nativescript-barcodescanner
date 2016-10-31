@@ -12,9 +12,16 @@ export interface CommonScanOptions {
    * as the Promise would, but every time something is scanned.
    *
    * This function doesn't report duplicates in the same scanning session,
-   * you're welcome ;)
+   * unless reportDuplicates is set to true.
    */
   continuousScanCallback?: Function;
+
+  /**
+   * Wheter or not to report duplicate scan results during continuous scanning.
+   * 
+   * Default false.
+   */
+  reportDuplicates?: boolean;
 
   /**
    * Start the scanner with the front camera?

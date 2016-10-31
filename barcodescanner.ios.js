@@ -139,7 +139,7 @@ var BarcodeScanner = (function () {
                 var startScanningAtLoad = true;
                 self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, reader, startScanningAtLoad, flip, torch);
                 self._scanner.modalPresentationStyle = 2;
-                var delegate_1 = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous_1, function (reader, text, format) {
+                var delegate_1 = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous_1, arg.reportDuplicates, function (reader, text, format) {
                     if (text === undefined) {
                         self._removeVolumeObserver();
                         reject("Scan aborted");
@@ -189,8 +189,9 @@ var QRCodeReaderDelegateImpl = (function (_super) {
     QRCodeReaderDelegateImpl.new = function () {
         return _super.new.call(this);
     };
-    QRCodeReaderDelegateImpl.prototype.initWithCallback = function (isContinuous, callback) {
+    QRCodeReaderDelegateImpl.prototype.initWithCallback = function (isContinuous, reportDuplicates, callback) {
         this._isContinuous = isContinuous;
+        this._reportDuplicates = reportDuplicates;
         this._callback = callback;
         return this;
     };
@@ -205,7 +206,7 @@ var QRCodeReaderDelegateImpl = (function (_super) {
             if (!this._scannedArray) {
                 this._scannedArray = Array();
             }
-            if (this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1) {
+            if (this._reportDuplicates || this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1) {
                 this._scannedArray.push("[" + text + "][" + type + "]");
                 this._callback(reader, text, type);
             }

@@ -73,12 +73,16 @@ export class HelloWorldModel extends Observable {
 
   public doContinuousScanMax3() {
     let count = 0;
+    console.log("-- in doContinuousScanMax3, count: " + count);
     let self = this;
     this.barcodeScanner.scan({
+      reportDuplicates: false,
       continuousScanCallback: function (result) {
         count++;
         console.log(result.format + ": " + result.text + " (count: " + count + ")");
         if (count === 3) {
+          // funilly this is required on Android to reset the counter for a second run
+          count = 0;
           self.barcodeScanner.stop();
           setTimeout(function() {
             alert({
