@@ -211,7 +211,7 @@ export class BarcodeScanner {
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
 
-        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, (reader: string, text: string, format: string) => {
+        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
           // invoke the callback / promise
           if (text === undefined) {
             self._removeVolumeObserver();
@@ -261,10 +261,12 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
 
   private _callback: (reader: string, text?: string, format?: string) => void;
   private _isContinuous: boolean;
+  private _reportDuplicates: boolean;
   private _scannedArray: Array<string>;
 
-  public initWithCallback(isContinuous: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
+  public initWithCallback(isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
     this._isContinuous = isContinuous;
+    this._reportDuplicates = reportDuplicates;
     this._callback = callback;
     return this;
   }
@@ -281,7 +283,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
         this._scannedArray = Array<string>();
       }
       // don't report duplicates
-      if (this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1) {
+      if (this._reportDuplicates || this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1) {
         this._scannedArray.push("[" + text + "][" + type + "]");
         this._callback(reader, text, type);
       }

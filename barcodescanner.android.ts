@@ -7,15 +7,14 @@ let SCANNER_REQUEST_CODE = 444;
 
 declare let com, android: any;
 
+let _onScanReceivedCallback = undefined;
+
 export class BarcodeScanner {
 
   private broadcastManager: any = null;
-  private onScanReceivedCallback: any;
   private onContinuousScanResult: any;
-  private uniquelyScannedCodes: Array<string>;
   private onPermissionGranted: Function;
   private onPermissionRejected: Function;
-  // I'd rather get rid of this one
   private rememberedContext: any = null;
 
   constructor() {
@@ -30,8 +29,6 @@ export class BarcodeScanner {
 
       if (self.onPermissionGranted) {
         self.onPermissionGranted();
-      } else {
-        console.log("No after-permission callback function specified for requestCode " + args.requestCode + ". That's a bug in the nativescript-barcodescanner plugin, please report it!")
       }
     });
   }
@@ -98,9 +95,9 @@ export class BarcodeScanner {
         let stopIntent = new android.content.Intent("barcode-scanner-stop");
         self.broadcastManager.sendBroadcast(stopIntent);
 
-        if (self.onScanReceivedCallback) {
-          self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
-          self.onScanReceivedCallback = undefined;
+        if (_onScanReceivedCallback) {
+          self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
+          _onScanReceivedCallback = undefined;
         }
         resolve();
       } catch (ex) {
@@ -155,7 +152,6 @@ export class BarcodeScanner {
 
           self.onContinuousScanResult = arg.continuousScanCallback;
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
-          self.uniquelyScannedCodes = new Array<string>();
 
           let CallbackReceiver = android.content.BroadcastReceiver.extend({
             onReceive: function (context, data) {
@@ -163,8 +159,11 @@ export class BarcodeScanner {
               let text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
 
               // don't report duplicates
-              if (self.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") == -1) {
-                self.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
+              if (!this.uniquelyScannedCodes) {
+                this.uniquelyScannedCodes = new Array<string>();
+              }
+              if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
+                this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
                 self.onContinuousScanResult({
                   format : format,
                   text : text
@@ -172,8 +171,8 @@ export class BarcodeScanner {
               }
             }
           });
-          self.onScanReceivedCallback = new CallbackReceiver();
-          self.broadcastManager.registerReceiver(self.onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
+          _onScanReceivedCallback = new CallbackReceiver();
+          self.broadcastManager.registerReceiver(_onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
         }
 
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
@@ -186,8 +185,10 @@ export class BarcodeScanner {
             appModule.android.onActivityResult = previousResult;
             if (requestCode === SCANNER_REQUEST_CODE) {
               if (isContinuous) {
-                self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
-                self.onScanReceivedCallback = undefined;
+                if (_onScanReceivedCallback) {
+                  self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
+                  _onScanReceivedCallback = undefined;
+                }
               } else {
                 if (resultCode === android.app.Activity.RESULT_OK) {
                   let format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);

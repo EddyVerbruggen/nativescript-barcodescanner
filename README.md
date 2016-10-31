@@ -113,7 +113,7 @@ In this mode the scanner will continuously report scanned codes back to your cod
 but it will only be dismissed if the user tells it to, or you call `stop` programmatically.
 
 The plugin handles duplicates for you so don't worry about checking those;
-every result withing the same scan session is unique.
+every result withing the same scan session is unique unless you set `reportDuplicates` to `true`.
 
 Here's an example of scanning 3 unique QR codes and then stopping scanning programmatically.
 You'll notice that the Promise will no longer receive the result as there may be many results:
@@ -130,7 +130,8 @@ You'll notice that the Promise will no longer receive the result as there may be
       if (count == 3) {
         barcodescanner.stop();
       }
-    }
+    },
+    reportDuplicates: false // which is the default
   }).then(
       function() {
         console.log("We're now reporting scan results in 'continuousScanCallback'");

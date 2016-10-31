@@ -1,6 +1,7 @@
 export interface CommonScanOptions {
     formats?: string;
     continuousScanCallback?: Function;
+    reportDuplicates?: boolean;
     preferFrontCamera?: boolean;
     showFlipCameraButton?: boolean;
 }

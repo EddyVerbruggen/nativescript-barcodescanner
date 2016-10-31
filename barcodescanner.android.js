@@ -3,6 +3,7 @@ var appModule = require("application");
 var camera = require("camera");
 var utils = require("utils/utils");
 var SCANNER_REQUEST_CODE = 444;
+var _onScanReceivedCallback = undefined;
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this.broadcastManager = null;
@@ -30,9 +31,6 @@ var BarcodeScanner = (function () {
             }
             if (self.onPermissionGranted) {
                 self.onPermissionGranted();
-            }
-            else {
-                console.log("No after-permission callback function specified for requestCode " + args.requestCode + ". That's a bug in the nativescript-barcodescanner plugin, please report it!");
             }
         });
     }
@@ -79,9 +77,9 @@ var BarcodeScanner = (function () {
                 }
                 var stopIntent = new android.content.Intent("barcode-scanner-stop");
                 self.broadcastManager.sendBroadcast(stopIntent);
-                if (self.onScanReceivedCallback) {
-                    self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
-                    self.onScanReceivedCallback = undefined;
+                if (_onScanReceivedCallback) {
+                    self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
+                    _onScanReceivedCallback = undefined;
                 }
                 resolve();
             }
@@ -120,13 +118,15 @@ var BarcodeScanner = (function () {
                 if (isContinuous) {
                     self.onContinuousScanResult = arg.continuousScanCallback;
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
-                    self.uniquelyScannedCodes = new Array();
                     var CallbackReceiver = android.content.BroadcastReceiver.extend({
                         onReceive: function (context, data) {
                             var format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
                             var text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
-                            if (self.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") == -1) {
-                                self.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
+                            if (!this.uniquelyScannedCodes) {
+                                this.uniquelyScannedCodes = new Array();
+                            }
+                            if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
+                                this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
                                 self.onContinuousScanResult({
                                     format: format,
                                     text: text
@@ -134,8 +134,8 @@ var BarcodeScanner = (function () {
                             }
                         }
                     });
-                    self.onScanReceivedCallback = new CallbackReceiver();
-                    self.broadcastManager.registerReceiver(self.onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
+                    _onScanReceivedCallback = new CallbackReceiver();
+                    self.broadcastManager.registerReceiver(_onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
                 }
                 if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
                     var previousResult_1 = appModule.android.onActivityResult;
@@ -147,8 +147,10 @@ var BarcodeScanner = (function () {
                         appModule.android.onActivityResult = previousResult_1;
                         if (requestCode === SCANNER_REQUEST_CODE) {
                             if (isContinuous) {
-                                self.broadcastManager.unregisterReceiver(self.onScanReceivedCallback);
-                                self.onScanReceivedCallback = undefined;
+                                if (_onScanReceivedCallback) {
+                                    self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
+                                    _onScanReceivedCallback = undefined;
+                                }
                             }
                             else {
                                 if (resultCode === android.app.Activity.RESULT_OK) {
