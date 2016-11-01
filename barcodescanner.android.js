@@ -4,6 +4,7 @@ var camera = require("camera");
 var utils = require("utils/utils");
 var SCANNER_REQUEST_CODE = 444;
 var _onScanReceivedCallback = undefined;
+var _onContinuousScanResult = undefined;
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this.broadcastManager = null;
@@ -116,7 +117,7 @@ var BarcodeScanner = (function () {
                 }
                 var isContinuous = typeof arg.continuousScanCallback === "function";
                 if (isContinuous) {
-                    self.onContinuousScanResult = arg.continuousScanCallback;
+                    _onContinuousScanResult = arg.continuousScanCallback;
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
                     var CallbackReceiver = android.content.BroadcastReceiver.extend({
                         onReceive: function (context, data) {
@@ -127,7 +128,7 @@ var BarcodeScanner = (function () {
                             }
                             if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
                                 this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
-                                self.onContinuousScanResult({
+                                _onContinuousScanResult({
                                     format: format,
                                     text: text
                                 });

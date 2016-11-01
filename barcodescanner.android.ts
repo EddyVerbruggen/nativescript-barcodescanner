@@ -8,11 +8,11 @@ let SCANNER_REQUEST_CODE = 444;
 declare let com, android: any;
 
 let _onScanReceivedCallback = undefined;
+let _onContinuousScanResult = undefined;
 
 export class BarcodeScanner {
 
   private broadcastManager: any = null;
-  private onContinuousScanResult: any;
   private onPermissionGranted: Function;
   private onPermissionRejected: Function;
   private rememberedContext: any = null;
@@ -150,7 +150,7 @@ export class BarcodeScanner {
         let isContinuous = typeof arg.continuousScanCallback === "function";
         if (isContinuous) {
 
-          self.onContinuousScanResult = arg.continuousScanCallback;
+          _onContinuousScanResult = arg.continuousScanCallback;
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
 
           let CallbackReceiver = android.content.BroadcastReceiver.extend({
@@ -164,7 +164,7 @@ export class BarcodeScanner {
               }
               if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
                 this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
-                self.onContinuousScanResult({
+                _onContinuousScanResult({
                   format : format,
                   text : text
                 });

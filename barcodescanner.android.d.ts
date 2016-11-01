@@ -1,7 +1,6 @@
 import { ScanOptions } from "./barcodescanner.common";
 export declare class BarcodeScanner {
     private broadcastManager;
-    private onContinuousScanResult;
     private onPermissionGranted;
     private onPermissionRejected;
     private rememberedContext;
