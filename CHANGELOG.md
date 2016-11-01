@@ -1,5 +1,18 @@
 # Change Log
 
+## [2.1.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.2) (2016-11-01)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.1...2.1.2)
+
+**Fixed bugs:**
+
+- Bulk scan callback is not updating after routing change [\#44](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/44)
+
+**Closed issues:**
+
+- Conflict with another similar plugin [\#42](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/42)
+-  angular 2 can not set reportDuplicates :false   [\#45](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/45)
+- iOS Barcode Scanning is Broken [\#41](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/41)
+
 ## [2.1.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.1) (2016-10-17)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...2.1.1)
 
