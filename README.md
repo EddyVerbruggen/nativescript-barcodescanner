@@ -189,32 +189,17 @@ but if for some reason you want to handle permissions yourself you can use these
 When using Angular 2, it is best to inject dependencies into your classes.  Here is an example of how you
 can set up `nativescript-barcodescanner` in an Angular 2 app with dependency injection.
 
-1. Set up an [opaque token](https://angular.io/docs/ts/latest/guide/dependency-injection.html#!#dependency-injection-tokens)
-    ```ts
-    //barcodescanner.ts
-    import { OpaqueToken } from '@angular/core';
-    import * as scanner from 'nativescript-barcodescanner';
-
-    export const BARCODE_SCANNER = new OpaqueToken('barcodescanner');
-
-    //These are re-exported for convenience (so you don't have to import from two places)
-    export const barcodescanner = new scanner.BarcodeScanner();
-    export type BarcodeScanner = scanner.BarcodeScanner;
-    export type ScanOptions = scanner.ScanOptions;
-    export type IosScanOptions = scanner.IOS;
-    export type AndroidScanOptions = scanner.Android;
-    ```
 1. Register the provider with your module
     ```ts
     //app.module.ts
     import { NgModule, ValueProvider } from '@angular/core';
-    import { BARCODE_SCANNER, barcodescanner } from './barcodescanner';
+    import { BarcodeScanner } from 'nativescript-barcodescanner';
     //other imports
 
     @NgModule({
       //bootstrap, declarations, imports, etc.
       providers: [
-        <ValueProvider>{ provide: BARCODE_SCANNER, useValue: barcodescanner }
+        BarcodeScanner
       ]
     })
     export class AppModule {}
@@ -223,12 +208,12 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```ts
     //my-component.ts
     import { Component, Inject } from '@angular/core';
-    import { BARCODE_SCANNER, BarcodeScanner } from './barcodescanner';
+    import { BarcodeScanner } from 'nativescript-barcodescanner';
     //other imports
 
     @Component({ ... })
     export class MyComponent {
-      constructor(@Inject(BARCODE_SCANNER) private barcodeScanner: BarcodeScanner) {
+      constructor(private barcodeScanner: BarcodeScanner) {
       }
 
       //use the barcodescanner wherever you need it. See general usage above.
@@ -239,7 +224,7 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 ## Changelog
-* __2.1.0__  iOS now also honors the `preferFrontCamera` and `showFlipCameraButton` settings. Also, added `showTorchButton` (iOS only for now). 
+* __2.1.0__  iOS now also honors the `preferFrontCamera` and `showFlipCameraButton` settings. Also, added `showTorchButton` (iOS only for now).
 * __2.0.0__  Conversion to TypeScript (note that the JS require syntax is now slightly different!).
 * __1.5.0__  Auto-permission handling. Use the volume up/down buttons to toggle the torch.
 * __1.4.0__  Bulk scanning.
