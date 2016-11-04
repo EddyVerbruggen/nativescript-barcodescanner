@@ -1,5 +1,20 @@
 # Change Log
 
+## [2.1.3](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.3) (2016-11-04)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.2...2.1.3)
+
+**Implemented enhancements:**
+
+- Angular Usage Docs Need Updating [\#40](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/40)
+
+**Closed issues:**
+
+- iOS Barcode Scanning is Broken [\#41](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/41)
+
+**Merged pull requests:**
+
+- Simplify Angular setup using classes instead of opaque tokens for DI [\#46](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/46) ([joeskeen](https://github.com/joeskeen))
+
 ## [2.1.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.2) (2016-11-01)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.1...2.1.2)
 
@@ -11,7 +26,6 @@
 
 - Conflict with another similar plugin [\#42](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/42)
 -  angular 2 can not set reportDuplicates :false   [\#45](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/45)
-- iOS Barcode Scanning is Broken [\#41](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/41)
 
 ## [2.1.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.1) (2016-10-17)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...2.1.1)
