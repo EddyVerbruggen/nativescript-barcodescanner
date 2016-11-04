@@ -1,9 +1,9 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner.js",
-  "typings": "barcodescanner.d.ts",
+  "typings": "index.d.ts",
   "nativescript": {
     "platforms": {
       "android": "2.3.0",
