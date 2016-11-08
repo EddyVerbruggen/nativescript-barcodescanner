@@ -129,13 +129,13 @@ export class BarcodeScanner {
 
   public hasCameraPermission(): Promise<boolean> {
     let self = this;
-    return new Promise(function (resolve) {
+    return new Promise((resolve) => {
       resolve(self._hasCameraPermission());
     });
   };
 
   public requestCameraPermission(): Promise<boolean> {
-    return new Promise(function (resolve) {
+    return new Promise((resolve) => {
       // this will trigger the prompt on iOS 10+
       QRCodeReader.isAvailable();
       resolve();
@@ -144,7 +144,7 @@ export class BarcodeScanner {
 
   public stop(): Promise<any> {
     let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       try {
         let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
         app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
@@ -158,7 +158,7 @@ export class BarcodeScanner {
 
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       try {
         // only need for denied permission as conveniently, this method will auto-request permission upon scan
         if (self._hasDeniedCameraPermission()) {

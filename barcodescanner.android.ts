@@ -66,7 +66,7 @@ export class BarcodeScanner {
 
   public hasCameraPermission(): Promise<boolean> {
     let self = this;
-    return new Promise(function (resolve) {
+    return new Promise((resolve) => {
       let granted = self.wasCameraPermissionGranted();
       resolve(granted);
     });
@@ -74,7 +74,7 @@ export class BarcodeScanner {
 
   public requestCameraPermission(): Promise<boolean> {
     let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       try {
         self.requestCameraPermissionInternal(resolve, reject);
       } catch (ex) {
@@ -86,7 +86,7 @@ export class BarcodeScanner {
 
   public stop(): Promise<any> {
     let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       try {
         if (!self.broadcastManager) {
           reject("You found a bug in the plugin, please report that calling stop() failed with this message.");
@@ -108,7 +108,7 @@ export class BarcodeScanner {
 
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       let onPermissionGranted = function() {
         // the intent name should match the filter name in AndroidManifest.xml, don't change it
         let intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
