@@ -3,7 +3,6 @@ export declare class BarcodeScanner {
     private broadcastManager;
     private onPermissionGranted;
     private onPermissionRejected;
-    private rememberedContext;
     constructor();
     private wasCameraPermissionGranted;
     private requestCameraPermissionInternal;
