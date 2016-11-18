@@ -8,7 +8,6 @@ var _onContinuousScanResult = undefined;
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this.broadcastManager = null;
-        this.rememberedContext = null;
         this.wasCameraPermissionGranted = function () {
             var hasPermission = android.os.Build.VERSION.SDK_INT < 23;
             if (!hasPermission) {
@@ -20,7 +19,7 @@ var BarcodeScanner = (function () {
         this.requestCameraPermissionInternal = function (onPermissionGranted, reject) {
             this.onPermissionGranted = onPermissionGranted;
             this.onPermissionRejected = reject;
-            android.support.v4.app.ActivityCompat.requestPermissions(appModule.android.currentContext, [android.Manifest.permission.CAMERA], 234);
+            android.support.v4.app.ActivityCompat.requestPermissions(appModule.android.foregroundActivity, [android.Manifest.permission.CAMERA], 234);
         };
         var self = this;
         appModule.android.on(appModule.AndroidApplication.activityRequestPermissionsEvent, function (args) {
@@ -141,10 +140,6 @@ var BarcodeScanner = (function () {
                 if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
                     var previousResult_1 = appModule.android.onActivityResult;
                     appModule.android.onActivityResult = function (requestCode, resultCode, data) {
-                        if (self.rememberedContext !== null) {
-                            appModule.android.currentContext = self.rememberedContext;
-                            self.rememberedContext = null;
-                        }
                         appModule.android.onActivityResult = previousResult_1;
                         if (requestCode === SCANNER_REQUEST_CODE) {
                             if (isContinuous) {
@@ -168,8 +163,7 @@ var BarcodeScanner = (function () {
                             }
                         }
                     };
-                    self.rememberedContext = appModule.android.currentContext;
-                    appModule.android.currentContext.startActivityForResult(intent, SCANNER_REQUEST_CODE);
+                    appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
                     if (isContinuous) {
                         resolve();
                     }
