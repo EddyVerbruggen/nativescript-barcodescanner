@@ -15,7 +15,6 @@ export class BarcodeScanner {
   private broadcastManager: any = null;
   private onPermissionGranted: Function;
   private onPermissionRejected: Function;
-  private rememberedContext: any = null;
 
   constructor() {
     let self = this;
@@ -46,7 +45,7 @@ export class BarcodeScanner {
     this.onPermissionGranted = onPermissionGranted;
     this.onPermissionRejected = reject;
     android.support.v4.app.ActivityCompat.requestPermissions(
-        appModule.android.currentContext,
+        appModule.android.foregroundActivity,
         [android.Manifest.permission.CAMERA],
         234 // irrelevant since we simply invoke onPermissionGranted
     );
@@ -178,10 +177,6 @@ export class BarcodeScanner {
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
           let previousResult = appModule.android.onActivityResult;
           appModule.android.onActivityResult = function (requestCode, resultCode, data) {
-            if (self.rememberedContext !== null) {
-              appModule.android.currentContext = self.rememberedContext;
-              self.rememberedContext = null;
-            }
             appModule.android.onActivityResult = previousResult;
             if (requestCode === SCANNER_REQUEST_CODE) {
               if (isContinuous) {
@@ -204,9 +199,7 @@ export class BarcodeScanner {
             }
           };
 
-          // we need to cache and restore the context, otherwise the dialogs module will be broken (and possibly other things as well)
-          self.rememberedContext = appModule.android.currentContext;
-          appModule.android.currentContext.startActivityForResult(intent, SCANNER_REQUEST_CODE);
+          appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
 
           if (isContinuous) {
             resolve();
