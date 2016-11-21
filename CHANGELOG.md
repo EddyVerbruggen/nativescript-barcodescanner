@@ -1,11 +1,28 @@
 # Change Log
 
+## [2.1.4](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.4) (2016-11-21)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.3...2.1.4)
+
+**Implemented enhancements:**
+
+- fix\(android\): change currentContext to foregroundActivity [\#51](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/51) ([sis0k0](https://github.com/sis0k0))
+
+**Fixed bugs:**
+
+- Error after scan, Android, Nativescript 2.4 [\#50](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/50)
+- App Crash after scanning a barcode \(Android\) [\#39](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/39)
+- fix\\(android\\): change currentContext to foregroundActivity [\#51](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/51) ([sis0k0](https://github.com/sis0k0))
+
 ## [2.1.3](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.3) (2016-11-04)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.2...2.1.3)
 
 **Implemented enhancements:**
 
 - Angular Usage Docs Need Updating [\#40](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/40)
+
+**Fixed bugs:**
+
+- make type script happy with barcodescanner.d.ts [\#47](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/47)
 
 **Closed issues:**
 
@@ -29,6 +46,10 @@
 
 ## [2.1.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.1) (2016-10-17)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.0...2.1.1)
+
+**Implemented enhancements:**
+
+- callback after permission granted \(android 6\) [\#26](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/26)
 
 **Fixed bugs:**
 
