@@ -210,7 +210,6 @@ export class BarcodeScanner {
         self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-
         let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
           // invoke the callback / promise
           if (text === undefined) {
@@ -232,6 +231,12 @@ export class BarcodeScanner {
           delegate = undefined;
         });
         self._scanner.delegate = delegate;
+
+        // restrict scanning range for better speed: https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/48
+        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
+        device.lockForConfiguration();
+        device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
+        device.unlockForConfiguration();
 
         // TODO this means we should be able to embed the QR scanner as well
         let topMostFrame = frame.topmost();

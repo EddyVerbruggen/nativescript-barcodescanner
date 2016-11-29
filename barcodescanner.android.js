@@ -25,7 +25,12 @@ var BarcodeScanner = (function () {
         appModule.android.on(appModule.AndroidApplication.activityRequestPermissionsEvent, function (args) {
             for (var i = 0; i < args.permissions.length; i++) {
                 if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_DENIED) {
-                    self.onPermissionRejected("Please allow access to the Camera and try again.");
+                    if (self.onPermissionRejected) {
+                        self.onPermissionRejected("Please allow access to the Camera and try again.");
+                    }
+                    else {
+                        console.log("Please allow access to the Camera and try again. (tip: pass in a reject to receive this message in your app)");
+                    }
                     return;
                 }
             }
