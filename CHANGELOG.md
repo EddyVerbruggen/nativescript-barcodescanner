@@ -1,5 +1,20 @@
 # Change Log
 
+## [2.1.5](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.5) (2016-11-29)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.4...2.1.5)
+
+**Implemented enhancements:**
+
+- Trying to access/implement AVCaptureFocusMode [\#48](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/48)
+
+**Fixed bugs:**
+
+- onPermissionRejected [\#56](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/56)
+
+**Closed issues:**
+
+- No callbacks . the component re-render itself without any callbacks after the scannanig ! [\#43](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/43)
+
 ## [2.1.4](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.1.4) (2016-11-21)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.3...2.1.4)
 
