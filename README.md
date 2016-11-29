@@ -222,9 +222,3 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
       }
     }
     ```
-
-## Changelog
-* __2.1.0__  iOS now also honors the `preferFrontCamera` and `showFlipCameraButton` settings. Also, added `showTorchButton` (iOS only for now).
-* __2.0.0__  Conversion to TypeScript (note that the JS require syntax is now slightly different!).
-* __1.5.0__  Auto-permission handling. Use the volume up/down buttons to toggle the torch.
-* __1.4.0__  Bulk scanning.
