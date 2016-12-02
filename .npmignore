@@ -1,3 +1,5 @@
+.idea
+.vscode
 demo/
 *.gif
 *.jpg
