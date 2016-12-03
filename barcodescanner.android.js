@@ -110,6 +110,9 @@ var BarcodeScanner = (function () {
                 if (arg.showFlipCameraButton === true) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, true);
                 }
+                if (arg.showTorchButton === true) {
+                    intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_TORCH_BUTTON, true);
+                }
                 if (arg.orientation) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.ORIENTATION_LOCK, arg.orientation);
                 }
@@ -128,7 +131,7 @@ var BarcodeScanner = (function () {
                             var format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
                             var text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
                             if (!this.uniquelyScannedCodes) {
-                                this.uniquelyScannedCodes = new Array();
+                                this.uniquelyScannedCodes = [];
                             }
                             if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
                                 this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");

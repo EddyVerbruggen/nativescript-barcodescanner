@@ -4,11 +4,11 @@ export interface CommonScanOptions {
     reportDuplicates?: boolean;
     preferFrontCamera?: boolean;
     showFlipCameraButton?: boolean;
+    showTorchButton?: boolean;
 }
 export interface IOS extends CommonScanOptions {
     cancelLabel?: string;
     openSettingsIfPermissionWasPreviouslyDenied?: boolean;
-    showTorchButton?: boolean;
 }
 export interface Android extends CommonScanOptions {
     message?: string;
