@@ -49,7 +49,7 @@ var BarcodeScanner = (function () {
     }
     BarcodeScanner.prototype.available = function () {
         return new Promise(function (resolve, reject) {
-            resolve(true);
+            resolve(AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null);
         });
     };
     ;

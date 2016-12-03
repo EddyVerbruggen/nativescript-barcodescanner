@@ -121,9 +121,7 @@ export class BarcodeScanner {
 
   public available(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      // since this would also request permission on iOS 10: resolve(QRCodeReader.isAvailable());
-      // ..and it's extremely likely to be 'true' anyway, I decided to hardcode this:
-      resolve(true);
+      resolve(AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null);
     });
   };
 
