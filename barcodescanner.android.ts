@@ -112,7 +112,7 @@ export class BarcodeScanner {
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
     return new Promise((resolve, reject) => {
-      let onPermissionGranted = function() {
+      let onPermissionGranted: ()=>any = function () {
         // the intent name should match the filter name in AndroidManifest.xml, don't change it
         let intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
 
@@ -131,6 +131,9 @@ export class BarcodeScanner {
         }
         if (arg.showFlipCameraButton === true) {
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, true);
+        }
+        if (arg.showTorchButton === true) {
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.SHOW_TORCH_BUTTON, true);
         }
         if (arg.orientation) {
           // if not set, sensor orientation is used (rotates with the device)
@@ -163,13 +166,13 @@ export class BarcodeScanner {
 
               // don't report duplicates
               if (!this.uniquelyScannedCodes) {
-                this.uniquelyScannedCodes = new Array<string>();
+                this.uniquelyScannedCodes = [];
               }
               if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
                 this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
                 _onContinuousScanResult({
-                  format : format,
-                  text : text
+                  format: format,
+                  text: text
                 });
               }
             }
@@ -193,8 +196,8 @@ export class BarcodeScanner {
                   let format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
                   let text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
                   resolve({
-                    format : format,
-                    text : text
+                    format: format,
+                    text: text
                   });
                 } else {
                   reject("Scan aborted");

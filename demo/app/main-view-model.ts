@@ -108,8 +108,10 @@ export class HelloWorldModel extends Observable {
       openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
     }).then(
       function(result) {
+        console.log("--- scanned: " + result.text);
         // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
         setTimeout(function() {
+          // if this alert doesn't show up please upgrade to {N} 2.4.0+
           alert({
             title: "Scan result",
             message: "Format: " + result.format + ",\nValue: " + result.text,

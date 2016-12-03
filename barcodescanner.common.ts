@@ -34,6 +34,11 @@ export interface CommonScanOptions {
    * Default: false
    */
   showFlipCameraButton?: boolean;
+
+  /**
+   * Default: false
+   */
+  showTorchButton?: boolean;
 }
 
 export interface IOS extends CommonScanOptions {
@@ -47,11 +52,6 @@ export interface IOS extends CommonScanOptions {
    * Default: false
    */
   openSettingsIfPermissionWasPreviouslyDenied?: boolean;
-
-  /**
-   * Default: false
-   */
-  showTorchButton?: boolean;
 }
 
 export interface Android extends CommonScanOptions {

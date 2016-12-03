@@ -1,17 +1,17 @@
 {
   "nativescript": {
     "id": "org.nativescript.demo.barcodescanner",
-    "tns-android": {
-      "version": "2.4.1"
-    },
     "tns-ios": {
       "version": "2.4.0"
+    },
+    "tns-android": {
+      "version": "2.4.1"
     }
   },
   "dependencies": {
     "nativescript-barcodescanner": "file:..",
     "nativescript-theme-core": "^0.1.2",
-    "tns-core-modules": "^2.3.0"
+    "tns-core-modules": "^2.4.1"
   },
   "devDependencies": {
     "babel-traverse": "6.12.0",

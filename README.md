@@ -67,7 +67,7 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
-    showTorchButton: true,        // iOS only, default false
+    showTorchButton: true,        // default false
     orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then((result) => {
@@ -94,7 +94,7 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
-    showTorchButton: true,        // iOS only, default false
+    showTorchButton: true,        // default false
     orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then(
