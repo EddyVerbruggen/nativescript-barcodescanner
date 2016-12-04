@@ -28,7 +28,7 @@
 * UPC_A
 
 ## Installation
-Make sure you're using __NativeScript 2.3.0 or higher__. Run `npm install -g nativescript` if not.
+Make sure you're using __NativeScript 2.3.0+__ (2.4.0+ is best for Android). Run `npm install -g nativescript` if not.
 
 From the command prompt go to your app's root folder and execute:
 ```
