@@ -1,13 +1,19 @@
 # Change Log
 
-## [2.2.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.2.0) (2016-12-03)
+## [2.2.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.2.1) (2016-12-20)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.2.0...2.2.1)
 
+**Implemented enhancements:**
+
+- Add an optional 'toggle torch' button on Android [\#60](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/60)
+- Webpack compatibility [\#63](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/63)
+
+## [2.2.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.2.0) (2016-12-03)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.1.5...2.2.0)
 
 **Implemented enhancements:**
 
 - Add support for 'inverted codes' on Android \(white code on black background\) [\#61](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/61)
-- Add an optional 'toggle torch' button on Android [\#60](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/60)
 
 **Fixed bugs:**
 
