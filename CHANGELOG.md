@@ -1,21 +1,18 @@
 # Change Log
 
-## [2.3.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.3.0) (2016-12-22)
-[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.2.1...2.3.0)
+## [2.3.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.3.1) (2016-12-22)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.2.1...2.3.1)
 
 **Implemented enhancements:**
 
 - Allow starting the scanner with the torch switched ON [\#67](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/67)
 - Hide the scan result to be display after scanned [\#65](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/65)
+- @ng-tools/webpack compatibility [\#66](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/66) ([hdeshev](https://github.com/hdeshev))
 
 **Closed issues:**
 
 - zxing again / still [\#64](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/64)
 - Does not work on android [\#22](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/22)
-
-**Merged pull requests:**
-
-- @ng-tools/webpack compatibility [\#66](https://github.com/EddyVerbruggen/nativescript-barcodescanner/pull/66) ([hdeshev](https://github.com/hdeshev))
 
 ## [2.2.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.2.1) (2016-12-20)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.2.0...2.2.1)
