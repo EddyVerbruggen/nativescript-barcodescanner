@@ -71,8 +71,8 @@ var BarcodeScanner = (function () {
         var self = this;
         return new Promise(function (resolve, reject) {
             try {
-                var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-                app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+                var app_1 = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+                app_1.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
                 self._removeVolumeObserver();
                 resolve();
             }
@@ -216,8 +216,8 @@ var QRCodeReaderDelegateImpl = (function (_super) {
             }
         }
         else {
-            var app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-            app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+            var app_2 = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+            app_2.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
             this._callback(reader, text, type);
         }
     };

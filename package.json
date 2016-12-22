@@ -3,7 +3,6 @@
   "version": "2.2.1",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner",
-  "typings": "index.d.ts",
   "nativescript": {
     "platforms": {
       "android": "2.3.0",
@@ -61,7 +60,7 @@
     "nativescript-dev-typescript": "^0.3.2",
     "tns-core-modules": "^2.3.0",
     "tns-platform-declarations": "^2.3.0",
-    "typescript": "^1.8.0"
+    "typescript": "~2.0.10"
   },
   "dependencies": {
     "nativescript-theme-core": "^0.1.2"
