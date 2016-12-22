@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner",
   "nativescript": {
@@ -61,8 +61,5 @@
     "tns-core-modules": "^2.3.0",
     "tns-platform-declarations": "^2.3.0",
     "typescript": "~2.0.10"
-  },
-  "dependencies": {
-    "nativescript-theme-core": "^0.1.2"
   }
 }
