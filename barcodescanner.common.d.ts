@@ -5,6 +5,7 @@ export interface CommonScanOptions {
     preferFrontCamera?: boolean;
     showFlipCameraButton?: boolean;
     showTorchButton?: boolean;
+    torchOn?: boolean;
 }
 export interface IOS extends CommonScanOptions {
     cancelLabel?: string;
@@ -13,6 +14,7 @@ export interface IOS extends CommonScanOptions {
 export interface Android extends CommonScanOptions {
     message?: string;
     orientation?: string;
+    resultDisplayDuration?: number;
 }
 export interface ScanOptions extends IOS, Android {
     IOS?: IOS;

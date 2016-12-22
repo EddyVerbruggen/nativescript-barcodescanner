@@ -39,6 +39,11 @@ export interface CommonScanOptions {
    * Default: false
    */
   showTorchButton?: boolean;
+
+  /**
+   * Launch the scanner with the flashlight turned on.
+   */
+  torchOn?: boolean;
 }
 
 export interface IOS extends CommonScanOptions {
@@ -66,6 +71,11 @@ export interface Android extends CommonScanOptions {
    * Default: "sensor", which follows the current device rotation.
    */
   orientation?: string;
+
+  /**
+   * Default is 1500, set to 0 o suppress the scanner echoing the scanned text.
+   */
+  resultDisplayDuration?: number;
 }
 
 export interface ScanOptions extends IOS, Android {

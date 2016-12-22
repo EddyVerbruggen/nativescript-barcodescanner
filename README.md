@@ -57,6 +57,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 ### function: scan (single mode)
 
 #### TypeScript
+This plugin was created and tested with TypeScript 2+, so please update your project if needed.
+
 ```js
   import {BarcodeScanner} from "nativescript-barcodescanner";
   let barcodescanner = new BarcodeScanner();
@@ -68,6 +70,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
+    torchOn: false,               // launch with the flashlight on (default false)
+    resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then((result) => {
@@ -95,6 +99,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
+    torchOn: false,               // launch with the flashlight on (default false)
+    resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
   }).then(

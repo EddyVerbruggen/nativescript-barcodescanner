@@ -104,6 +104,8 @@ export class HelloWorldModel extends Observable {
       preferFrontCamera: front,     // Android only, default false
       showFlipCameraButton: flip,   // default false
       showTorchButton: torch,       // iOS only, default false
+      torchOn: false,               // launch with the flashlight on (default false)
+      resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
       orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
       openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
     }).then(

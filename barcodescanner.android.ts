@@ -143,6 +143,14 @@ export class BarcodeScanner {
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
           // intent.putExtra(com.google.zxing.client.android.Intents.Scan.MODE, com.google.zxing.client.android.Intents.Scan.QR_CODE_MODE);
         }
+        if (arg.torchOn === true) {
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.TORCH_ON, true);
+        }
+        if (arg.resultDisplayDuration !== undefined) {
+          //  ZXing expects a String
+          intent.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT_DISPLAY_DURATION_MS, "" + arg.resultDisplayDuration);
+        }
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.SAVE_HISTORY, false);
 
         // rectangle size can be controlled as well (but don't bother as of yet)
         // intent.putExtra(com.google.zxing.client.android.Intents.Scan.WIDTH, 200);

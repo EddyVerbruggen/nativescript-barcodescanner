@@ -119,6 +119,13 @@ var BarcodeScanner = (function () {
                 if (arg.formats) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.FORMATS, arg.formats);
                 }
+                if (arg.torchOn === true) {
+                    intent.putExtra(com.google.zxing.client.android.Intents.Scan.TORCH_ON, true);
+                }
+                if (arg.resultDisplayDuration !== undefined) {
+                    intent.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT_DISPLAY_DURATION_MS, "" + arg.resultDisplayDuration);
+                }
+                intent.putExtra(com.google.zxing.client.android.Intents.Scan.SAVE_HISTORY, false);
                 if (!self.broadcastManager) {
                     self.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(com.tns.NativeScriptApplication.getInstance());
                 }

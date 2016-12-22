@@ -236,12 +236,15 @@ export class BarcodeScanner {
         device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
         device.unlockForConfiguration();
 
-        // TODO this means we should be able to embed the QR scanner as well
         let topMostFrame = frame.topmost();
         if (topMostFrame) {
           let vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
           if (vc) {
-            vc.presentViewControllerAnimatedCompletion(self._scanner, true, null);
+            vc.presentViewControllerAnimatedCompletion(self._scanner, true, () => {
+              if (arg.torchOn) {
+                this._enableTorch();
+              }
+            });
           }
         }
         if (isContinuous) {

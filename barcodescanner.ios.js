@@ -83,6 +83,7 @@ var BarcodeScanner = (function () {
     };
     ;
     BarcodeScanner.prototype.scan = function (arg) {
+        var _this = this;
         var self = this;
         return new Promise(function (resolve, reject) {
             try {
@@ -168,7 +169,11 @@ var BarcodeScanner = (function () {
                 if (topMostFrame) {
                     var vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
                     if (vc) {
-                        vc.presentViewControllerAnimatedCompletion(self._scanner, true, null);
+                        vc.presentViewControllerAnimatedCompletion(self._scanner, true, function () {
+                            if (arg.torchOn) {
+                                _this._enableTorch();
+                            }
+                        });
                     }
                 }
                 if (isContinuous_1) {
