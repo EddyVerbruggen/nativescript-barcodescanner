@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.3](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.3.3) (2017-01-05)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.3.2...2.3.3)
+
+**Fixed bugs:**
+
+- BarcodeScanner crashes app in iOS 9.3 / iPad 2 [\#69](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/69)
+
 ## [2.3.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.3.2) (2016-12-22)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.2.1...2.3.2)
 
