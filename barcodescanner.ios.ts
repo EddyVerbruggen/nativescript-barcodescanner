@@ -232,9 +232,11 @@ export class BarcodeScanner {
 
         // restrict scanning range for better speed: https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/48
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
-        device.lockForConfiguration();
-        device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
-        device.unlockForConfiguration();
+        if (device.autoFocusRangeRestrictionSupported) {
+          device.lockForConfiguration();
+          device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
+          device.unlockForConfiguration();
+        }
 
         let topMostFrame = frame.topmost();
         if (topMostFrame) {

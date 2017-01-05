@@ -162,9 +162,11 @@ var BarcodeScanner = (function () {
                 });
                 self._scanner.delegate = delegate_1;
                 var device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
-                device.lockForConfiguration();
-                device.autoFocusRangeRestriction = 1;
-                device.unlockForConfiguration();
+                if (device.autoFocusRangeRestrictionSupported) {
+                    device.lockForConfiguration();
+                    device.autoFocusRangeRestriction = 1;
+                    device.unlockForConfiguration();
+                }
                 var topMostFrame = frame.topmost();
                 if (topMostFrame) {
                     var vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
