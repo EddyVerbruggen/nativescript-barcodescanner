@@ -146,7 +146,7 @@ export class BarcodeScanner {
         if (arg.torchOn === true) {
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.TORCH_ON, true);
         }
-        intent.putExtra(com.google.zxing.client.android.Intents.Scan.BEEP_ON_SCAN, arg.beepOnScan === true);
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.BEEP_ON_SCAN, arg.beepOnScan !== false);
         if (arg.resultDisplayDuration !== undefined) {
           //  ZXing expects a String
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT_DISPLAY_DURATION_MS, "" + arg.resultDisplayDuration);

@@ -70,7 +70,7 @@ This plugin was created and tested with TypeScript 2+, so please update your pro
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
-    beepOnScan: true,             // Play or Suppress beep on scan (default false)
+    beepOnScan: true,             // Play or Suppress beep on scan (default true)
     torchOn: false,               // launch with the flashlight on (default false)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
@@ -100,7 +100,7 @@ This plugin was created and tested with TypeScript 2+, so please update your pro
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
-    beepOnScan: true,             // Play or Suppress beep on scan (default false)
+    beepOnScan: true,             // Play or Suppress beep on scan (default true)
     torchOn: false,               // launch with the flashlight on (default false)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"

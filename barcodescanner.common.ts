@@ -47,7 +47,7 @@ export interface CommonScanOptions {
 
   /**
    * Play a sound when a code was scanned.
-   * Default: false
+   * Default: true
    */
   beepOnScan?: boolean;
 }
