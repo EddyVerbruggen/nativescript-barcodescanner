@@ -112,7 +112,7 @@ export class BarcodeScanner {
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
     return new Promise((resolve, reject) => {
-      let onPermissionGranted: ()=>any = function () {
+      let onPermissionGranted: () => any = function () {
         // the intent name should match the filter name in AndroidManifest.xml, don't change it
         let intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
 
@@ -146,6 +146,7 @@ export class BarcodeScanner {
         if (arg.torchOn === true) {
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.TORCH_ON, true);
         }
+        intent.putExtra(com.google.zxing.client.android.Intents.Scan.BEEP_ON_SCAN, arg.beepOnScan === true);
         if (arg.resultDisplayDuration !== undefined) {
           //  ZXing expects a String
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT_DISPLAY_DURATION_MS, "" + arg.resultDisplayDuration);

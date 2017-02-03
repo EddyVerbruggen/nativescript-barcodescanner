@@ -122,6 +122,7 @@ var BarcodeScanner = (function () {
                 if (arg.torchOn === true) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.TORCH_ON, true);
                 }
+                intent.putExtra(com.google.zxing.client.android.Intents.Scan.BEEP_ON_SCAN, arg.beepOnScan === true);
                 if (arg.resultDisplayDuration !== undefined) {
                     intent.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT_DISPLAY_DURATION_MS, "" + arg.resultDisplayDuration);
                 }

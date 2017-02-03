@@ -44,6 +44,12 @@ export interface CommonScanOptions {
    * Launch the scanner with the flashlight turned on.
    */
   torchOn?: boolean;
+
+  /**
+   * Play a sound when a code was scanned.
+   * Default: false
+   */
+  beepOnScan?: boolean;
 }
 
 export interface IOS extends CommonScanOptions {

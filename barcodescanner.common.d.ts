@@ -6,6 +6,7 @@ export interface CommonScanOptions {
     showFlipCameraButton?: boolean;
     showTorchButton?: boolean;
     torchOn?: boolean;
+    beepOnScan?: boolean;
 }
 export interface IOS extends CommonScanOptions {
     cancelLabel?: string;
