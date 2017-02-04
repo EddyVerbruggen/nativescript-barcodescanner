@@ -1,5 +1,21 @@
 # Change Log
 
+## [2.4.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.0) (2017-02-04)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.3.3...2.4.0)
+
+**Implemented enhancements:**
+
+- Smoother autofocus on capable devices [\#75](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/75)
+- Add an option to play/suppress a sound upon scanning [\#74](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/74)
+
+**Closed issues:**
+
+- Android zxing library [\#71](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/71)
+- null is not an object \(evaluating 'device.autoFocusRangeRestrictionSupported'\) [\#70](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/70)
+- Keyboard cover the text field after launch barcodescanner [\#68](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/68)
+- RouterExtensions.navigate not working after scan. [\#58](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/58)
+- Add support for MaxiCode on iOS [\#32](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/32)
+
 ## [2.3.3](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.3.3) (2017-01-05)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.3.2...2.3.3)
 
