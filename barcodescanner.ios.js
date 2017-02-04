@@ -166,8 +166,12 @@ var BarcodeScanner = (function () {
                 if (device.autoFocusRangeRestrictionSupported) {
                     device.lockForConfiguration();
                     device.autoFocusRangeRestriction = 1;
+                    device.smoothAutoFocusEnabled = true;
                     device.unlockForConfiguration();
                 }
+                console.log("--- focusmode: " + device.focusMode);
+                console.log("--- smoothAutoFocusSupported: " + device.smoothAutoFocusSupported);
+                console.log("--- smoothAutoFocusEnabled: " + device.smoothAutoFocusEnabled);
                 var topMostFrame = frame.topmost();
                 if (topMostFrame) {
                     var vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;

@@ -242,6 +242,9 @@ export class BarcodeScanner {
         if (device.autoFocusRangeRestrictionSupported) {
           device.lockForConfiguration();
           device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
+          if (device.smoothAutoFocusSupported) {
+            device.smoothAutoFocusEnabled = true;
+          }
           device.unlockForConfiguration();
         }
 
