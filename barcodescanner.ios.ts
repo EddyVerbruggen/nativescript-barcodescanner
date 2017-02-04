@@ -1,7 +1,14 @@
 import {ScanOptions} from "./barcodescanner.common";
-import {ContentView} from "ui/content-view";
 import * as utils from "utils/utils";
 import * as frame from "ui/frame";
+import * as fs from "file-system";
+
+
+
+// TODO see https://github.com/jbristowe/nativescript-sound/blob/master/sound.ios.js
+// .. and see https://github.com/phonegap/phonegap-plugin-barcodescanner/blob/2e36cd46de37969eae619e0d34fe1259f2db79b7/src/ios/CDVBarcodeScanner.mm#L414
+// .. also: rename to disableSuccessBeep in the phonegap ios impl to beepOnScan
+
 
 declare let QRCodeReader, QRCodeReaderViewController, QRCodeReaderDelegate: any;
 
@@ -208,7 +215,7 @@ export class BarcodeScanner {
         self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
+        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(arg.beepOnScan, isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
           // invoke the callback / promise
           if (text === undefined) {
             self._removeVolumeObserver();
@@ -268,14 +275,24 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
   }
 
   private _callback: (reader: string, text?: string, format?: string) => void;
+  private _beepOnScan: boolean;
   private _isContinuous: boolean;
   private _reportDuplicates: boolean;
   private _scannedArray: Array<string>;
+  private _player: AVAudioPlayer;
 
-  public initWithCallback(isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
+  public initWithCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
     this._isContinuous = isContinuous;
     this._reportDuplicates = reportDuplicates;
     this._callback = callback;
+    this._beepOnScan = beepOnScan;
+    if (this._beepOnScan) {
+      let soundPath = fs.knownFolders.currentApp().path + "/tns_modules/nativescript-barcodescanner/sound/beep.caf";
+      this._player = new AVAudioPlayer({contentsOfURL: NSURL.fileURLWithPath(soundPath)});
+      this._player.numberOfLoops = 1;
+      this._player.volume = 0.7;
+      this._player.prepareToPlay();
+    }
     return this;
   }
 
@@ -299,6 +316,9 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
       let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
       this._callback(reader, text, type);
+    }
+    if (this._player) {
+      this._player.play();
     }
   };
 }

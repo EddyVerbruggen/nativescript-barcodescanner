@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc",
     "demo.ios": "npm run preparedemo && cd demo && tns emulate ios --device \"iPhone 7\"",
-    "demo.ios.device": "npm run preparedemo && cd demo && tns run ios",
+    "demo.ios.device": "npm run preparedemo && cd demo && tns platform remove ios && tns platform add ios && tns run ios",
     "demo.android": "npm run preparedemo && cd demo && tns run android",
     "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-barcodescanner && tns plugin add .. && tns install",
     "setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin add .. && cd .."

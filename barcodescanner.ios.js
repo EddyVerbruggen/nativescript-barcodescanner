@@ -1,6 +1,7 @@
 "use strict";
 var utils = require("utils/utils");
 var frame = require("ui/frame");
+var fs = require("file-system");
 var BarcodeScanner = (function () {
     function BarcodeScanner() {
         this._hasCameraPermission = function () {
@@ -140,7 +141,7 @@ var BarcodeScanner = (function () {
                 var startScanningAtLoad = true;
                 self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, reader, startScanningAtLoad, flip, torch);
                 self._scanner.modalPresentationStyle = 2;
-                var delegate_1 = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous_1, arg.reportDuplicates, function (reader, text, format) {
+                var delegate_1 = QRCodeReaderDelegateImpl.new().initWithCallback(arg.beepOnScan, isContinuous_1, arg.reportDuplicates, function (reader, text, format) {
                     if (text === undefined) {
                         self._removeVolumeObserver();
                         reject("Scan aborted");
@@ -200,10 +201,18 @@ var QRCodeReaderDelegateImpl = (function (_super) {
     QRCodeReaderDelegateImpl.new = function () {
         return _super.new.call(this);
     };
-    QRCodeReaderDelegateImpl.prototype.initWithCallback = function (isContinuous, reportDuplicates, callback) {
+    QRCodeReaderDelegateImpl.prototype.initWithCallback = function (beepOnScan, isContinuous, reportDuplicates, callback) {
         this._isContinuous = isContinuous;
         this._reportDuplicates = reportDuplicates;
         this._callback = callback;
+        this._beepOnScan = beepOnScan;
+        if (this._beepOnScan) {
+            var soundPath = fs.knownFolders.currentApp().path + "/tns_modules/nativescript-barcodescanner/sound/beep.caf";
+            this._player = new AVAudioPlayer({ contentsOfURL: NSURL.fileURLWithPath(soundPath) });
+            this._player.numberOfLoops = 1;
+            this._player.volume = 0.7;
+            this._player.prepareToPlay();
+        }
         return this;
     };
     QRCodeReaderDelegateImpl.prototype.readerDidCancel = function (reader) {
@@ -226,6 +235,9 @@ var QRCodeReaderDelegateImpl = (function (_super) {
             var app_2 = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
             app_2.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
             this._callback(reader, text, type);
+        }
+        if (this._player) {
+            this._player.play();
         }
     };
     ;
