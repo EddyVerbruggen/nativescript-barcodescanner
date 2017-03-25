@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.4.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.1) (2017-03-25)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.0...2.4.1)
+
+**Fixed bugs:**
+
+- Crash can occur in Android runtimes because of missing AndroidManifest settings [\#77](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/77)
+
 ## [2.4.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.0) (2017-02-04)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.3.3...2.4.0)
 
