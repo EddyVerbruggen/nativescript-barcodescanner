@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.4.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.2) (2017-03-27)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.1...2.4.2)
+
+**Implemented enhancements:**
+
+- Some Samsung devices have problems reading barcodes [\#79](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/79)
+
+
 ## [2.4.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.1) (2017-03-25)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.0...2.4.1)
 
