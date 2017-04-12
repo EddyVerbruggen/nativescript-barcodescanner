@@ -1,0 +1,39 @@
+language: android
+
+jdk: oraclejdk8
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-25.0.2
+    - android-25
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-21
+
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+    directories:
+        - .nvm
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+
+install:
+    - nvm install node
+    - npm install -g nativescript
+    - tns usage-reporting disable
+    - tns error-reporting disable
+    - npm install
+
+before_script:
+    - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
+    - emulator -avd test -no-audio -no-window &
+    - android-wait-for-emulator
+
+script:
+    - npm run setup
+    - npm run tslint
+    - cd demo
+    - tns build android

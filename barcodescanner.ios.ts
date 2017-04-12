@@ -130,14 +130,14 @@ export class BarcodeScanner {
     return new Promise((resolve, reject) => {
       resolve(AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null);
     });
-  };
+  }
 
   public hasCameraPermission(): Promise<boolean> {
     let self = this;
     return new Promise((resolve) => {
       resolve(self._hasCameraPermission());
     });
-  };
+  }
 
   public requestCameraPermission(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -145,7 +145,7 @@ export class BarcodeScanner {
       QRCodeReader.isAvailable();
       resolve();
     });
-  };
+  }
 
   public stop(): Promise<any> {
     let self = this;
@@ -159,7 +159,7 @@ export class BarcodeScanner {
         reject(ex);
       }
     });
-  };
+  }
 
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
@@ -266,7 +266,7 @@ export class BarcodeScanner {
         reject(ex);
       }
     });
-  };
+  }
 }
 
 class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegate*/ {
@@ -302,7 +302,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
     let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
     app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
     this._callback(reader);
-  };
+  }
 
   public readerDidScanResultForType(reader, text, type) {
     if (this._isContinuous) {
@@ -322,7 +322,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
     if (this._player) {
       this._player.play();
     }
-  };
+  }
 }
 
 class VolumeObserverClass extends NSObject {

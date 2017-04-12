@@ -65,7 +65,7 @@ export class BarcodeScanner {
         resolve(true);
       }
     });
-  };
+  }
 
   public hasCameraPermission(): Promise<boolean> {
     let self = this;
@@ -73,7 +73,7 @@ export class BarcodeScanner {
       let granted = self.wasCameraPermissionGranted();
       resolve(granted);
     });
-  };
+  }
 
   public requestCameraPermission(): Promise<boolean> {
     let self = this;
@@ -85,7 +85,7 @@ export class BarcodeScanner {
         reject(ex);
       }
     });
-  };
+  }
 
   public stop(): Promise<any> {
     let self = this;
@@ -107,7 +107,7 @@ export class BarcodeScanner {
         reject(ex);
       }
     });
-  };
+  }
 
   public scan(arg: ScanOptions): Promise<any> {
     let self = this;
@@ -233,5 +233,5 @@ export class BarcodeScanner {
 
       onPermissionGranted();
     });
-  };
+  }
 }

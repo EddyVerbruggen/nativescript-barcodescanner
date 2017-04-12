@@ -18,7 +18,6 @@ export interface CommonScanOptions {
 
   /**
    * Wheter or not to report duplicate scan results during continuous scanning.
-   * 
    * Default false.
    */
   reportDuplicates?: boolean;

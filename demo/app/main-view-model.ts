@@ -41,27 +41,27 @@ export class HelloWorldModel extends Observable {
         console.log("Camera permission requested");
       }
     );
-  };
+  }
 
   public doScanWithBackCamera() {
     this.scan(false, true);
-  };
+  }
 
   public doScanWithFrontCamera() {
     this.scan(true, false);
-  };
+  }
 
   public doScanWithTorch() {
     this.scan(false, true, true, "portrait");
-  };
+  }
 
   public doScanPortrait() {
     this.scan(false, true, false, "portrait");
-  };
+  }
 
   public doScanLandscape() {
     this.scan(false, true, false, "landscape");
-  };
+  }
 
   public doContinuousScan() {
     this.barcodeScanner.scan({
@@ -69,7 +69,7 @@ export class HelloWorldModel extends Observable {
         console.log(result.format + ": " + result.text);
       }
     });
-  };
+  }
 
   public doContinuousScanMax3() {
     let count = 0;
@@ -94,7 +94,7 @@ export class HelloWorldModel extends Observable {
         }
       }
     });
-  };
+  }
 
   private scan(front: boolean, flip: boolean, torch?: boolean, orientation?: string) {
     this.barcodeScanner.scan({
@@ -127,5 +127,5 @@ export class HelloWorldModel extends Observable {
         console.log("No scan. " + errorMessage);
       }
     );
-  };
+  }
 }
