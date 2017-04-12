@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.5.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.5.0) (2017-04-12)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.2...2.5.0)
+
+**Implemented enhancements:**
+
+- nativescript-barcodescanner in NS 3.0 RC [\#80](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/80)
+- Add the option to change the iOS cancel label background color [\#81](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/81)
+
+
 ## [2.4.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.4.2) (2017-03-27)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.1...2.4.2)
 
