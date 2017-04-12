@@ -1,5 +1,6 @@
 .idea
 .vscode
+.travis.yml
 build.xcconfig
 demo/
 hooks/
