@@ -1,6 +1,5 @@
-import {ScanOptions} from "./barcodescanner.common";
+import { ScanOptions } from "./barcodescanner.common";
 import * as appModule from "application";
-import * as camera from "camera";
 import * as utils from "utils/utils";
 
 let SCANNER_REQUEST_CODE = 444;
@@ -58,7 +57,7 @@ export class BarcodeScanner {
   public available(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        resolve(camera.isAvailable());
+        resolve(utils.ad.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA));
       } catch (ex) {
         console.log("Error in barcodescanner.available: " + ex);
         // let's just assume it's ok
