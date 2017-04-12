@@ -100,6 +100,7 @@ export class HelloWorldModel extends Observable {
     this.barcodeScanner.scan({
       formats: "QR_CODE, EAN_13",
       cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+      cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
       message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
       preferFrontCamera: front,     // Android only, default false
       showFlipCameraButton: flip,   // default false

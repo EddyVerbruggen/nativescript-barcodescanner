@@ -211,7 +211,7 @@ export class BarcodeScanner {
         let torch = arg.showTorchButton;
         let flip = arg.showFlipCameraButton;
         let startScanningAtLoad = true;
-        self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, reader, startScanningAtLoad, flip, torch);
+        self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
         self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.

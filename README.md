@@ -66,6 +66,7 @@ This plugin was created and tested with TypeScript 2+, so please update your pro
   barcodescanner.scan({
     formats: "QR_CODE, EAN_13",
     cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+    cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false
@@ -96,6 +97,7 @@ This plugin was created and tested with TypeScript 2+, so please update your pro
   barcodescanner.scan({
     formats: "QR_CODE,PDF_417",   // Pass in of you want to restrict scanning to certain types
     cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+    cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
     message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
     showFlipCameraButton: true,   // default false
     preferFrontCamera: false,     // default false

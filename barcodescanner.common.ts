@@ -59,6 +59,11 @@ export interface IOS extends CommonScanOptions {
    */
   cancelLabel?: string;
   /**
+   * The background color of the button the label is drawn upon.
+   * Default: "#000000" (black)
+   */
+  cancelLabelBackgroundColor?: string;
+  /**
    * You can send the user to the settings app if access was previously denied.
    * Default: false
    */

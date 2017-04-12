@@ -10,6 +10,7 @@ export interface CommonScanOptions {
 }
 export interface IOS extends CommonScanOptions {
     cancelLabel?: string;
+    cancelLabelBackgroundColor?: string;
     openSettingsIfPermissionWasPreviouslyDenied?: boolean;
 }
 export interface Android extends CommonScanOptions {
