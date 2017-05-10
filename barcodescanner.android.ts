@@ -190,9 +190,7 @@ export class BarcodeScanner {
         }
 
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
-          let previousResult = appModule.android.onActivityResult;
-          appModule.android.onActivityResult = function (requestCode, resultCode, data) {
-            appModule.android.onActivityResult = previousResult;
+          appModule.android.on('activityResult', (data) => {
             if (requestCode === SCANNER_REQUEST_CODE) {
               if (isContinuous) {
                 if (_onScanReceivedCallback) {
@@ -212,7 +210,7 @@ export class BarcodeScanner {
                 }
               }
             }
-          };
+          });
 
           appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
 
