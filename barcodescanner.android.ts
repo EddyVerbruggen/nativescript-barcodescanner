@@ -191,16 +191,16 @@ export class BarcodeScanner {
 
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
           appModule.android.on('activityResult', (data) => {
-            if (requestCode === SCANNER_REQUEST_CODE) {
+            if (data.requestCode === SCANNER_REQUEST_CODE) {
               if (isContinuous) {
                 if (_onScanReceivedCallback) {
                   self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
                   _onScanReceivedCallback = undefined;
                 }
               } else {
-                if (resultCode === android.app.Activity.RESULT_OK) {
-                  let format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
-                  let text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
+                if (data.resultCode === android.app.Activity.RESULT_OK) {
+                  let format = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
+                  let text = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
                   resolve({
                     format: format,
                     text: text
