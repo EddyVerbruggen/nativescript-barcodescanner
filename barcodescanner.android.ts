@@ -39,7 +39,7 @@ export class BarcodeScanner {
     let hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
     if (!hasPermission) {
       hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ===
-          android.support.v4.content.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
+        android.support.v4.content.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
     }
     return hasPermission;
   };
@@ -48,9 +48,9 @@ export class BarcodeScanner {
     this.onPermissionGranted = onPermissionGranted;
     this.onPermissionRejected = reject;
     android.support.v4.app.ActivityCompat.requestPermissions(
-        appModule.android.foregroundActivity,
-        [android.Manifest.permission.CAMERA],
-        234 // irrelevant since we simply invoke onPermissionGranted
+      appModule.android.foregroundActivity,
+      [android.Manifest.permission.CAMERA],
+      234 // irrelevant since we simply invoke onPermissionGranted
     );
   };
 
@@ -192,6 +192,7 @@ export class BarcodeScanner {
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
           appModule.android.on('activityResult', (data) => {
             if (data.requestCode === SCANNER_REQUEST_CODE) {
+              self.onPermissionGranted = null;
               if (isContinuous) {
                 if (_onScanReceivedCallback) {
                   self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
