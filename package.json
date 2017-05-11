@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Scan QR/barcodes with a {N} app.",
   "main": "barcodescanner",
   "nativescript": {

@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.5.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.5.1) (2017-05-11)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/15?closed=1)
+
+**Fixed bugs:**
+
+- Promise not returned on android device with NS 3.0 [\#84](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/84)
+- Use onActivityResult event handler rather than callback method #85 [\#85](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/85)
+- Resolved bug where the scanner was opening after any permission was a.. [\#86](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/86)
+
+
 ## [2.5.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.5.0) (2017-04-12)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/compare/2.4.2...2.5.0)
 
