@@ -190,20 +190,18 @@ export class BarcodeScanner {
         }
 
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
-          let previousResult = appModule.android.onActivityResult;
-          appModule.android.onActivityResult = function (requestCode, resultCode, data) {
-            self.onPermissionGranted = null;
-            appModule.android.onActivityResult = previousResult;
-            if (requestCode === SCANNER_REQUEST_CODE) {
+          appModule.android.on('activityResult', (data) => {
+            if (data.requestCode === SCANNER_REQUEST_CODE) {
+              self.onPermissionGranted = null;
               if (isContinuous) {
                 if (_onScanReceivedCallback) {
                   self.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
                   _onScanReceivedCallback = undefined;
                 }
               } else {
-                if (resultCode === android.app.Activity.RESULT_OK) {
-                  let format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
-                  let text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
+                if (data.resultCode === android.app.Activity.RESULT_OK) {
+                  let format = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
+                  let text = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
                   resolve({
                     format: format,
                     text: text
@@ -213,7 +211,7 @@ export class BarcodeScanner {
                 }
               }
             }
-          };
+          });
 
           appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
 
