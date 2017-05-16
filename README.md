@@ -245,3 +245,18 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
       }
     }
     ```
+
+#### Webpack usage
+If you run into an error when Webpacking, open `app,module.ts` and add this:
+
+```typescript
+import { BarcodeScanner } from "nativescript-barcodescanner";
+
+export function createBarcodeScanner() {
+  return new BarcodeScanner();
+}
+
+providers: [
+  {provide: BarcodeScanner, useFactory: (createBarcodeScanner)}
+]
+```
