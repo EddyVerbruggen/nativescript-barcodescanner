@@ -1,7 +1,6 @@
 import { ScanOptions, ScanResult } from "./barcodescanner.common";
 import * as utils from "utils/utils";
 import * as frame from "ui/frame";
-import * as fs from "file-system";
 
 // TODO (no rush) rename disableSuccessBeep in the phonegap ios impl to beepOnScan
 
@@ -289,13 +288,6 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
     this._reportDuplicates = reportDuplicates;
     this._callback = callback;
     this._beepOnScan = beepOnScan;
-    if (this._beepOnScan) {
-      let soundPath = fs.knownFolders.currentApp().path + "/tns_modules/nativescript-barcodescanner/sound/beep.caf";
-      this._player = new AVAudioPlayer({contentsOfURL: NSURL.fileURLWithPath(soundPath)});
-      this._player.numberOfLoops = 1;
-      this._player.volume = 0.7;
-      this._player.prepareToPlay();
-    }
   }
 
   public readerDidCancel(reader) {
@@ -330,8 +322,9 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
       this._callback(reader, text, type);
     }
-    if (validResult && this._player) {
-      this._player.play();
+    if (validResult && this._beepOnScan) {
+      // see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/93
+      AudioServicesPlaySystemSound(1256); // "short_low_high"
     }
   }
 }
