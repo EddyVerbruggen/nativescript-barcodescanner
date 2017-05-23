@@ -3,12 +3,7 @@ import * as utils from "utils/utils";
 import * as frame from "ui/frame";
 import * as fs from "file-system";
 
-
-
-// TODO see https://github.com/jbristowe/nativescript-sound/blob/master/sound.ios.js
-// .. and see https://github.com/phonegap/phonegap-plugin-barcodescanner/blob/2e36cd46de37969eae619e0d34fe1259f2db79b7/src/ios/CDVBarcodeScanner.mm#L414
-// .. also: rename to disableSuccessBeep in the phonegap ios impl to beepOnScan
-
+// TODO (no rush) rename disableSuccessBeep in the phonegap ios impl to beepOnScan
 
 declare let QRCodeReader, QRCodeReaderViewController, QRCodeReaderDelegate: any;
 
@@ -73,6 +68,7 @@ export class BarcodeScanner {
   private _observerActive: boolean;
   private _currentVolume: any;
   private _scanner: any;
+  private _scanDelegate: QRCodeReaderDelegateImpl;
 
   constructor() {
     this._observer = VolumeObserverClass.alloc();
@@ -214,28 +210,30 @@ export class BarcodeScanner {
         self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
         self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
-        // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(arg.beepOnScan !== false, isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
-          // invoke the callback / promise
-          if (text === undefined) {
-            self._removeVolumeObserver();
-            reject("Scan aborted");
-          } else {
-            let result: ScanResult = {
-              format : format,
-              text : text
-            };
-            if (isContinuous) {
-              arg.continuousScanCallback(result);
-            } else {
-              self._removeVolumeObserver();
-              resolve(result);
-            }
-          }
-          // Remove the local variable for the delegate.
-          delegate = undefined;
-        });
-        self._scanner.delegate = delegate;
+        self._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+        self._scanner.delegate = self._scanDelegate;
+        self._scanDelegate.setCallback(
+            arg.beepOnScan !== false,
+            isContinuous,
+            arg.reportDuplicates,
+            (reader: string, text: string, format: string) => {
+              // invoke the callback / promise
+              if (text === undefined) {
+                self._removeVolumeObserver();
+                reject("Scan aborted");
+              } else {
+                let result: ScanResult = {
+                  format: format,
+                  text: text
+                };
+                if (isContinuous) {
+                  arg.continuousScanCallback(result);
+                } else {
+                  self._removeVolumeObserver();
+                  resolve(result);
+                }
+              }
+            });
 
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
         if (device.autoFocusRangeRestrictionSupported) {
@@ -269,8 +267,12 @@ export class BarcodeScanner {
 class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegate*/ {
   public static ObjCProtocols = [QRCodeReaderDelegate];
 
-  static new(): QRCodeReaderDelegateImpl {
-    return <QRCodeReaderDelegateImpl>super.new();
+  private _owner: WeakRef<any>;
+
+  public static initWithOwner(owner: WeakRef<any>): QRCodeReaderDelegateImpl {
+    let delegate = <QRCodeReaderDelegateImpl>QRCodeReaderDelegateImpl.new();
+    delegate._owner = owner;
+    return delegate;
   }
 
   private _callback: (reader: string, text?: string, format?: string) => void;
@@ -279,9 +281,10 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
   private _reportDuplicates: boolean;
   private _scannedArray: Array<string>;
   private _player: AVAudioPlayer;
-  private _lastScanResultTs: number = 0;
+  // initializing this value may prevent recognizing too quickly
+  private _lastScanResultTs: number = new Date().getTime();
 
-  public initWithCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
+  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): void {
     this._isContinuous = isContinuous;
     this._reportDuplicates = reportDuplicates;
     this._callback = callback;
@@ -293,7 +296,6 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
       this._player.volume = 0.7;
       this._player.prepareToPlay();
     }
-    return this;
   }
 
   public readerDidCancel(reader) {
@@ -304,16 +306,21 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
 
   public readerDidScanResultForType(reader, text, type) {
     let validResult: boolean = false;
+    let now: number = new Date().getTime();
+    // prevent flooding the callback
+    if (now - this._lastScanResultTs < 1700) {
+      return;
+    }
+    this._lastScanResultTs = now;
+
     if (this._isContinuous) {
       if (!this._scannedArray) {
         this._scannedArray = Array<string>();
       }
-      // don't report duplicates unless explicitly requested (in which case delay 2 seconds to avoid bursts)
+      // don't report duplicates unless explicitly requested
       let newResult: boolean = this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1;
-      let now: number = new Date().getTime();
-      if (newResult || (this._reportDuplicates && now - this._lastScanResultTs > 2000)) {
+      if (newResult || this._reportDuplicates) {
         validResult = true;
-        this._lastScanResultTs = now;
         this._scannedArray.push("[" + text + "][" + type + "]");
         this._callback(reader, text, type);
       }

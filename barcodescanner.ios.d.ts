@@ -4,6 +4,7 @@ export declare class BarcodeScanner {
     private _observerActive;
     private _currentVolume;
     private _scanner;
+    private _scanDelegate;
     constructor();
     private _hasCameraPermission;
     private _hasDeniedCameraPermission;
