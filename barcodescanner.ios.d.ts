@@ -1,4 +1,4 @@
-import { ScanOptions } from "./barcodescanner.common";
+import { ScanOptions, ScanResult } from "./barcodescanner.common";
 export declare class BarcodeScanner {
     private _observer;
     private _observerActive;
@@ -15,5 +15,5 @@ export declare class BarcodeScanner {
     hasCameraPermission(): Promise<boolean>;
     requestCameraPermission(): Promise<boolean>;
     stop(): Promise<any>;
-    scan(arg: ScanOptions): Promise<any>;
+    scan(arg: ScanOptions): Promise<ScanResult>;
 }

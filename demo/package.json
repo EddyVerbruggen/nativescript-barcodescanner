@@ -2,16 +2,16 @@
   "nativescript": {
     "id": "org.nativescript.demo.barcodescanner",
     "tns-android": {
-      "version": "2.5.0"
+      "version": "3.0.0"
     },
     "tns-ios": {
-      "version": "2.5.0"
+      "version": "3.0.1"
     }
   },
   "dependencies": {
-    "nativescript-barcodescanner": "file:..",
+    "nativescript-barcodescanner": "file:///Users/eddyverbruggen/sandboxes/nativescript-barcodescanner",
     "nativescript-theme-core": "^0.1.2",
-    "tns-core-modules": "^2.5.0"
+    "tns-core-modules": "^3.0.0"
   },
   "devDependencies": {
     "babel-traverse": "6.12.0",
@@ -19,7 +19,7 @@
     "babylon": "6.8.4",
     "filewalker": "0.1.2",
     "lazy": "1.0.11",
-    "nativescript-dev-typescript": "^0.3.7",
-    "typescript": "^2.1.0"
+    "nativescript-dev-typescript": "^0.4.5",
+    "typescript": "^2.3.0"
   }
 }

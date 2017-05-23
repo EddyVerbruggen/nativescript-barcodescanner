@@ -1,4 +1,4 @@
-import { ScanOptions } from "./barcodescanner.common";
+import { ScanOptions, ScanResult } from "./barcodescanner.common";
 import * as appModule from "application";
 import * as utils from "utils/utils";
 
@@ -108,7 +108,7 @@ export class BarcodeScanner {
     });
   }
 
-  public scan(arg: ScanOptions): Promise<any> {
+  public scan(arg: ScanOptions): Promise<ScanResult> {
     let self = this;
     return new Promise((resolve, reject) => {
       let onPermissionGranted: () => any = function () {
@@ -178,10 +178,11 @@ export class BarcodeScanner {
               }
               if (arg.reportDuplicates || this.uniquelyScannedCodes.indexOf("[" + text + "][" + format + "]") === -1) {
                 this.uniquelyScannedCodes.push("[" + text + "][" + format + "]");
-                _onContinuousScanResult({
+                let result: ScanResult = {
                   format: format,
                   text: text
-                });
+                };
+                _onContinuousScanResult(result);
               }
             }
           });
@@ -202,10 +203,11 @@ export class BarcodeScanner {
                 if (data.resultCode === android.app.Activity.RESULT_OK) {
                   let format = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
                   let text = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
-                  resolve({
+                  let result: ScanResult = {
                     format: format,
                     text: text
-                  });
+                  };
+                  resolve(result);
                 } else {
                   reject("Scan aborted");
                 }
@@ -214,10 +216,6 @@ export class BarcodeScanner {
           });
 
           appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
-
-          if (isContinuous) {
-            resolve();
-          }
         } else {
           // this is next to impossible
           reject("Configuration error");

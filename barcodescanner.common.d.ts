@@ -1,6 +1,10 @@
+export interface ScanResult {
+    text: string;
+    format: string;
+}
 export interface CommonScanOptions {
     formats?: string;
-    continuousScanCallback?: Function;
+    continuousScanCallback?: (scanResult: ScanResult) => void;
     reportDuplicates?: boolean;
     preferFrontCamera?: boolean;
     showFlipCameraButton?: boolean;
@@ -38,5 +42,5 @@ export declare class BarcodeScanner {
     hasCameraPermission(): Promise<boolean>;
     requestCameraPermission(): Promise<boolean>;
     stop(): Promise<any>;
-    scan(arg: ScanOptions): Promise<any>;
+    scan(arg: ScanOptions): Promise<ScanResult>;
 }

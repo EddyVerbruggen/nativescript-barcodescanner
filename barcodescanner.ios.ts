@@ -1,4 +1,4 @@
-import {ScanOptions} from "./barcodescanner.common";
+import { ScanOptions, ScanResult } from "./barcodescanner.common";
 import * as utils from "utils/utils";
 import * as frame from "ui/frame";
 import * as fs from "file-system";
@@ -161,7 +161,7 @@ export class BarcodeScanner {
     });
   }
 
-  public scan(arg: ScanOptions): Promise<any> {
+  public scan(arg: ScanOptions): Promise<ScanResult> {
     let self = this;
     return new Promise((resolve, reject) => {
       try {
@@ -215,13 +215,13 @@ export class BarcodeScanner {
         self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(arg.beepOnScan, isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
+        let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(arg.beepOnScan !== false, isContinuous, arg.reportDuplicates, (reader: string, text: string, format: string) => {
           // invoke the callback / promise
           if (text === undefined) {
             self._removeVolumeObserver();
             reject("Scan aborted");
           } else {
-            let result = {
+            let result: ScanResult = {
               format : format,
               text : text
             };
@@ -258,9 +258,6 @@ export class BarcodeScanner {
             });
           }
         }
-        if (isContinuous) {
-          resolve();
-        }
       } catch (ex) {
         console.log("Error in barcodescanner.scan: " + ex);
         reject(ex);
@@ -282,6 +279,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
   private _reportDuplicates: boolean;
   private _scannedArray: Array<string>;
   private _player: AVAudioPlayer;
+  private _lastScanResultTs: number = 0;
 
   public initWithCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): QRCodeReaderDelegateImpl {
     this._isContinuous = isContinuous;
@@ -305,21 +303,27 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
   }
 
   public readerDidScanResultForType(reader, text, type) {
+    let validResult: boolean = false;
     if (this._isContinuous) {
       if (!this._scannedArray) {
         this._scannedArray = Array<string>();
       }
-      // don't report duplicates
-      if (this._reportDuplicates || this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1) {
+      // don't report duplicates unless explicitly requested (in which case delay 2 seconds to avoid bursts)
+      let newResult: boolean = this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1;
+      let now: number = new Date().getTime();
+      if (newResult || (this._reportDuplicates && now - this._lastScanResultTs > 2000)) {
+        validResult = true;
+        this._lastScanResultTs = now;
         this._scannedArray.push("[" + text + "][" + type + "]");
         this._callback(reader, text, type);
       }
     } else {
+      validResult = true;
       let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
       this._callback(reader, text, type);
     }
-    if (this._player) {
+    if (validResult && this._player) {
       this._player.play();
     }
   }

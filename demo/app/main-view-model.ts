@@ -65,8 +65,9 @@ export class HelloWorldModel extends Observable {
 
   public doContinuousScan() {
     this.barcodeScanner.scan({
+      reportDuplicates: true,
       continuousScanCallback: function (result) {
-        console.log(result.format + ": " + result.text);
+        console.log(`${result.format}: ${result.text} @ ${new Date().getTime()}`);
       }
     });
   }

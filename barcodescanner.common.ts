@@ -1,3 +1,8 @@
+export interface ScanResult {
+  text: string;
+  format: string;
+}
+
 export interface CommonScanOptions {
   /**
    * A comma sep. string of barcode types: "QR_CODE,PDF_417"
@@ -14,7 +19,7 @@ export interface CommonScanOptions {
    * This function doesn't report duplicates in the same scanning session,
    * unless reportDuplicates is set to true.
    */
-  continuousScanCallback?: Function;
+  continuousScanCallback?: (scanResult: ScanResult) => void;
 
   /**
    * Wheter or not to report duplicate scan results during continuous scanning.
@@ -109,5 +114,5 @@ export declare class BarcodeScanner {
     hasCameraPermission(): Promise<boolean>;
     requestCameraPermission(): Promise<boolean>;
     stop(): Promise<any>;
-    scan(arg: ScanOptions): Promise<any>;
+    scan(arg: ScanOptions): Promise<ScanResult>;
 }
