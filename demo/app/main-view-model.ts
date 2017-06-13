@@ -74,7 +74,6 @@ export class HelloWorldModel extends Observable {
 
   public doContinuousScanMax3() {
     let count = 0;
-    console.log("-- in doContinuousScanMax3, count: " + count);
     let self = this;
     this.barcodeScanner.scan({
       reportDuplicates: false,

@@ -29,7 +29,7 @@
                 </ContentView>
               </iOS-->
 
-              <Label class="h3" text="Scanning (QR & EAN-13)" />
+              <Label class="h3" text="Scanning (QR and EAN-13)" />
               <Label class="body" text="You can use the volume buttons to toggle the torch." textWrap="true"/>
               
   			      <Button class="btn btn-primary btn-rounded-sm" text="back camera, with flip" tap="{{ doScanWithBackCamera }}" />
@@ -37,8 +37,8 @@
               <Button class="btn btn-primary btn-rounded-sm" text="back camera, with torch" tap="{{ doScanWithTorch }}" />
 
               <Label class="h3" text="Continuous scanning (see console)" />
-  			      <Button class="btn btn-primary btn-rounded-sm" text="stop after 3 results" tap="{{ doContinuousScanMax3 }}" />
-  			      <Button class="btn btn-primary btn-rounded-sm" text="scan till you drop" tap="{{ doContinuousScan }}" />
+  			      <Button class="btn btn-primary btn-rounded-sm" text="stop after 3 unique results" tap="{{ doContinuousScanMax3 }}" />
+  			      <Button class="btn btn-primary btn-rounded-sm" text="unlimited scan, allow duplicates" tap="{{ doContinuousScan }}" />
 
               <Android>
                 <Label class="h3" text="Orientation lock" />

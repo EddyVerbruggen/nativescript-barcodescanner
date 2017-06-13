@@ -298,12 +298,6 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
 
   public readerDidScanResultForType(reader, text, type) {
     let validResult: boolean = false;
-    let now: number = new Date().getTime();
-    // prevent flooding the callback
-    if (now - this._lastScanResultTs < 1700) {
-      return;
-    }
-    this._lastScanResultTs = now;
 
     if (this._isContinuous) {
       if (!this._scannedArray) {
@@ -312,6 +306,12 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
       // don't report duplicates unless explicitly requested
       let newResult: boolean = this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1;
       if (newResult || this._reportDuplicates) {
+        let now: number = new Date().getTime();
+        // prevent flooding the callback
+        if (now - this._lastScanResultTs < 1700) {
+          return;
+        }
+        this._lastScanResultTs = now;
         validResult = true;
         this._scannedArray.push("[" + text + "][" + type + "]");
         this._callback(reader, text, type);
