@@ -6,3 +6,5 @@ demo/
 *.log
 *.ts
 !*.d.ts
+CHANGELOG.md
+tslint.json

@@ -52,10 +52,7 @@
     "UPCE"
   ],
   "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/issues"
   },
