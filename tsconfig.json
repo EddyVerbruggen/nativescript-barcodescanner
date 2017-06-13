@@ -2,23 +2,41 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "removeComments": true,
-        "experimentalDecorators": true,
-        "noEmitHelpers": true,
         "declaration": true,
-        "skipLibCheck": true,
-        "noLib": true
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "es2016",
+            "es6",
+            "dom"
+        ],
+        "pretty": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noEmitHelpers": true,
+        "noEmitOnError": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noFallthroughCasesInSwitch": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./node_modules"
+        ],
+        "types": [],
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "./node_modules/tns-core-modules/*",
+                "./node_modules/*"
+            ]
+        }
     },
-    "files": [
-        "manual_typings/base.d.ts",
-        "references.d.ts",
-        "barcodescanner.common.ts",
-        "barcodescanner.android.ts",
-        "barcodescanner.ios.ts"
-    ],
-    "compileOnSave": false,
     "exclude": [
-        "node_modules",
-        "platforms"
-    ]
+        "demo",
+        "node_modules"
+    ],
+    "compileOnSave": false
 }
