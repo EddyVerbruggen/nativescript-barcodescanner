@@ -17,7 +17,7 @@
     "demo.android": "npm run preparedemo && cd demo && tns run android",
     "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-barcodescanner && tns plugin add .. && tns install",
     "setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
-    "test": "npm run tslint && npm run tslint.demo && cd demo && tns build ios && tns build android",
+    "test": "npm run tslint && npm run tslint.demo && cd demo && tns build android",
     "tslint": "tslint *.ts",
     "tslint.demo": "tslint demo/app/*.ts"
   },
