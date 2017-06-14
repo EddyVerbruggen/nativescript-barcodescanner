@@ -72,8 +72,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 #### TypeScript
 This plugin was created and tested with TypeScript 2+, so please update your project if needed.
 
-```js
-  import {BarcodeScanner} from "nativescript-barcodescanner";
+```typescript
+  import { BarcodeScanner } from "nativescript-barcodescanner";
   let barcodescanner = new BarcodeScanner();
 
   barcodescanner.scan({
@@ -150,7 +150,7 @@ You'll notice that the Promise will no longer receive the result as there may be
     continuousScanCallback: function (result) {
       count++;
       console.log(result.format + ": " + result.text + " (count: " + count + ")");
-      if (count == 3) {
+      if (count === 3) {
         barcodescanner.stop();
       }
     },
@@ -213,7 +213,7 @@ When using Angular 2, it is best to inject dependencies into your classes.  Here
 can set up `nativescript-barcodescanner` in an Angular 2 app with dependency injection.
 
 1. Register the provider with your module
-    ```ts
+    ```typescript
     //app.module.ts
     import { NgModule, ValueProvider } from '@angular/core';
     import { BarcodeScanner } from 'nativescript-barcodescanner';
@@ -228,11 +228,10 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     export class AppModule {}
     ```
 1. Inject it into your component
-    ```ts
-    //my-component.ts
+    ```typescript
+    // my-component.ts
     import { Component, Inject } from '@angular/core';
     import { BarcodeScanner } from 'nativescript-barcodescanner';
-    //other imports
 
     @Component({ ... })
     export class MyComponent {
@@ -247,7 +246,7 @@ can set up `nativescript-barcodescanner` in an Angular 2 app with dependency inj
     ```
 
 #### Webpack usage
-If you run into an error when Webpacking, open `app,module.ts` and add this:
+If you run into an error when Webpacking, open `app.module.ts` and add this:
 
 ```typescript
 import { BarcodeScanner } from "nativescript-barcodescanner";
@@ -257,6 +256,6 @@ export function createBarcodeScanner() {
 }
 
 providers: [
-  {provide: BarcodeScanner, useFactory: (createBarcodeScanner)}
+  { provide: BarcodeScanner, useFactory: (createBarcodeScanner) }
 ]
 ```
