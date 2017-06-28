@@ -219,6 +219,7 @@ export class BarcodeScanner {
               // invoke the callback / promise
               if (text === undefined) {
                 self._removeVolumeObserver();
+                arg.closeCallback && arg.closeCallback();
                 reject("Scan aborted");
               } else {
                 let result: ScanResult = {
@@ -229,6 +230,7 @@ export class BarcodeScanner {
                   arg.continuousScanCallback(result);
                 } else {
                   self._removeVolumeObserver();
+                  arg.closeCallback && arg.closeCallback();
                   resolve(result);
                 }
               }

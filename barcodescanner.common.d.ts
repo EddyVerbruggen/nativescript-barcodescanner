@@ -5,6 +5,7 @@ export interface ScanResult {
 export interface CommonScanOptions {
     formats?: string;
     continuousScanCallback?: (scanResult: ScanResult) => void;
+    closeCallback?: () => void;
     reportDuplicates?: boolean;
     preferFrontCamera?: boolean;
     showFlipCameraButton?: boolean;

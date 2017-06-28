@@ -191,7 +191,8 @@ export class BarcodeScanner {
         }
 
         if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
-          appModule.android.on('activityResult', (data) => {
+          const onScanResult = (data) => {
+            console.log(">> activity result: @ " + new Date().getTime());
             if (data.requestCode === SCANNER_REQUEST_CODE) {
               self.onPermissionGranted = null;
               if (isContinuous) {
@@ -212,9 +213,11 @@ export class BarcodeScanner {
                   reject("Scan aborted");
                 }
               }
+              arg.closeCallback && arg.closeCallback();
+              appModule.android.off('activityResult', onScanResult);
             }
-          });
-
+          };
+          appModule.android.on('activityResult', onScanResult);
           appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
         } else {
           // this is next to impossible

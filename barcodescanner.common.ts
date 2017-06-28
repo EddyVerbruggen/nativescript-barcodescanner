@@ -22,6 +22,11 @@ export interface CommonScanOptions {
   continuousScanCallback?: (scanResult: ScanResult) => void;
 
   /**
+   * Called when the user stopped/cancelled scanning, or in single scan mode when the scan was successful.
+   */
+  closeCallback?: () => void;
+
+  /**
    * Wheter or not to report duplicate scan results during continuous scanning.
    * Default false.
    */

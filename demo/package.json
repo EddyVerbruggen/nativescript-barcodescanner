@@ -5,11 +5,11 @@
       "version": "3.0.1"
     },
     "tns-ios": {
-      "version": "3.0.1"
+      "version": "3.1.0"
     }
   },
   "dependencies": {
-    "nativescript-barcodescanner": "^2.5.0",
+    "nativescript-barcodescanner": "file:///Users/eddyverbruggen/sandboxes/nativescript-barcodescanner",
     "nativescript-theme-core": "^1.0.2",
     "tns-core-modules": "^3.0.1"
   },
