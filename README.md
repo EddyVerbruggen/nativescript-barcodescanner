@@ -118,7 +118,7 @@ This plugin was created and tested with TypeScript 2+, so please update your pro
     showTorchButton: true,        // default false
     beepOnScan: true,             // Play or Suppress beep on scan (default true)
     torchOn: false,               // launch with the flashlight on (default false)
-    closeCallback: function () { console.log("Scanner closed")}, // invoked when the scanner was closed (success or abort)
+    closeCallback: function () { console.log("Scanner closed"); }, // invoked when the scanner was closed (success or abort)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: "landscape",     // Android only, optionally lock the orientation to either "portrait" or "landscape"
     openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
@@ -156,7 +156,7 @@ You'll notice that the Promise will no longer receive the result as there may be
         barcodescanner.stop();
       }
     },
-    closeCallback: function () { console.log("Scanner closed")}, // invoked when the scanner was closed
+    closeCallback: function () { console.log("Scanner closed"); }, // invoked when the scanner was closed
     reportDuplicates: false // which is the default
   }).then(
       function() {

@@ -1,6 +1,6 @@
-import {Observable} from "data/observable";
-import {alert} from "ui/dialogs";
-import {BarcodeScanner} from "nativescript-barcodescanner";
+import { Observable } from "data/observable";
+import { alert } from "ui/dialogs";
+import { BarcodeScanner } from "nativescript-barcodescanner";
 
 export class HelloWorldModel extends Observable {
   public message: string;
@@ -37,9 +37,9 @@ export class HelloWorldModel extends Observable {
 
   public doRequestCameraPermission() {
     this.barcodeScanner.requestCameraPermission().then(
-      function() {
-        console.log("Camera permission requested");
-      }
+        function () {
+          console.log("Camera permission requested");
+        }
     );
   }
 
@@ -68,6 +68,9 @@ export class HelloWorldModel extends Observable {
       reportDuplicates: true,
       continuousScanCallback: function (result) {
         console.log(`${result.format}: ${result.text} @ ${new Date().getTime()}`);
+      },
+      closeCallback: () => {
+        console.log("Scanner closed @ " + new Date().getTime());
       }
     });
   }
@@ -77,15 +80,12 @@ export class HelloWorldModel extends Observable {
     let self = this;
     this.barcodeScanner.scan({
       reportDuplicates: false,
-      closeCallback: () => { console.log("Scanner closed @ " + new Date().getTime())},
       continuousScanCallback: function (result) {
         count++;
         console.log(result.format + ": " + result.text + " (count: " + count + ")");
         if (count === 3) {
-          // funilly this is required on Android to reset the counter for a second run
-          count = 0;
           self.barcodeScanner.stop();
-          setTimeout(function() {
+          setTimeout(function () {
             alert({
               title: "Scanned 3 codes",
               message: "Check the log for the results",
@@ -111,23 +111,25 @@ export class HelloWorldModel extends Observable {
       orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
       beepOnScan: true,             // Play or Suppress beep on scan (default true)
       openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
-      closeCallback: () => { console.log("Scanner closed @ " + new Date().getTime())}
-    }).then(
-      function(result) {
-        console.log("--- scanned: " + result.text);
-        // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
-        setTimeout(function() {
-          // if this alert doesn't show up please upgrade to {N} 2.4.0+
-          alert({
-            title: "Scan result",
-            message: "Format: " + result.format + ",\nValue: " + result.text,
-            okButtonText: "OK"
-          });
-        }, 500);
-      },
-      function(errorMessage) {
-        console.log("No scan. " + errorMessage);
+      closeCallback: () => {
+        console.log("Scanner closed @ " + new Date().getTime());
       }
+    }).then(
+        function (result) {
+          console.log("--- scanned: " + result.text);
+          // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
+          setTimeout(function () {
+            // if this alert doesn't show up please upgrade to {N} 2.4.0+
+            alert({
+              title: "Scan result",
+              message: "Format: " + result.format + ",\nValue: " + result.text,
+              okButtonText: "OK"
+            });
+          }, 500);
+        },
+        function (errorMessage) {
+          console.log("No scan. " + errorMessage);
+        }
     );
   }
 }
