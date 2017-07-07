@@ -41,8 +41,6 @@
 * UPC_A
 
 ## Installation
-Make sure you're using __NativeScript 2.3.0+__ (2.4.0+ is best for Android). Run `npm install -g nativescript` if not.
-
 From the command prompt go to your app's root folder and execute:
 ```
 tns plugin add nativescript-barcodescanner
@@ -62,7 +60,7 @@ You can provide your own reason for accessing the camera by adding something lik
   <string>My reason justifying fooling around with your camera</string>
 ```
 
-_To not crash your app in case you forgot to provide the reason this plugin adds an empty reason to the `.plist` during build. This value gets overridden by anything you specified yourself. You're welcome._
+_To not crash your app in case you forgot to provide the reason this plugin adds an empty reason to the `.plist` during build. This value gets overridden by anything you specify yourself._
 
 ## Usage
 Tip: during a scan you can use the volume up/down buttons to toggle the torch.
