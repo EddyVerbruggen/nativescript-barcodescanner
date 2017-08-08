@@ -22,21 +22,21 @@
 ## Supported barcode types
 
 ### iOS and Android
+* AZTEC (on Android only when passed in explicity via `formats`)
 * CODE_39
 * CODE_93
 * CODE_128
+* DATA_MATRIX
 * EAN_8
 * EAN_13
+* ITF (also known as ITF14)
+* PDF_417 (on Android only when passed in explicity via `formats`)
 * QR_CODE
 * UPC_E
-* AZTEC (on Android only when passed in explicity via `formats`)
-* PDF_417 (on Android only when passed in explicity via `formats`)
 
 ### Android only
-* DATA_MATRIX
 * CODABAR
 * MAXICODE
-* ITF
 * RSS_14
 * UPC_A
 

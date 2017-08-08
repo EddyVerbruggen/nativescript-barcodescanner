@@ -188,12 +188,15 @@ export class BarcodeScanner {
             else if (format === "CODE_39_MOD_43") types.push(AVMetadataObjectTypeCode39Mod43Code);
             else if (format === "CODE_93") types.push(AVMetadataObjectTypeCode93Code);
             else if (format === "CODE_128") types.push(AVMetadataObjectTypeCode128Code);
+            else if (format === "DATA_MATRIX") types.push(AVMetadataObjectTypeDataMatrixCode);
             else if (format === "EAN_8") types.push(AVMetadataObjectTypeEAN8Code);
             else if (format === "EAN_13") types.push(AVMetadataObjectTypeEAN13Code);
+            else if (format === "ITF") types.push(AVMetadataObjectTypeITF14Code);
           }
         } else {
           types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
             AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+            AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
             AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
         }
 
