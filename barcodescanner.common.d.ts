@@ -1,3 +1,4 @@
+import { ContentView } from "tns-core-modules/ui/content-view";
 export interface ScanResult {
     text: string;
     format: string;
@@ -26,6 +27,8 @@ export interface Android extends CommonScanOptions {
 export interface ScanOptions extends IOS, Android {
     IOS?: IOS;
     Android?: Android;
+}
+export declare class BarcodeScannerView extends ContentView {
 }
 export declare class BarcodeScanner {
     private _observer;

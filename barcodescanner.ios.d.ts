@@ -1,4 +1,14 @@
-import { ScanOptions, ScanResult } from "./barcodescanner.common";
+import { BarcodeScannerView as BarcodeScannerBaseView, ScanOptions, ScanResult } from "./barcodescanner.common";
+export declare class BarcodeScannerView extends BarcodeScannerBaseView {
+    private _reader;
+    private _scanner;
+    private _ios;
+    private _continuous;
+    constructor();
+    onLayout(left: number, top: number, right: number, bottom: number): void;
+    readonly ios: any;
+    continuous: boolean;
+}
 export declare class BarcodeScanner {
     private _observer;
     private _observerActive;
