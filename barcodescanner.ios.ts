@@ -1,13 +1,13 @@
 import { ScanOptions, ScanResult } from "./barcodescanner.common";
-import * as utils from "utils/utils";
-import * as frame from "ui/frame";
+import * as utils from "tns-core-modules/utils/utils";
+import * as frame from "tns-core-modules/ui/frame";
 
 // TODO (no rush) rename disableSuccessBeep in the phonegap ios impl to beepOnScan
 
 declare let QRCodeReader, QRCodeReaderViewController, QRCodeReaderDelegate: any;
 
-/* attempting XML declared scanner.. needs work ;)
-export class BarcodeScannerView extends ContentView {
+/* no luck yet
+export class BarcodeScannerView extends BarcodeScannerBaseView {
 
   private _reader: any;
   private _scanner: any;
@@ -37,18 +37,38 @@ export class BarcodeScannerView extends ContentView {
     // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
 
     let isContinuous = false;
-    let delegate = QRCodeReaderDelegateImpl.new().initWithCallback(isContinuous, (reader: string, text: string, format: string) => {
+    // self._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+
+    let delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+    delegate.setCallback(true, isContinuous, true, (reader: string, text: string, format: string) => {
       // Remove the local variable for the delegate.
       delegate = undefined;
     });
     // this._scanner.delegate = delegate;
 
-    console.log("--- ios: " + this._ios);
-    this._ios = this._reader.previewLayer; // TODO
+    console.log("--- this._reader.previewLayer: " + this._reader.previewLayer);
+    // this._ios = this._reader.previewLayer; // TODO
+
+    console.log("--- ios: " + this.ios);
+    if (this.ios) {
+      this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
+    }
 
     // instead of a delegate we can use setCompletionWithBlock: https://github.com/yannickl/QRCodeReaderViewController/blob/master/QRCodeReaderViewController/QRCodeReader.h#L201
 
-    this._reader.startScanning();
+    setTimeout(() => {
+      this._reader.startScanning();
+    }, 4000);
+  }
+
+  public onLayout(left: number, top: number, right: number, bottom: number): void {
+    super.onLayout(left, top, right, bottom);
+    if (this.ios) {
+      console.log(">>> yes, layout");
+      this._reader.previewLayer.frame = this.ios.layer.bounds;
+    } else {
+      console.log(">>> no, layout");
+    }
   }
 
   get ios(): any {

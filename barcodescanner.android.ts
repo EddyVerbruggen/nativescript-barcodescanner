@@ -1,6 +1,6 @@
 import { ScanOptions, ScanResult } from "./barcodescanner.common";
-import * as appModule from "application";
-import * as utils from "utils/utils";
+import * as appModule from "tns-core-modules/application";
+import * as utils from "tns-core-modules/utils/utils";
 
 let SCANNER_REQUEST_CODE = 444;
 

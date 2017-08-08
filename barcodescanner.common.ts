@@ -103,6 +103,9 @@ export interface ScanOptions extends IOS, Android {
   Android?: Android;
 }
 
+// export abstract class BarcodeScannerView extends ContentView {
+// }
+
 export declare class BarcodeScanner {
     private _observer;
     private _observerActive;
