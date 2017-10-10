@@ -49,7 +49,7 @@ tns plugin add nativescript-barcodescanner
 ## iOS runtime permission reason
 You've probably seen a permission popup like this before (this plugin will trigger one as well, automatically):
 
-<img src="ios_permission_custom_reason.png" width="271px" height="167px"/>
+<img src="docs/ios_permission_custom_reason.png" width="271px" height="167px"/>
 
 iOS 10+ requires not only this popup, but also a _reason_. In this case it's "We'd like to use the Camera ..".
 

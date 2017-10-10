@@ -9,7 +9,7 @@
     }
   },
   "dependencies": {
-    "nativescript-barcodescanner": "file:///Users/eddyverbruggen/sandboxes/nativescript-barcodescanner/src",
+    "nativescript-barcodescanner": "file:../src",
     "nativescript-theme-core": "^1.0.4",
     "nativescript-unit-test-runner": "^0.3.4",
     "tns-core-modules": "^3.2.0"
