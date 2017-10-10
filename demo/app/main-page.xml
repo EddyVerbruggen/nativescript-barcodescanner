@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner"  loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner" loaded="pageLoaded">
   <TabView class="tab-view">
     <TabView.items>
       <TabViewItem title="About">

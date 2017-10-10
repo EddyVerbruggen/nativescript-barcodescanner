@@ -1,0 +1,7 @@
+*.ts
+*.map
+!barcodescanner.android.d.ts
+!barcodescanner.ios.d.ts
+!barcodescanner-common.d.ts
+!index.d.ts
+tsconfig.json

@@ -1,0 +1,74 @@
+{
+  "name": "nativescript-barcodescanner",
+  "version": "2.7.0",
+  "description": "Scan QR/barcodes with your NativeScript app.",
+  "main": "barcodescanner",
+  "typings": "index.d.ts",
+  "nativescript": {
+    "platforms": {
+      "android": "2.3.0",
+      "ios": "2.3.0"
+    }
+  },
+  "scripts": {
+    "tsc": "tsc -skipLibCheck",
+    "build": "npm i && npm run tsc",
+    "postclone": "npm i && cd ../demo && npm i && cd ../src && npm run plugin.link",
+    "test.android": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
+    "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
+    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
+    "plugin.link": "npm link && cd ../demo && npm link nativescript-barcodescanner && cd ../src",
+    "plugin.tscwatch": "npm run tsc -- -w",
+    "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
+    "demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
+    "demo.reset": "cd ../demo && rimraf platforms",
+    "plugin.prepare": "npm run tsc && cd ../demo && tns plugin remove nativescript-barcodescanner && tns plugin add ../src",
+    "clean": "cd ../demo && rimraf hooks node_modules platforms && cd ../src && rimraf node_modules && npm run plugin.link",
+    "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/typings/**'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddyverbruggen/nativescript-barcodescanner.git"
+  },
+  "keywords": [
+    "ecosystem:nativescript",
+    "NativeScript",
+    "Barcode",
+    "Barcode Scanner",
+    "Bulk",
+    "Bulk Scan",
+    "Continuous",
+    "Flashlight",
+    "Torch",
+    "Torch",
+    "Aztec",
+    "Codabar",
+    "Code39",
+    "Code93",
+    "Code128",
+    "Datamatrix",
+    "EAN8",
+    "EAN13",
+    "ITF",
+    "ITF14",
+    "PDF417",
+    "QR",
+    "RSS14",
+    "UPCA",
+    "UPCE"
+  ],
+  "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eddyverbruggen/nativescript-barcodescanner/issues"
+  },
+  "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
+  "devDependencies": {
+    "tns-core-modules": "^3.1.0",
+    "tns-platform-declarations": "^3.1.0",
+    "typescript": "~2.3.0",
+    "prompt": "^1.0.0",
+    "rimraf": "^2.5.0",
+    "tslint": "^5.0.0"
+  }
+}

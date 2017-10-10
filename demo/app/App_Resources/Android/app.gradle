@@ -4,3 +4,13 @@
 //dependencies {
 //	compile 'com.android.support:recyclerview-v7:+'
 //}
+
+android {
+    defaultConfig {
+        generatedDensities = []
+        applicationId = "org.nativescript.plugindemo.barcodescanner"
+    }
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
+    }
+}
