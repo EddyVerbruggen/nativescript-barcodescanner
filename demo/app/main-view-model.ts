@@ -80,6 +80,9 @@ export class HelloWorldModel extends Observable {
     let self = this;
     this.barcodeScanner.scan({
       reportDuplicates: false,
+      closeCallback: () => {
+        console.log("Scanner closed @ " + new Date().getTime());
+      },
       continuousScanCallback: function (result) {
         count++;
         console.log(result.format + ": " + result.text + " (count: " + count + ")");

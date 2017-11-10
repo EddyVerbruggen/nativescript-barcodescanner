@@ -86,6 +86,7 @@ export class BarcodeScanner {
   private _currentVolume: any;
   private _scanner: any;
   private _scanDelegate: QRCodeReaderDelegateImpl;
+  private _closeCallback: any;
 
   constructor() {
     this._observer = VolumeObserverClass.alloc();
@@ -167,6 +168,7 @@ export class BarcodeScanner {
         let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
         app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
         self._removeVolumeObserver();
+        this._closeCallback && this._closeCallback();
         resolve();
       } catch (ex) {
         reject(ex);
@@ -192,6 +194,8 @@ export class BarcodeScanner {
         arg = arg || {};
         let closeButtonLabel = arg.cancelLabel || "Close";
         let isContinuous = typeof arg.continuousScanCallback === "function";
+
+        this._closeCallback = arg.closeCallback;
 
         let types = [];
         if (arg.formats) {
@@ -240,7 +244,7 @@ export class BarcodeScanner {
               // invoke the callback / promise
               if (text === undefined) {
                 self._removeVolumeObserver();
-                arg.closeCallback && arg.closeCallback();
+                this._closeCallback && this._closeCallback();
                 reject("Scan aborted");
               } else {
                 let result: ScanResult = {
@@ -251,7 +255,7 @@ export class BarcodeScanner {
                   arg.continuousScanCallback(result);
                 } else {
                   self._removeVolumeObserver();
-                  arg.closeCallback && arg.closeCallback();
+                  this._closeCallback && this._closeCallback();
                   resolve(result);
                 }
               }
