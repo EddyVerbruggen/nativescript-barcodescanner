@@ -15,8 +15,7 @@
 
 #### Want a quick demo?
 * git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
-* cd barcodedemo
-* npm run setup
+* cd src
 * npm run demo.android (or demo.ios / demo.ios.device)
 
 ## Supported barcode types
