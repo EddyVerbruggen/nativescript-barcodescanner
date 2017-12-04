@@ -67,7 +67,6 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
 ### function: scan (single mode)
 
 #### TypeScript
-This plugin was created and tested with TypeScript 2+, so please update your project if needed.
 
 ```typescript
   import { BarcodeScanner } from "nativescript-barcodescanner";
