@@ -2,8 +2,6 @@ import { ScanOptions, ScanResult } from "./barcodescanner-common";
 import * as utils from "tns-core-modules/utils/utils";
 import * as frame from "tns-core-modules/ui/frame";
 
-declare let QRCodeReader, QRCodeReaderViewController, QRCodeReaderDelegate: any;
-
 /* no luck yet
 export class BarcodeScannerView extends BarcodeScannerBaseView {
 
@@ -35,7 +33,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
 
     let isContinuous = false;
-    // self._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+    // this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
 
     let delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
     delegate.setCallback(true, isContinuous, true, (reader: string, text: string, format: string) => {
@@ -80,40 +78,48 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
 */
 
 export class BarcodeScanner {
-
   private _observer: NSObject;
   private _observerActive: boolean;
   private _currentVolume: any;
   private _scanner: any;
   private _scanDelegate: QRCodeReaderDelegateImpl;
+  private _audioSession: AVAudioSession;
   private _closeCallback: any;
+  private _device: AVCaptureDevice;
 
   constructor() {
-    this._observer = VolumeObserverClass.alloc();
-    this._observer["_owner"] = this;
+    this._device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
+    if (this._device && this._device.hasTorch && this._device.hasFlash) {
+      this._observer = VolumeObserverClass.alloc();
+      this._observer["_owner"] = this;
+    }
   }
 
-  private _hasCameraPermission = function () {
+  private _hasCameraPermission(): boolean {
     let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
     return authStatus === AVAuthorizationStatus.Authorized;
-  };
+  }
 
-  private _hasDeniedCameraPermission = function () {
+  private _hasDeniedCameraPermission(): boolean {
     let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
     return authStatus === AVAuthorizationStatus.Denied || authStatus === AVAuthorizationStatus.Restricted;
-  };
+  }
 
-  private _addVolumeObserver = function () {
+  private _addVolumeObserver(): void {
+    if (!this._observer) {
+      return;
+    }
+
     this._audioSession = utils.ios.getter(AVAudioSession, AVAudioSession.sharedInstance);
-    this._audioSession.setActiveError(true, null);
+    this._audioSession.setActiveError(true);
     this._currentVolume = this._audioSession.outputVolume;
     if (!this._observerActive) {
       this._audioSession.addObserverForKeyPathOptionsContext(this._observer, "outputVolume", 0, null);
       this._observerActive = true;
     }
-  };
+  }
 
-  private _removeVolumeObserver = function () {
+  private _removeVolumeObserver(): void {
     try {
       if (this._observerActive) {
         this._observerActive = false;
@@ -121,35 +127,31 @@ export class BarcodeScanner {
       }
     } catch (ignore) {
     }
-  };
+  }
 
-  // TODO the lib actually has toggleTorch: https://github.com/yannickl/QRCodeReaderViewController/blob/9fa79106e1f0839d96d0166c78d7f263b03b3e61/QRCodeReaderViewController/QRCodeReader.h#L150
-  private _enableTorch = function () {
-    let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
-    device.lockForConfiguration();
-    device.setTorchModeOnWithLevelError(AVCaptureMaxAvailableTorchLevel);
-    device.flashMode = AVCaptureFlashMode.On;
-    device.unlockForConfiguration();
-  };
+  private _enableTorch() {
+    this._device.lockForConfiguration();
+    this._device.setTorchModeOnWithLevelError(AVCaptureMaxAvailableTorchLevel);
+    this._device.flashMode = AVCaptureFlashMode.On;
+    this._device.unlockForConfiguration();
+  }
 
-  private _disableTorch = function () {
-    let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
-    device.lockForConfiguration();
-    device.torchMode = AVCaptureTorchMode.Off;
-    device.flashMode = AVCaptureFlashMode.Off;
-    device.unlockForConfiguration();
-  };
+  private _disableTorch() {
+    this._device.lockForConfiguration();
+    this._device.torchMode = AVCaptureTorchMode.Off;
+    this._device.flashMode = AVCaptureFlashMode.Off;
+    this._device.unlockForConfiguration();
+  }
 
   public available(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      resolve(AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null);
+      resolve(!!this._device);
     });
   }
 
   public hasCameraPermission(): Promise<boolean> {
-    let self = this;
     return new Promise((resolve) => {
-      resolve(self._hasCameraPermission());
+      resolve(this._hasCameraPermission());
     });
   }
 
@@ -162,12 +164,11 @@ export class BarcodeScanner {
   }
 
   public stop(): Promise<any> {
-    let self = this;
     return new Promise((resolve, reject) => {
       try {
         let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
         app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-        self._removeVolumeObserver();
+        this._removeVolumeObserver();
         this._closeCallback && this._closeCallback();
         resolve();
       } catch (ex) {
@@ -177,11 +178,10 @@ export class BarcodeScanner {
   }
 
   public scan(arg: ScanOptions): Promise<ScanResult> {
-    let self = this;
     return new Promise((resolve, reject) => {
       try {
         // only need for denied permission as conveniently, this method will auto-request permission upon scan
-        if (self._hasDeniedCameraPermission()) {
+        if (this._hasDeniedCameraPermission()) {
           if (arg.openSettingsIfPermissionWasPreviouslyDenied) {
             utils.ios.getter(UIApplication, UIApplication.sharedApplication).openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
           }
@@ -189,7 +189,7 @@ export class BarcodeScanner {
           return;
         }
 
-        self._addVolumeObserver();
+        this._addVolumeObserver();
 
         arg = arg || {};
         let closeButtonLabel = arg.cancelLabel || "Close";
@@ -222,7 +222,7 @@ export class BarcodeScanner {
             AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
         }
 
-        let reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+        const reader = QRCodeReader.readerWithMetadataObjectTypes(<any>types);
 
         if (arg.preferFrontCamera && reader.hasFrontDevice()) {
           reader.switchDeviceInput();
@@ -231,19 +231,19 @@ export class BarcodeScanner {
         let torch = arg.showTorchButton;
         let flip = arg.showFlipCameraButton;
         let startScanningAtLoad = true;
-        self._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
-        self._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+        this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
+        this._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
-        self._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
-        self._scanner.delegate = self._scanDelegate;
-        self._scanDelegate.setCallback(
+        this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+        this._scanner.delegate = this._scanDelegate;
+        this._scanDelegate.setCallback(
             arg.beepOnScan !== false,
             isContinuous,
             arg.reportDuplicates,
-            (reader: string, text: string, format: string) => {
+            (text: string, format: string) => {
               // invoke the callback / promise
               if (text === undefined) {
-                self._removeVolumeObserver();
+                this._removeVolumeObserver();
                 this._closeCallback && this._closeCallback();
                 reject("Scan aborted");
               } else {
@@ -254,28 +254,27 @@ export class BarcodeScanner {
                 if (isContinuous) {
                   arg.continuousScanCallback(result);
                 } else {
-                  self._removeVolumeObserver();
+                  this._removeVolumeObserver();
                   this._closeCallback && this._closeCallback();
                   resolve(result);
                 }
               }
             });
 
-        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
-        if (device.autoFocusRangeRestrictionSupported) {
-          device.lockForConfiguration();
-          device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
-          if (device.smoothAutoFocusSupported) {
-            device.smoothAutoFocusEnabled = true;
+        if (this._device && this._device.autoFocusRangeRestrictionSupported) {
+          this._device.lockForConfiguration();
+          this._device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestriction.Near;
+          if (this._device.smoothAutoFocusSupported) {
+            this._device.smoothAutoFocusEnabled = true;
           }
-          device.unlockForConfiguration();
+          this._device.unlockForConfiguration();
         }
 
         let topMostFrame = frame.topmost();
         if (topMostFrame) {
           let vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
           if (vc) {
-            vc.presentViewControllerAnimatedCompletion(self._scanner, true, () => {
+            vc.presentViewControllerAnimatedCompletion(this._scanner, true, () => {
               if (arg.torchOn) {
                 this._enableTorch();
               }
@@ -290,7 +289,7 @@ export class BarcodeScanner {
   }
 }
 
-class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegate*/ {
+class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate {
   public static ObjCProtocols = [QRCodeReaderDelegate];
 
   private _owner: WeakRef<any>;
@@ -301,7 +300,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
     return delegate;
   }
 
-  private _callback: (reader: string, text?: string, format?: string) => void;
+  private _callback: (text?: string, format?: string) => void;
   private _beepOnScan: boolean;
   private _isContinuous: boolean;
   private _reportDuplicates: boolean;
@@ -310,7 +309,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
   // initializing this value may prevent recognizing too quickly
   private _lastScanResultTs: number = new Date().getTime();
 
-  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (reader: string, text: string, format: string) => void): void {
+  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (text?: string, format?: string) => void): void {
     this._isContinuous = isContinuous;
     this._reportDuplicates = reportDuplicates;
     this._callback = callback;
@@ -324,13 +323,13 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
     }
   }
 
-  public readerDidCancel(reader) {
+  public readerDidCancel(reader: QRCodeReaderViewController): void {
     let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
     app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-    this._callback(reader);
+    this._callback();
   }
 
-  public readerDidScanResultForType(reader, text, type) {
+  readerDidScanResultForType(reader: QRCodeReaderViewController, result: string, type: string): void {
     let validResult: boolean = false;
 
     if (this._isContinuous) {
@@ -338,7 +337,7 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
         this._scannedArray = Array<string>();
       }
       // don't report duplicates unless explicitly requested
-      let newResult: boolean = this._scannedArray.indexOf("[" + text + "][" + type + "]") === -1;
+      let newResult: boolean = this._scannedArray.indexOf("[" + result + "][" + type + "]") === -1;
       if (newResult || this._reportDuplicates) {
         let now: number = new Date().getTime();
         // prevent flooding the callback
@@ -347,14 +346,14 @@ class QRCodeReaderDelegateImpl extends NSObject /*implements QRCodeReaderDelegat
         }
         this._lastScanResultTs = now;
         validResult = true;
-        this._scannedArray.push("[" + text + "][" + type + "]");
-        this._callback(reader, text, type);
+        this._scannedArray.push("[" + result + "][" + type + "]");
+        this._callback(result, type);
       }
     } else {
       validResult = true;
       let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-      this._callback(reader, text, type);
+      this._callback(result, type);
     }
 
     if (validResult && this._player) {

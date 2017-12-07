@@ -1,5 +1,17 @@
 # Change Log
 
+## [2.7.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.7.2) (2017-12-07)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/25?closed=1)
+
+
+## [2.7.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.7.1) (2017-11-10)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/24closed=1)
+
+
+## [2.7.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.7.0) (2017-10-11)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/22?closed=1)
+
+
 ## [2.6.1](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.6.1) (2017-08-08)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/21?closed=1)
 

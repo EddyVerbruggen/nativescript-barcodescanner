@@ -2,17 +2,17 @@
   "nativescript": {
     "id": "org.nativescript.plugindemo.barcodescanner",
     "tns-ios": {
-      "version": "3.2.0"
+      "version": "3.3.0"
     },
     "tns-android": {
-      "version": "3.2.0"
+      "version": "3.3.1"
     }
   },
   "dependencies": {
     "nativescript-barcodescanner": "file:../src",
     "nativescript-theme-core": "^1.0.4",
     "nativescript-unit-test-runner": "^0.3.4",
-    "tns-core-modules": "^3.2.0"
+    "tns-core-modules": "~3.3.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "~3.1.3",
@@ -32,9 +32,9 @@
     "nativescript-dev-webpack": "^0.7.3",
     "raw-loader": "~0.5.1",
     "resolve-url-loader": "~2.1.0",
-    "tns-platform-declarations": "^3.1.0",
+    "tns-platform-declarations": "~3.3.0",
     "tslint": "~5.4.3",
-    "typescript": "~2.3.0",
+    "typescript": "~2.4.0",
     "webpack": "~3.2.0",
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-sources": "~1.0.1"
