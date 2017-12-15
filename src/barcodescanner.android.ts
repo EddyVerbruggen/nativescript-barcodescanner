@@ -164,7 +164,7 @@ export class BarcodeScanner {
           _onContinuousScanResult = arg.continuousScanCallback;
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
 
-          _onScanReceivedCallback = android.content.BroadcastReceiver.extend({
+          const cb = android.content.BroadcastReceiver.extend({
             onReceive: (context, data) => {
               const format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
               const text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
@@ -180,6 +180,8 @@ export class BarcodeScanner {
               }
             }
           });
+
+          _onScanReceivedCallback = new cb();
           this.broadcastManager.registerReceiver(_onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
         }
 
