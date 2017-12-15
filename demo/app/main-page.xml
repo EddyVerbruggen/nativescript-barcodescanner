@@ -29,7 +29,7 @@
                 </ContentView>
               </iOS-->
 
-              <Label class="h3" text="Scanning (QR and EAN-13)"/>
+              <Label class="h3" text="Scan QR, EAN-13, or CODE_128"/>
               <Label class="body" text="You can use the volume buttons to toggle the torch." textWrap="true"/>
 
               <Button class="btn btn-primary btn-rounded-sm" text="back camera, with flip" tap="{{ doScanWithBackCamera }}"/>

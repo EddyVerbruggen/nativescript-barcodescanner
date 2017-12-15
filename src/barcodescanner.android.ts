@@ -164,7 +164,7 @@ export class BarcodeScanner {
           _onContinuousScanResult = arg.continuousScanCallback;
           intent.putExtra(com.google.zxing.client.android.Intents.Scan.BULK_SCAN, true);
 
-          _onScanReceivedCallback = new android.content.BroadcastReceiver.extend({
+          _onScanReceivedCallback = android.content.BroadcastReceiver.extend({
             onReceive: (context, data) => {
               const format = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
               const text = data.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT);
@@ -219,7 +219,7 @@ export class BarcodeScanner {
       };
 
       if (!this.wasCameraPermissionGranted()) {
-        this.requestCameraPermissionInternal(onPermissionGranted, reject);
+        this.requestCameraPermissionInternal(onPermissionGranted.bind(this), reject);
         return;
       }
 
