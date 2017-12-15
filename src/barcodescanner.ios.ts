@@ -80,8 +80,8 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
 export class BarcodeScanner {
   private _observer: NSObject;
   private _observerActive: boolean;
-  private _currentVolume: any;
-  private _scanner: any;
+  public _currentVolume: number;
+  private _scanner: QRCodeReaderViewController;
   private _scanDelegate: QRCodeReaderDelegateImpl;
   private _audioSession: AVAudioSession;
   private _closeCallback: any;
@@ -231,7 +231,10 @@ export class BarcodeScanner {
         let torch = arg.showTorchButton;
         let flip = arg.showFlipCameraButton;
         let startScanningAtLoad = true;
-        this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
+
+        this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(
+            closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
+
         this._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
         this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
@@ -292,9 +295,9 @@ export class BarcodeScanner {
 class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate {
   public static ObjCProtocols = [QRCodeReaderDelegate];
 
-  private _owner: WeakRef<any>;
+  private _owner: WeakRef<BarcodeScanner>;
 
-  public static initWithOwner(owner: WeakRef<any>): QRCodeReaderDelegateImpl {
+  public static initWithOwner(owner: WeakRef<BarcodeScanner>): QRCodeReaderDelegateImpl {
     let delegate = <QRCodeReaderDelegateImpl>QRCodeReaderDelegateImpl.new();
     delegate._owner = owner;
     return delegate;
