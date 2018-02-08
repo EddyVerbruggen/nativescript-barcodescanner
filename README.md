@@ -258,3 +258,9 @@ providers: [
   { provide: BarcodeScanner, useFactory: (createBarcodeScanner) }
 ]
 ```
+
+## Troubleshooting
+If you get the error `TypeError: Cannot read property 'zxing' of undefined` on android, try the following steps:
+1. Delete the app from your device
+2. Remove the folder `platforms/android`. This triggers a complete rebuild
+3. run `tns run android`
