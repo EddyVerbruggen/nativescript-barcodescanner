@@ -13,6 +13,7 @@
   "scripts": {
     "tsc": "tsc -skipLibCheck",
     "build": "npm i && npm run tsc",
+    "setup": "npm run build && cd ../demo && npm i",
     "postclone": "npm i && cd ../demo && npm i && cd ../src && npm run plugin.link",
     "test.android": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
     "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
@@ -65,11 +66,10 @@
   "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
   "devDependencies": {
     "nativescript-dev-typescript": "libs",
-    "prompt": "^1.0.0",
     "rimraf": "^2.5.0",
-    "tns-core-modules": "~3.3.0",
-    "tns-platform-declarations": "~3.3.0",
+    "tns-core-modules": "~3.4.0",
+    "tns-platform-declarations": "~3.4.0",
     "tslint": "^5.0.0",
-    "typescript": "~2.4.0"
+    "typescript": "~2.6.0"
   }
 }
