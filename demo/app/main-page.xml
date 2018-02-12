@@ -1,15 +1,6 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner" loaded="pageLoaded">
   <TabView class="tab-view">
     <TabView.items>
-      <TabViewItem title="About">
-        <TabViewItem.view>
-          <StackLayout class="tab-content">
-            <Image margin="10" src="~/res/telerik-logo.png"/>
-            <Label class="h3" text="BarcodeScanner plugin demo"/>
-            <Label class="body" text="The BarcodeScanner plugin supports extracting data from a large range of barcodes, including QR codes. Your app will receive the type of barcode and the encode value." textWrap="true"/>
-          </StackLayout>
-        </TabViewItem.view>
-      </TabViewItem>
       <TabViewItem title="Demo">
         <TabViewItem.view>
           <ScrollView>
@@ -23,11 +14,21 @@
               <Button class="btn btn-outline btn-rounded-sm" text="has permission?" tap="{{ doCheckHasCameraPermission }}"/>
               <Button class="btn btn-primary btn-rounded-sm" text="request permission" tap="{{ doRequestCameraPermission }}"/>
 
-              <!--iOS>
-                <ContentView height="240" width="240">
-                  <Barcode:BarcodeScannerView></Barcode:BarcodeScannerView>
-                </ContentView>
-              </iOS-->
+              <iOS>
+                <Label class="h3" text="Scanner declared in XML"/>
+                <Label class="body" text="Beeps and logs to console when a QR_CODE or EAN_13 is scanned. The image was added to show how to add an arbitrary overlay." textWrap="true"/>
+                <GridLayout>
+                  <Barcode:BarcodeScannerView
+                      class="scanner-round"
+                      formats="QR_CODE, EAN_13"
+                      beepOnScan="true"
+                      reportDuplicates="true"
+                      preferFrontCamera="false"
+                      scanResult="onScanResult" />
+                  <Image src="~/images/crosshair.png" width="140" height="140" style="margin-top: 14; opacity: 0.3" horizontalAlignment="center" verticalAlignment="center"/>
+                  <!--<Label text="......................................." style="margin-top: 8; color: #FFF; opacity: 0.5" horizontalAlignment="center" verticalAlignment="center"/>-->
+                </GridLayout>
+              </iOS>
 
               <Label class="h3" text="Scan QR, EAN-13, or CODE_128"/>
               <Label class="body" text="You can use the volume buttons to toggle the torch." textWrap="true"/>
@@ -47,6 +48,15 @@
               </Android>
             </StackLayout>
           </ScrollView>
+        </TabViewItem.view>
+      </TabViewItem>
+      <TabViewItem title="About">
+        <TabViewItem.view>
+          <StackLayout class="tab-content">
+            <Image margin="10" src="~/res/telerik-logo.png"/>
+            <Label class="h3" text="BarcodeScanner plugin demo"/>
+            <Label class="body" text="The BarcodeScanner plugin supports extracting data from a large range of barcodes, including QR codes. Your app will receive the type of barcode and the encode value." textWrap="true"/>
+          </StackLayout>
         </TabViewItem.view>
       </TabViewItem>
     </TabView.items>

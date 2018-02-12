@@ -1,3 +1,7 @@
+import {ContentView} from "tns-core-modules/ui/content-view";
+import {Property} from "tns-core-modules/ui/core/properties";
+import {booleanConverter} from "tns-core-modules/ui/core/view-base";
+
 export interface ScanResult {
   text: string;
   format: string;
@@ -103,24 +107,77 @@ export interface ScanOptions extends IOS, Android {
   Android?: Android;
 }
 
-// export abstract class BarcodeScannerView extends ContentView {
-// }
-
 export declare class BarcodeScanner {
-    private _observer;
-    private _observerActive;
-    private _currentVolume;
-    private _scanner;
-    constructor();
-    private _hasCameraPermission;
-    private _hasDeniedCameraPermission;
-    private _addVolumeObserver;
-    private _removeVolumeObserver;
-    private _enableTorch;
-    private _disableTorch;
-    available(): Promise<boolean>;
-    hasCameraPermission(): Promise<boolean>;
-    requestCameraPermission(): Promise<boolean>;
-    stop(): Promise<any>;
-    scan(arg: ScanOptions): Promise<ScanResult>;
+  private _observer;
+  private _observerActive;
+  private _currentVolume;
+  private _scanner;
+  constructor();
+  private _hasCameraPermission;
+  private _hasDeniedCameraPermission;
+  private _addVolumeObserver;
+  private _removeVolumeObserver;
+  private _enableTorch;
+  private _disableTorch;
+  available(): Promise<boolean>;
+  hasCameraPermission(): Promise<boolean>;
+  requestCameraPermission(): Promise<boolean>;
+  stop(): Promise<any>;
+  scan(arg: ScanOptions): Promise<ScanResult>;
 }
+
+
+/**** View-related stuff below ****/
+export const formatsProperty = new Property<BarcodeScannerView, string>({
+  name: "formats",
+  defaultValue: null,
+});
+
+export const preferFrontCameraProperty = new Property<BarcodeScannerView, boolean>({
+  name: "preferFrontCamera",
+  defaultValue: false,
+  valueConverter: booleanConverter
+});
+
+export const beepOnScanProperty = new Property<BarcodeScannerView, boolean>({
+  name: "beepOnScan",
+  defaultValue: true,
+  valueConverter: booleanConverter
+});
+
+export const reportDuplicatesProperty = new Property<BarcodeScannerView, boolean>({
+  name: "reportDuplicates",
+  defaultValue: false,
+  valueConverter: booleanConverter
+});
+
+export abstract class BarcodeScannerView extends ContentView {
+
+  static scanResultEvent: string = "scanResult";
+
+  protected formats: string;
+  protected preferFrontCamera: boolean;
+  protected beepOnScan: boolean;
+  protected reportDuplicates: boolean;
+
+  [formatsProperty.setNative](value: string) {
+    this.formats = value;
+  }
+
+  [preferFrontCameraProperty.setNative](value: boolean) {
+    this.preferFrontCamera = value;
+  }
+
+  [beepOnScanProperty.setNative](value: boolean) {
+    this.beepOnScan = value;
+  }
+
+  [reportDuplicatesProperty.setNative](value: boolean) {
+    this.reportDuplicates = value;
+  }
+}
+
+formatsProperty.register(BarcodeScannerView);
+preferFrontCameraProperty.register(BarcodeScannerView);
+beepOnScanProperty.register(BarcodeScannerView);
+reportDuplicatesProperty.register(BarcodeScannerView);

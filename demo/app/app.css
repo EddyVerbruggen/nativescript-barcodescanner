@@ -9,3 +9,12 @@
   color: #808080;
   padding: 0 18;
 }
+
+.scanner-round {
+  width: 260;
+  height: 260;
+  margin-top: 16;
+  border-radius: 130;
+  border-width: 8;
+  border-color: #ddd;
+}

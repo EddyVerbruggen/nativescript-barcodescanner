@@ -1,81 +1,64 @@
-import { ScanOptions, ScanResult } from "./barcodescanner-common";
+import {BarcodeScannerView as BarcodeScannerBaseView, ScanOptions, ScanResult} from "./barcodescanner-common";
 import * as utils from "tns-core-modules/utils/utils";
 import * as frame from "tns-core-modules/ui/frame";
 
-/* no luck yet
 export class BarcodeScannerView extends BarcodeScannerBaseView {
 
-  private _reader: any;
-  private _scanner: any;
-  private _ios: any;
-  private _continuous: boolean;
+  private _reader: QRCodeReader;
+  private _scanner: QRCodeReaderViewController;
 
-  constructor() {
-    super();
+  public createNativeView(): Object {
+    let v = super.createNativeView();
+    this.initView();
+    return v;
+  }
 
-    // let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
-    // if (authStatus !== AVAuthorizationStatus.Authorized) {
-    // }
-
-    let closeButtonLabel = "bla";
-    let types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-          AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
-          AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
-
-    this._reader = QRCodeReader.readerWithMetadataObjectTypes(types);
+  initView() {
+    const types = getBarcodeTypes(this.formats);
+    this._reader = QRCodeReader.readerWithMetadataObjectTypes(<any>types);
 
     let torch = false;
     let flip = false;
-    let startScanningAtLoad = true;
-    // this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButton(closeButtonLabel, this._reader, startScanningAtLoad, flip, torch);
-    // this._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+    let closeButtonLabel = null;
+    let cancelLabelBackgroundColor = null;
 
-    // Assign first to local variable, otherwise it will be garbage collected since delegate is weak reference.
-
-    let isContinuous = false;
-    // this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
-
-    let delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
-    delegate.setCallback(true, isContinuous, true, (reader: string, text: string, format: string) => {
-      // Remove the local variable for the delegate.
-      delegate = undefined;
-    });
-    // this._scanner.delegate = delegate;
-
-    console.log("--- this._reader.previewLayer: " + this._reader.previewLayer);
-    // this._ios = this._reader.previewLayer; // TODO
-
-    console.log("--- ios: " + this.ios);
-    if (this.ios) {
-      this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
+    if (this.preferFrontCamera) {
+      this._reader.switchDeviceInput();
     }
 
-    // instead of a delegate we can use setCompletionWithBlock: https://github.com/yannickl/QRCodeReaderViewController/blob/master/QRCodeReaderViewController/QRCodeReader.h#L201
+    this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(
+        closeButtonLabel, this._reader, true, flip, torch, cancelLabelBackgroundColor);
+    this._scanner.modalPresentationStyle = UIModalPresentationStyle.CurrentContext;
 
-    setTimeout(() => {
+    const that = this;
+    let delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+    delegate.setCallback(
+        this.beepOnScan,
+        true,
+        this.reportDuplicates,
+        (text: string, format: string) => {
+          that.notify({
+            eventName: BarcodeScannerBaseView.scanResultEvent,
+            object: that,
+            format: format,
+            text: text
+          });
+        });
+    this._scanner.delegate = delegate;
+
+    if (this.ios) {
+      this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
       this._reader.startScanning();
-    }, 4000);
+    }
   }
 
   public onLayout(left: number, top: number, right: number, bottom: number): void {
     super.onLayout(left, top, right, bottom);
     if (this.ios) {
-      console.log(">>> yes, layout");
       this._reader.previewLayer.frame = this.ios.layer.bounds;
-    } else {
-      console.log(">>> no, layout");
     }
   }
-
-  get ios(): any {
-    return this._ios;
-  }
-
-  set continuous(value: boolean) {
-    this._continuous = value;
-  }
 }
-*/
 
 export class BarcodeScanner {
   private _observer: NSObject;
@@ -197,30 +180,7 @@ export class BarcodeScanner {
 
         this._closeCallback = arg.closeCallback;
 
-        let types = [];
-        if (arg.formats) {
-          let formats = arg.formats.split(",");
-          for (let format of formats) {
-            format = format.trim();
-            if (format === "QR_CODE") types.push(AVMetadataObjectTypeQRCode);
-            else if (format === "PDF_417") types.push(AVMetadataObjectTypePDF417Code);
-            else if (format === "AZTEC") types.push(AVMetadataObjectTypeAztecCode);
-            else if (format === "UPC_E") types.push(AVMetadataObjectTypeUPCECode);
-            else if (format === "CODE_39") types.push(AVMetadataObjectTypeCode39Code);
-            else if (format === "CODE_39_MOD_43") types.push(AVMetadataObjectTypeCode39Mod43Code);
-            else if (format === "CODE_93") types.push(AVMetadataObjectTypeCode93Code);
-            else if (format === "CODE_128") types.push(AVMetadataObjectTypeCode128Code);
-            else if (format === "DATA_MATRIX") types.push(AVMetadataObjectTypeDataMatrixCode);
-            else if (format === "EAN_8") types.push(AVMetadataObjectTypeEAN8Code);
-            else if (format === "EAN_13") types.push(AVMetadataObjectTypeEAN13Code);
-            else if (format === "ITF") types.push(AVMetadataObjectTypeITF14Code);
-          }
-        } else {
-          types = [AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-            AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
-            AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
-            AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
-        }
+        const types = getBarcodeTypes(arg.formats);
 
         const reader = QRCodeReader.readerWithMetadataObjectTypes(<any>types);
 
@@ -292,12 +252,40 @@ export class BarcodeScanner {
   }
 }
 
+const getBarcodeTypes = (formatsString: string) => {
+  const types = [];
+  if (formatsString) {
+    let formats = formatsString.split(",");
+    for (let format of formats) {
+      format = format.trim();
+      if (format === "QR_CODE") types.push(AVMetadataObjectTypeQRCode);
+      else if (format === "PDF_417") types.push(AVMetadataObjectTypePDF417Code);
+      else if (format === "AZTEC") types.push(AVMetadataObjectTypeAztecCode);
+      else if (format === "UPC_E") types.push(AVMetadataObjectTypeUPCECode);
+      else if (format === "CODE_39") types.push(AVMetadataObjectTypeCode39Code);
+      else if (format === "CODE_39_MOD_43") types.push(AVMetadataObjectTypeCode39Mod43Code);
+      else if (format === "CODE_93") types.push(AVMetadataObjectTypeCode93Code);
+      else if (format === "CODE_128") types.push(AVMetadataObjectTypeCode128Code);
+      else if (format === "DATA_MATRIX") types.push(AVMetadataObjectTypeDataMatrixCode);
+      else if (format === "EAN_8") types.push(AVMetadataObjectTypeEAN8Code);
+      else if (format === "EAN_13") types.push(AVMetadataObjectTypeEAN13Code);
+      else if (format === "ITF") types.push(AVMetadataObjectTypeITF14Code);
+    }
+  } else {
+    types.push(AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
+        AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+        AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
+        AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode);
+  }
+  return types;
+};
+
 class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate {
   public static ObjCProtocols = [QRCodeReaderDelegate];
 
-  private _owner: WeakRef<BarcodeScanner>;
+  private _owner: WeakRef<any>;
 
-  public static initWithOwner(owner: WeakRef<BarcodeScanner>): QRCodeReaderDelegateImpl {
+  public static initWithOwner(owner: WeakRef<any>): QRCodeReaderDelegateImpl {
     let delegate = <QRCodeReaderDelegateImpl>QRCodeReaderDelegateImpl.new();
     delegate._owner = owner;
     return delegate;
