@@ -45,6 +45,51 @@ From the command prompt go to your app's root folder and execute:
 tns plugin add nativescript-barcodescanner
 ```
 
+## Embedding the scanner on an existing page (iOS)
+
+<img src="docs/ios_embedded_scanner.png" width="281px"/>
+
+As you can see, you can style the view any way you like, and even overlay it with an image or button.
+To recreate the layout above, look at [these lines in the demo app](https://github.com/EddyVerbruggen/nativescript-barcodescanner/blob/23395bec3e5a26622146daea96dd6407a8413f70/demo/app/main-page.xml#L17-L31).
+
+### XML
+```xml
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner">
+```
+
+```xml
+<iOS>
+    <Barcode:BarcodeScannerView
+      class="scanner-round"
+      formats="QR_CODE, EAN_13"
+      beepOnScan="true"
+      reportDuplicates="true"
+      preferFrontCamera="false"
+      scanResult="onScanResult" />
+</iOS>
+```
+
+### Embedding in Angular
+Component:
+
+```typescript
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").BarcodeScannerView);
+```
+
+View:
+
+```html
+<BarcodeScanner
+      class="scanner-round"
+      formats="QR_CODE, EAN_13"
+      beepOnScan="true"
+      reportDuplicates="true"
+      preferFrontCamera="false"
+      (scanResult)="onScanResult($event)" />
+</BarcodeScanner>
+```
+
 ## iOS runtime permission reason
 You've probably seen a permission popup like this before (this plugin will trigger one as well, automatically):
 
