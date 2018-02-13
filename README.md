@@ -45,7 +45,7 @@ From the command prompt go to your app's root folder and execute:
 tns plugin add nativescript-barcodescanner
 ```
 
-## Embedding the scanner on an existing page (iOS)
+## Embedding the scanner (iOS)
 
 <img src="docs/ios_embedded_scanner.png" width="281px"/>
 
@@ -56,6 +56,8 @@ To recreate the layout above, look at [these lines in the demo app](https://gith
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner">
 ```
+
+Here's an example tag, showing all currently supported options. The property defaults are equal to the `scan` function.
 
 ```xml
 <iOS>
