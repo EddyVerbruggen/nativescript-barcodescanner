@@ -314,7 +314,7 @@ If you get the error `TypeError: Cannot read property 'zxing' of undefined` on a
 
 ## Dependencies / Related Projects
 
-This plugin wrapt libaries for android and ios to make the barcode scanner easily accessible via a unified API. The Libraries used are:
+This plugin wraps libaries for Android and iOS to make the barcode scanner easily accessible via a unified API. The Libraries used are:
 
 ### iOS
 
