@@ -311,3 +311,17 @@ If you get the error `TypeError: Cannot read property 'zxing' of undefined` on a
 1. Delete the app from your device
 2. Remove the folder `platforms/android`. This triggers a complete rebuild
 3. run `tns run android`
+
+## Dependencies / Related Projects
+
+This plugin wrapt libaries for android and ios to make the barcode scanner easily accessible via a unified API. The Libraries used are:
+
+### iOS
+
+Custom Framework to access iOS APIs: https://github.com/EddyVerbruggen/ios-framework-barcodescanner
+
+### Android
+
+ZXing: https://github.com/zxing/zxing/releases
+
+As using that library as a direct dependency was not practical, there is a library-project that adopts the sources from ZXing and copiles them into a AAR for usage on android: https://github.com/EddyVerbruggen/barcodescanner-lib-aar/
