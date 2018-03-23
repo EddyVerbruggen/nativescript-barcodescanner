@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "2.7.5",
+  "version": "2.7.6",
   "description": "Scan QR/barcodes with your NativeScript app.",
   "main": "barcodescanner",
   "typings": "index.d.ts",
@@ -19,8 +19,10 @@
     "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
     "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
     "plugin.link": "npm link && cd ../demo && npm link nativescript-barcodescanner && cd ../src",
+    "plugin.link.ng": "npm link && cd ../demo-ng && npm link nativescript-barcodescanner && cd ../src",
     "plugin.tscwatch": "npm run tsc -- -w",
     "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
+    "demo.ng.ios": "npm i && npm run tsc && cd ../demo-ng && tns run ios --syncAllFiles",
     "demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
     "demo.reset": "cd ../demo && rimraf platforms",
     "plugin.prepare": "npm run tsc && cd ../demo && tns plugin remove nativescript-barcodescanner && tns plugin add ../src",

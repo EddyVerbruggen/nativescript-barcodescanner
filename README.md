@@ -70,7 +70,7 @@ To recreate the layout above, look at [these lines in the demo app](https://gith
 ```
 
 ### Embedding in Angular
-Component:
+Component / Module:
 
 ```typescript
 import { registerElement } from "nativescript-angular/element-registry";
@@ -86,9 +86,11 @@ View:
       beepOnScan="true"
       reportDuplicates="true"
       preferFrontCamera="false"
-      (scanResult)="onScanResult($event)" />
+      (scanResult)="onScanResult($event)">
 </BarcodeScanner>
 ```
+
+See the 'demo-ng' for details.
 
 ## iOS runtime permission reason
 You've probably seen a permission popup like this before (this plugin will trigger one as well, automatically):
