@@ -45,7 +45,7 @@ From the command prompt go to your app's root folder and execute:
 tns plugin add nativescript-barcodescanner
 ```
 
-## Embedding the scanner on an existing page (iOS)
+## Embedding the scanner (iOS)
 
 <img src="docs/ios_embedded_scanner.png" width="281px"/>
 
@@ -56,6 +56,8 @@ To recreate the layout above, look at [these lines in the demo app](https://gith
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner">
 ```
+
+Here's an example tag, showing all currently supported options. The property defaults are equal to the `scan` function.
 
 ```xml
 <iOS>
@@ -311,3 +313,17 @@ If you get the error `TypeError: Cannot read property 'zxing' of undefined` on a
 1. Delete the app from your device
 2. Remove the folder `platforms/android`. This triggers a complete rebuild
 3. run `tns run android`
+
+## Dependencies / Related Projects
+
+This plugin wraps libaries for Android and iOS to make the barcode scanner easily accessible via a unified API. The Libraries used are:
+
+### iOS
+
+Custom Framework to access iOS APIs: https://github.com/EddyVerbruggen/ios-framework-barcodescanner
+
+### Android
+
+ZXing: https://github.com/zxing/zxing/releases
+
+As using that library as a direct dependency was not practical, there is a library-project that adopts the sources from ZXing and copiles them into a AAR for usage on android: https://github.com/EddyVerbruggen/barcodescanner-lib-aar/
