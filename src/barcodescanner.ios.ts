@@ -6,10 +6,18 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
 
   private _reader: QRCodeReader;
   private _scanner: QRCodeReaderViewController;
+  private _hasSupport;
 
-  public createNativeView(): Object {
+  constructor() {
+    super();
+    this._hasSupport = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null;
+  }
+
+  createNativeView(): Object {
     let v = super.createNativeView();
-    this.initView();
+    if (this._hasSupport) {
+      this.initView();
+    }
     return v;
   }
 
@@ -54,7 +62,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
 
   public onLayout(left: number, top: number, right: number, bottom: number): void {
     super.onLayout(left, top, right, bottom);
-    if (this.ios) {
+    if (this._hasSupport && this.ios) {
       this._reader.previewLayer.frame = this.ios.layer.bounds;
     }
   }
