@@ -47,6 +47,8 @@ tns plugin add nativescript-barcodescanner
 
 ## Embedding the scanner (iOS)
 
+> If you need to embed the scanner for Android as well, please consider using the Machine Learning powered Barcode scanner I've added to the [ML Kit feature of the NativeScript Firebase plugin](https://github.com/EddyVerbruggen/nativescript-plugin-firebase/blob/master/docs/ML_KIT.md#barcode-scanning)!
+
 <img src="docs/ios_embedded_scanner.png" width="281px"/>
 
 As you can see, you can style the view any way you like, and even overlay it with an image or button.
