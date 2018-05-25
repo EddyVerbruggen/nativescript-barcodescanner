@@ -12,8 +12,8 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 // import { NativeScriptHttpModule } from "nativescript-angular/http";
-
 import { registerElement } from "nativescript-angular/element-registry";
+import { BarcodeScanner } from "nativescript-barcodescanner";
 registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").BarcodeScannerView);
 
 @NgModule({
@@ -30,7 +30,8 @@ registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").B
         ItemDetailComponent
     ],
     providers: [
-        ItemService
+        ItemService,
+        BarcodeScanner
     ],
     schemas: [
         NO_ERRORS_SCHEMA
