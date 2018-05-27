@@ -1,4 +1,3 @@
-import { ScanOptions } from './../../platforms/android/app/src/main/assets/app/tns_modules/nativescript-barcodescanner/barcodescanner-common.d';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
@@ -6,7 +5,7 @@ import { Item } from "./item";
 import { ItemService } from "./item.service";
 
 import {isAndroid, isIOS} from "platform";
-import { BarcodeScanner } from 'nativescript-barcodescanner';
+import { BarcodeScanner, ScanOptions } from 'nativescript-barcodescanner';
 
 @Component({
     selector: "ns-details",
