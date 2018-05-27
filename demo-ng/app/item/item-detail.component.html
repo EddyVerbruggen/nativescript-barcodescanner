@@ -5,7 +5,9 @@
         <Label class="h2" [text]="item.name"></Label>
     </FlexboxLayout>
     <Label class="h4" [text]="item.role"></Label>
+
     <BarcodeScanner
+        *ifIos
         height="300"
         formats="QR_CODE, EAN_13"
         beepOnScan="true"
@@ -13,4 +15,7 @@
         preferFrontCamera="false"
         (scanResult)="onScanResult($event)">
     </BarcodeScanner>
+
+    <Button text="SCAN" (tap)="onScan($event)"></Button>
+    
 </FlexboxLayout>
