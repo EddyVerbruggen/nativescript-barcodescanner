@@ -14,9 +14,12 @@
 [twitter-url]:https://twitter.com/eddyverbruggen
 
 #### Want a quick demo?
-* git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
-* cd src
-* npm run demo.android (or demo.ios / demo.ios.device)
+```
+git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
+cd barcodedemo/src
+npm install
+npm run demo.android (or demo.ios / demo.ios.device)
+```
 
 ## Supported barcode types
 
