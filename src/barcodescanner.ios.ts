@@ -1,6 +1,5 @@
 import {BarcodeScannerView as BarcodeScannerBaseView, ScanOptions, ScanResult} from "./barcodescanner-common";
 import * as utils from "tns-core-modules/utils/utils";
-import * as frame from "tns-core-modules/ui/frame";
 
 export class BarcodeScannerView extends BarcodeScannerBaseView {
 
@@ -157,7 +156,7 @@ export class BarcodeScanner {
   public stop(): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+        const app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
         app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
         this._removeVolumeObserver();
         this._closeCallback && this._closeCallback();
@@ -241,17 +240,13 @@ export class BarcodeScanner {
           this._device.unlockForConfiguration();
         }
 
-        let topMostFrame = frame.topmost();
-        if (topMostFrame) {
-          let vc = topMostFrame.currentPage && topMostFrame.currentPage.ios;
-          if (vc) {
-            vc.presentViewControllerAnimatedCompletion(this._scanner, true, () => {
-              if (arg.torchOn) {
-                this._enableTorch();
-              }
-            });
+        const app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+        app.keyWindow.rootViewController.presentViewControllerAnimatedCompletion(this._scanner, true, () => {
+          if (arg.torchOn) {
+            this._enableTorch();
           }
-        }
+        });
+
       } catch (ex) {
         console.log("Error in barcodescanner.scan: " + ex);
         reject(ex);
