@@ -7,6 +7,9 @@
 		"id": "org.nativescript.demong",
 		"tns-android": {
 			"version": "4.0.1"
+		},
+		"tns-ios": {
+			"version": "4.1.0"
 		}
 	},
 	"dependencies": {
