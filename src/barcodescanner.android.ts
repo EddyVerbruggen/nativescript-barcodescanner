@@ -156,7 +156,7 @@ export class BarcodeScanner {
 
         // required for the 'stop' function
         if (!this.broadcastManager) {
-          this.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(com.tns.NativeScriptApplication.getInstance());
+          this.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
         }
 
         const isContinuous = typeof arg.continuousScanCallback === "function";
@@ -185,7 +185,7 @@ export class BarcodeScanner {
           this.broadcastManager.registerReceiver(_onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
         }
 
-        if (intent.resolveActivity(com.tns.NativeScriptApplication.getInstance().getPackageManager()) !== null) {
+        if (intent.resolveActivity(utils.ad.getApplicationContext().getPackageManager()) !== null) {
           const onScanResult = (data) => {
             console.log(">> activity result: @ " + new Date().getTime());
             if (data.requestCode === SCANNER_REQUEST_CODE) {
