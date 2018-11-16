@@ -53,15 +53,17 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
         });
     this._scanner.delegate = delegate;
 
-    if (this.ios) {
-      this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
-      this._reader.startScanning();
-    }
+    setTimeout(() => {
+      if (this.ios && this.ios.layer) {
+        this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
+        this._reader.startScanning();
+      }
+    }, 0);
   }
 
   public onLayout(left: number, top: number, right: number, bottom: number): void {
     super.onLayout(left, top, right, bottom);
-    if (this._hasSupport && this.ios) {
+    if (this._hasSupport && this.ios && this._reader) {
       this._reader.previewLayer.frame = this.ios.layer.bounds;
     }
   }
