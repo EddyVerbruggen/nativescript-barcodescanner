@@ -97,7 +97,7 @@ View:
 </BarcodeScanner>
 ```
 
-See the 'demo-ng' for details.
+See the 'demo-ng' for details. Do not run it for Android, because embedding a view is not supported on that platform.
 
 ## iOS runtime permission reason
 You've probably seen a permission popup like this before (this plugin will trigger one as well, automatically):

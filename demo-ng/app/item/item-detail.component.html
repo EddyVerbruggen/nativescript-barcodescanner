@@ -6,19 +6,13 @@
   </FlexboxLayout>
   <Label class="h4" [text]="item.role"></Label>
 
-  <ios>
-    <BarcodeScanner
-        height="300"
-        formats="QR_CODE, EAN_13"
-        beepOnScan="true"
-        reportDuplicates="true"
-        preferFrontCamera="false"
-        (scanResult)="onScanResult($event)">
-    </BarcodeScanner>
-  </ios>
-
-  <android>
-    <Button text="SCAN" (tap)="scanTapped($event)"></Button>
-  </android>
+  <BarcodeScanner
+      height="300"
+      formats="QR_CODE, EAN_13"
+      beepOnScan="true"
+      reportDuplicates="true"
+      preferFrontCamera="false"
+      (scanResult)="onScanResult($event)">
+  </BarcodeScanner>
 
 </FlexboxLayout>
