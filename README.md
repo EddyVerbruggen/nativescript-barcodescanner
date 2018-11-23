@@ -13,12 +13,23 @@
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
-#### Want a quick demo?
-```
+## Want a quick demo?
+
+```bash
 git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
 cd barcodedemo/src
-npm install
+```
+
+#### Fullscreen, programmatically (iOS and Android)
+
+```bash
 npm run demo.android (or demo.ios / demo.ios.device)
+```
+
+#### Embedded (iOS only)
+
+```bash
+npm run demo-ng.ios (or demo.ios.device)
 ```
 
 ## Supported barcode types
