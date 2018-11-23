@@ -15,6 +15,8 @@
 
 ## Want a quick demo?
 
+> Note that running this only makes sense on a real device.
+
 ```bash
 git clone https://github.com/EddyVerbruggen/nativescript-barcodescanner barcodedemo
 cd barcodedemo/src
