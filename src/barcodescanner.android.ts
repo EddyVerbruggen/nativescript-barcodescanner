@@ -187,7 +187,6 @@ export class BarcodeScanner {
 
         if (intent.resolveActivity(utils.ad.getApplicationContext().getPackageManager()) !== null) {
           const onScanResult = (data) => {
-            console.log(">> activity result: @ " + new Date().getTime());
             if (data.requestCode === SCANNER_REQUEST_CODE) {
               this.onPermissionGranted = null;
               if (isContinuous) {

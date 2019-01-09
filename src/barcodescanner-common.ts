@@ -1,10 +1,28 @@
-import {ContentView} from "tns-core-modules/ui/content-view";
-import {Property} from "tns-core-modules/ui/core/properties";
-import {booleanConverter} from "tns-core-modules/ui/core/view-base";
+import { ContentView } from "tns-core-modules/ui/content-view";
+import { Property } from "tns-core-modules/ui/core/properties";
+import { booleanConverter } from "tns-core-modules/ui/core/view-base";
+
+export type BarcodeFormat =
+    "QR_CODE" |
+    "PDF_417" |
+    "AZTEC" |
+    "UPC_E" |
+    "CODE_39" |
+    "CODE_39_MOD_43" |
+    "CODE_93" |
+    "CODE_128" |
+    "DATA_MATRIX" |
+    "EAN_8" |
+    "ITF" |
+    "EAN_13" |
+    "UPC_A" |
+    "CODABAR" |
+    "MAXICODE" |
+    "RSS_14";
 
 export interface ScanResult {
   text: string;
-  format: string;
+  format: BarcodeFormat;
 }
 
 export interface CommonScanOptions {
@@ -112,17 +130,24 @@ export declare class BarcodeScanner {
   private _observerActive;
   private _currentVolume;
   private _scanner;
+
   constructor();
+
   private _hasCameraPermission;
   private _hasDeniedCameraPermission;
   private _addVolumeObserver;
   private _removeVolumeObserver;
   private _enableTorch;
   private _disableTorch;
+
   available(): Promise<boolean>;
+
   hasCameraPermission(): Promise<boolean>;
+
   requestCameraPermission(): Promise<boolean>;
+
   stop(): Promise<any>;
+
   scan(arg: ScanOptions): Promise<ScanResult>;
 }
 

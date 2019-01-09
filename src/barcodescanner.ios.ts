@@ -1,4 +1,9 @@
-import {BarcodeScannerView as BarcodeScannerBaseView, ScanOptions, ScanResult} from "./barcodescanner-common";
+import {
+  BarcodeFormat,
+  BarcodeScannerView as BarcodeScannerBaseView,
+  ScanOptions,
+  ScanResult
+} from "./barcodescanner-common";
 import * as utils from "tns-core-modules/utils/utils";
 
 export class BarcodeScannerView extends BarcodeScannerBaseView {
@@ -219,10 +224,20 @@ export class BarcodeScanner {
                 this._closeCallback && this._closeCallback();
                 reject("Scan aborted");
               } else {
-                let result: ScanResult = {
-                  format: format,
-                  text: text
+
+                let barcodeFormat = getBarcodeFormat(format);
+                let value = text;
+
+                if (barcodeFormat === "EAN_13" && value.indexOf("0") === 0) {
+                  barcodeFormat = "UPC_A";
+                  value = value.substring(1);
+                }
+
+                const result: ScanResult = {
+                  format: barcodeFormat,
+                  text: value
                 };
+
                 if (isContinuous) {
                   arg.continuousScanCallback(result);
                 } else {
@@ -257,6 +272,25 @@ export class BarcodeScanner {
   }
 }
 
+const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
+  if (nativeFormat === AVMetadataObjectTypeQRCode) return "QR_CODE";
+  else if (nativeFormat === AVMetadataObjectTypePDF417Code) return "PDF_417";
+  else if (nativeFormat === AVMetadataObjectTypeAztecCode) return "AZTEC";
+  else if (nativeFormat === AVMetadataObjectTypeUPCECode) return "UPC_E";
+  else if (nativeFormat === AVMetadataObjectTypeCode39Code) return "CODE_39";
+  else if (nativeFormat === AVMetadataObjectTypeCode39Mod43Code) return "CODE_39_MOD_43";
+  else if (nativeFormat === AVMetadataObjectTypeCode93Code) return "CODE_93";
+  else if (nativeFormat === AVMetadataObjectTypeCode128Code) return "CODE_128";
+  else if (nativeFormat === AVMetadataObjectTypeDataMatrixCode) return "DATA_MATRIX";
+  else if (nativeFormat === AVMetadataObjectTypeEAN8Code) return "EAN_8";
+  else if (nativeFormat === AVMetadataObjectTypeITF14Code) return "ITF";
+  else if (nativeFormat === AVMetadataObjectTypeEAN13Code) return "EAN_13";
+  else {
+    console.log("Unknown format scanned: " + nativeFormat + ", please report this at https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues");
+    return <BarcodeFormat>nativeFormat;
+  }
+};
+
 const getBarcodeTypes = (formatsString: string) => {
   const types = [];
   if (formatsString) {
@@ -273,13 +307,14 @@ const getBarcodeTypes = (formatsString: string) => {
       else if (format === "CODE_128") types.push(AVMetadataObjectTypeCode128Code);
       else if (format === "DATA_MATRIX") types.push(AVMetadataObjectTypeDataMatrixCode);
       else if (format === "EAN_8") types.push(AVMetadataObjectTypeEAN8Code);
-      else if (format === "EAN_13") types.push(AVMetadataObjectTypeEAN13Code);
       else if (format === "ITF") types.push(AVMetadataObjectTypeITF14Code);
+      // see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
+      else if (format === "EAN_13" || format === "UPC_A") types.push(AVMetadataObjectTypeEAN13Code);
     }
   } else {
     types.push(AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-        AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
-        AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
+        AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code,
+        AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
         AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode);
   }
   return types;
@@ -328,12 +363,20 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   readerDidScanResultForType(reader: QRCodeReaderViewController, result: string, type: string): void {
     let validResult: boolean = false;
 
+    let barcodeFormat = getBarcodeFormat(type);
+    let value = result;
+
+    if (barcodeFormat === "EAN_13" && value.indexOf("0") === 0) {
+      barcodeFormat = "UPC_A";
+      value = value.substring(1);
+    }
+
     if (this._isContinuous) {
       if (!this._scannedArray) {
         this._scannedArray = Array<string>();
       }
       // don't report duplicates unless explicitly requested
-      let newResult: boolean = this._scannedArray.indexOf("[" + result + "][" + type + "]") === -1;
+      let newResult: boolean = this._scannedArray.indexOf("[" + value + "][" + barcodeFormat + "]") === -1;
       if (newResult || this._reportDuplicates) {
         let now: number = new Date().getTime();
         // prevent flooding the callback
@@ -342,14 +385,14 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
         }
         this._lastScanResultTs = now;
         validResult = true;
-        this._scannedArray.push("[" + result + "][" + type + "]");
-        this._callback(result, type);
+        this._scannedArray.push("[" + value + "][" + barcodeFormat + "]");
+        this._callback(value, barcodeFormat); // TODO if type is EAN13, but it actually a UPC_A, return UPC_A
       }
     } else {
       validResult = true;
       let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
       app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-      this._callback(result, type);
+      this._callback(value, barcodeFormat); // TODO if type is EAN13, but it actually a UPC_A, return UPC_A
     }
 
     if (validResult && this._player) {

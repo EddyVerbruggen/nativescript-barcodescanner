@@ -47,13 +47,16 @@ npm run demo-ng.ios (or demo.ios.device)
 * ITF (also known as ITF14)
 * PDF_417 (on Android only when passed in explicity via `formats`)
 * QR_CODE
+* UPC_A
 * UPC_E
 
 ### Android only
 * CODABAR
 * MAXICODE
 * RSS_14
-* UPC_A
+
+### iOS only
+* CODE_39_MOD_43
 
 ## Installation
 From the command prompt go to your app's root folder and execute:
