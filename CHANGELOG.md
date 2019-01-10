@@ -1,9 +1,9 @@
 # Changelog
 
-## [2.8.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.8.0) (2019-01-10)
+## [2.8.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/3.0.0) (2019-01-10)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/33?closed=1)
 
-> Breaking change: on iOS we can now distinguish UPC_A codes from EAN_13. Formerly UPC_A was reported as EAN_13 and had a leading '0' (which has now been removed).
+> Breaking change: see https://github.com/EddyVerbruggen/nativescript-barcodescanner#a-note-about-upc_a-and-ean_13
 
 
 ## [2.7.9](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.7.9) (2018-11-16)
