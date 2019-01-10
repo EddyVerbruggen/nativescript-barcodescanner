@@ -47,7 +47,7 @@ npm run demo-ng.ios (or demo.ios.device)
 * ITF (also known as ITF14)
 * PDF_417 (on Android only when passed in explicity via `formats`)
 * QR_CODE
-* UPC_A
+* UPC_A (on iOS only when passed in explicitly via `formats`, see [#176](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176))
 * UPC_E
 
 ### Android only

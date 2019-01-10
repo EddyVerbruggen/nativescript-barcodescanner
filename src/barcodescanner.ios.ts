@@ -48,6 +48,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
         this.beepOnScan,
         true,
         this.reportDuplicates,
+        this.formats,
         (text: string, format: string) => {
           that.notify({
             eventName: BarcodeScannerBaseView.scanResultEvent,
@@ -217,6 +218,7 @@ export class BarcodeScanner {
             arg.beepOnScan !== false,
             isContinuous,
             arg.reportDuplicates,
+            arg.formats,
             (text: string, format: string) => {
               // invoke the callback / promise
               if (text === undefined) {
@@ -228,7 +230,7 @@ export class BarcodeScanner {
                 let barcodeFormat = getBarcodeFormat(format);
                 let value = text;
 
-                if (barcodeFormat === "EAN_13" && value.indexOf("0") === 0) {
+                if (shouldReturnEAN13AsUPCA(barcodeFormat, value, arg.formats)) {
                   barcodeFormat = "UPC_A";
                   value = value.substring(1);
                 }
@@ -272,6 +274,12 @@ export class BarcodeScanner {
   }
 }
 
+const shouldReturnEAN13AsUPCA = (barcodeFormat: BarcodeFormat, value: string, requestedFormats?: string): boolean => {
+  return barcodeFormat === "EAN_13" &&
+      value.indexOf("0") === 0 &&
+      (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
+};
+
 const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
   if (nativeFormat === AVMetadataObjectTypeQRCode) return "QR_CODE";
   else if (nativeFormat === AVMetadataObjectTypePDF417Code) return "PDF_417";
@@ -291,7 +299,7 @@ const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
   }
 };
 
-const getBarcodeTypes = (formatsString: string) => {
+const getBarcodeTypes = (formatsString: string): Array<string> => {
   const types = [];
   if (formatsString) {
     let formats = formatsString.split(",");
@@ -335,14 +343,16 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   private _beepOnScan: boolean;
   private _isContinuous: boolean;
   private _reportDuplicates: boolean;
+  private _requestedFormats: string;
   private _scannedArray: Array<string>;
   private _player: AVAudioPlayer;
   // initializing this value may prevent recognizing too quickly
   private _lastScanResultTs: number = new Date().getTime();
 
-  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, callback: (text?: string, format?: string) => void): void {
+  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, requestedFormats: string, callback: (text?: string, format?: string) => void): void {
     this._isContinuous = isContinuous;
     this._reportDuplicates = reportDuplicates;
+    this._requestedFormats = requestedFormats;
     this._callback = callback;
     this._beepOnScan = beepOnScan;
     if (this._beepOnScan) {
@@ -366,7 +376,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
     let barcodeFormat = getBarcodeFormat(type);
     let value = result;
 
-    if (barcodeFormat === "EAN_13" && value.indexOf("0") === 0) {
+    if (shouldReturnEAN13AsUPCA(barcodeFormat, value, this._requestedFormats)) {
       barcodeFormat = "UPC_A";
       value = value.substring(1);
     }
