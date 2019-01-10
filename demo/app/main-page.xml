@@ -20,7 +20,7 @@
                 <GridLayout>
                   <Barcode:BarcodeScannerView
                       class="scanner-round"
-                      formats="QR_CODE, EAN_13"
+                      formats="QR_CODE, EAN_13, CODE_128"
                       beepOnScan="true"
                       reportDuplicates="true"
                       preferFrontCamera="false"
@@ -30,7 +30,7 @@
                 </GridLayout>
               </iOS>
 
-              <Label class="h3" text="Scan QR, EAN-13, or CODE_128"/>
+              <Label class="h3" text="Scan QR, UPC_A (including EAN_13), or CODE_128"/>
               <Label class="body" text="You can use the volume buttons to toggle the torch." textWrap="true"/>
 
               <Button class="btn btn-primary btn-rounded-sm" text="back camera, with flip" tap="{{ doScanWithBackCamera }}"/>

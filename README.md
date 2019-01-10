@@ -47,7 +47,7 @@ npm run demo-ng.ios (or demo.ios.device)
 * ITF (also known as ITF14)
 * PDF_417 (on Android only when passed in explicity via `formats`)
 * QR_CODE
-* UPC_A (on iOS only when passed in explicitly via `formats`, see [#176](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176))
+* UPC_A
 * UPC_E
 
 ### Android only
@@ -57,6 +57,11 @@ npm run demo-ng.ios (or demo.ios.device)
 
 ### iOS only
 * CODE_39_MOD_43
+
+### A note about `UPC_A` and `EAN_13`
+When either (or both) of these are specified, both can be returned.
+You can check the actual type by inspecting the `format` property of the result object.
+For details, see [#176](https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176).
 
 ## Installation
 From the command prompt go to your app's root folder and execute:
@@ -168,6 +173,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     }
   );
 ```
+
+> Note that `result.format` above is one of [these](https://github.com/EddyVerbruggen/nativescript-barcodescanner/blob/241411a14f89171309bb94f3ca6da3bb45433e5e/src/barcodescanner-common.ts#L5).
 
 #### JavaScript
 ```js

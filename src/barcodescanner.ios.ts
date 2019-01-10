@@ -276,8 +276,9 @@ export class BarcodeScanner {
 
 const shouldReturnEAN13AsUPCA = (barcodeFormat: BarcodeFormat, value: string, requestedFormats?: string): boolean => {
   return barcodeFormat === "EAN_13" &&
-      value.indexOf("0") === 0 &&
-      (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
+      value.indexOf("0") === 0;
+  // why not add the line below? see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
+      // && (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
 };
 
 const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
