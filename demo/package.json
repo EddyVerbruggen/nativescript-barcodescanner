@@ -41,5 +41,8 @@
     "css-loader": "~0.28.7",
     "nativescript-worker-loader": "~0.8.1",
     "uglifyjs-webpack-plugin": "~1.1.6"
+  },
+  "scripts": {
+    "build.plugin": "cd ../src && npm run build"
   }
 }

@@ -17,7 +17,7 @@
     "postclone": "npm i && cd ../demo && npm i && cd ../src && npm run plugin.link",
     "test.android": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
     "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
-    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
+    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude '**/platforms/**' --exclude '**/tns_modules/**' --exclude '**/node_modules/**' --exclude '**/typings/**'",
     "plugin.link": "npm link && cd ../demo && npm link nativescript-barcodescanner && cd ../src",
     "plugin.link.ng": "npm link && cd ../demo-ng && npm link nativescript-barcodescanner && cd ../src",
     "plugin.tscwatch": "npm run tsc -- -w",
