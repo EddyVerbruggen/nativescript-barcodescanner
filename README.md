@@ -118,7 +118,31 @@ View:
 </BarcodeScanner>
 ```
 
-See the 'demo-ng' for details. Do not run it for Android, because embedding a view is not supported on that platform.
+See 'demo-ng' for details. Do not run it for Android, because embedding a view is not supported on that platform.
+
+### Embedding in Vue
+main.ts:
+
+```typescript
+Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView)
+```
+
+View:
+
+```html
+<BarcodeScanner
+    row="1"
+    height="300"
+    formats="QR_CODE, EAN_13, UPC_A"
+    beepOnScan="true"
+    reportDuplicates="true"
+    preferFrontCamera="false"
+    @scanResult="onScanResult"
+    v-if="isIOS">
+</BarcodeScanner>
+```
+
+See 'demo-vue' for details.
 
 ## iOS runtime permission reason
 You've probably seen a permission popup like this before (this plugin will trigger one as well, automatically):
