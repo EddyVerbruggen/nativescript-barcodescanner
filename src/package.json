@@ -71,7 +71,7 @@
   "devDependencies": {
     "tns-core-modules": "~5.1.2",
     "tns-platform-declarations": "~5.1.2",
-    "typescript": "~2.8.2",
+    "typescript": "~3.1.2",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",

@@ -5,6 +5,7 @@
         "declaration": false,
         "removeComments": true,
         "noLib": false,
+        "skipLibCheck": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "lib": [
@@ -31,8 +32,7 @@
         }
     },
     "include": [
-        "../src",
-        "**/*"
+        "./"
     ],
     "exclude": [
         "../src/node_modules",
