@@ -14,6 +14,7 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 // import { NativeScriptHttpModule } from "nativescript-angular/http";
 import { registerElement } from "nativescript-angular/element-registry";
 import { BarcodeScanner } from "nativescript-barcodescanner";
+import { ModalComponent } from "~/item/modal/modal.component";
 registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").BarcodeScannerView);
 
 @NgModule({
@@ -27,7 +28,8 @@ registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").B
     declarations: [
         AppComponent,
         ItemsComponent,
-        ItemDetailComponent
+        ItemDetailComponent,
+        ModalComponent
     ],
     providers: [
         ItemService,
@@ -35,7 +37,8 @@ registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").B
     ],
     schemas: [
         NO_ERRORS_SCHEMA
-    ]
+    ],
+    entryComponents: [ModalComponent],
 })
 /*
 Pass your application module to the bootstrapModule function located in main.ts to start your app

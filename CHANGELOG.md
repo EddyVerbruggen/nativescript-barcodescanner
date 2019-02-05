@@ -1,10 +1,13 @@
 # Changelog
 
-## [2.8.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/3.0.0) (2019-01-10)
+## [3.0.2](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/3.0.2) (2019-02-05)
+[Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/34?closed=1)
+
+
+## [3.0.0](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/3.0.0) (2019-01-10)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/33?closed=1)
 
 > Breaking change: see https://github.com/EddyVerbruggen/nativescript-barcodescanner#a-note-about-upc_a-and-ean_13
-
 
 ## [2.7.9](https://github.com/EddyVerbruggen/nativescript-barcodescanner/tree/2.7.9) (2018-11-16)
 [Full Changelog](https://github.com/EddyVerbruggen/nativescript-barcodescanner/milestone/32?closed=1)

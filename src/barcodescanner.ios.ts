@@ -164,8 +164,7 @@ export class BarcodeScanner {
   public stop(): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        const app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-        app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+        this.getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
         this._removeVolumeObserver();
         this._closeCallback && this._closeCallback();
         resolve();
@@ -259,12 +258,13 @@ export class BarcodeScanner {
           this._device.unlockForConfiguration();
         }
 
-        const app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-        app.keyWindow.rootViewController.presentViewControllerAnimatedCompletion(this._scanner, true, () => {
-          if (arg.torchOn) {
-            this._enableTorch();
-          }
-        });
+        setTimeout(() => {
+          this.getViewControllerToPresentFrom().presentViewControllerAnimatedCompletion(this._scanner, true, () => {
+            if (arg.torchOn) {
+              this._enableTorch();
+            }
+          });
+        }, this.isPresentingModally() ? 650 : 0);
 
       } catch (ex) {
         console.log("Error in barcodescanner.scan: " + ex);
@@ -272,12 +272,60 @@ export class BarcodeScanner {
       }
     });
   }
+
+  private isPresentingModally(): boolean {
+    let frame = require("tns-core-modules/ui/frame");
+    let viewController: UIViewController;
+    let topMostFrame = frame.topmost();
+
+    if (frame.topmost()) {
+      viewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
+
+      if (viewController) {
+        while (viewController.parentViewController) {
+          viewController = viewController.parentViewController;
+        }
+
+        return !!viewController.presentedViewController;
+      }
+    }
+
+    return false;
+  }
+
+  private getViewControllerToPresentFrom(): UIViewController {
+    let frame = require("tns-core-modules/ui/frame");
+    let viewController: UIViewController;
+    let topMostFrame = frame.topmost();
+
+    if (topMostFrame) {
+      viewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
+
+      if (viewController) {
+        while (viewController.parentViewController) {
+          // find top-most view controler
+          viewController = viewController.parentViewController;
+        }
+
+        while (viewController.presentedViewController) {
+          // find last presented modal
+          viewController = viewController.presentedViewController;
+        }
+      }
+    }
+
+    if (!viewController) {
+      viewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+    }
+
+    return viewController;
+  }
 }
 
 const shouldReturnEAN13AsUPCA = (barcodeFormat: BarcodeFormat, value: string, requestedFormats?: string): boolean => {
   return barcodeFormat === "EAN_13" &&
       value.indexOf("0") === 0;
-  // why not add the line below? see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
+  // why not add the line below? Well, see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
       // && (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
 };
 
@@ -366,8 +414,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   }
 
   public readerDidCancel(reader: QRCodeReaderViewController): void {
-    let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-    app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+    this._owner.get().getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
     this._callback();
   }
 
@@ -397,13 +444,12 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
         this._lastScanResultTs = now;
         validResult = true;
         this._scannedArray.push("[" + value + "][" + barcodeFormat + "]");
-        this._callback(value, barcodeFormat); // TODO if type is EAN13, but it actually a UPC_A, return UPC_A
+        this._callback(value, barcodeFormat);
       }
     } else {
       validResult = true;
-      let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-      app.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-      this._callback(value, barcodeFormat); // TODO if type is EAN13, but it actually a UPC_A, return UPC_A
+      this._owner.get().getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
+      this._callback(value, barcodeFormat);
     }
 
     if (validResult && this._player) {
