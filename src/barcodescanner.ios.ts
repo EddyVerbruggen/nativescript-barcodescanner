@@ -156,8 +156,7 @@ export class BarcodeScanner {
   public requestCameraPermission(): Promise<boolean> {
     return new Promise((resolve) => {
       // this will trigger the prompt on iOS 10+
-      QRCodeReader.isAvailable();
-      resolve();
+      resolve(QRCodeReader.isAvailable());
     });
   }
 
