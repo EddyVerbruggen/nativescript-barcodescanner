@@ -12,7 +12,7 @@ export class HelloWorldModel extends Observable {
   }
 
   public doCheckAvailable() {
-    this.barcodeScanner.available().then((avail) => {
+    this.barcodeScanner.available().then(avail => {
       alert({
         title: "Scanning available?",
         message: avail ? "YES" : "NO",
@@ -24,7 +24,7 @@ export class HelloWorldModel extends Observable {
   }
 
   public doCheckHasCameraPermission() {
-    this.barcodeScanner.hasCameraPermission().then((permitted) => {
+    this.barcodeScanner.hasCameraPermission().then(permitted => {
       alert({
         title: "Has Camera permission?",
         message: permitted ? "YES" : "NO",
