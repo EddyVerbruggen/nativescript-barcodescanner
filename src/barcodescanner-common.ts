@@ -18,7 +18,8 @@ export type BarcodeFormat =
     "UPC_A" |
     "CODABAR" |
     "MAXICODE" |
-    "RSS_14";
+    "RSS_14" |
+    "INTERLEAVED_2_OF_5";
 
 export interface ScanResult {
   text: string;

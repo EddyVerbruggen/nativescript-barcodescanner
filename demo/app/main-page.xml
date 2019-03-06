@@ -16,7 +16,7 @@
 
               <iOS>
                 <Label class="h3" text="Scanner declared in XML"/>
-                <Label class="body" text="Beeps and logs to console when a QR_CODE or EAN_13 is scanned. The image was added to show how to add an arbitrary overlay." textWrap="true"/>
+                <Label class="body" text="Beeps and logs to console when a QR_CODE, EAN_13, or CODE_128 is scanned. The image was added to show how to add an arbitrary overlay." textWrap="true"/>
                 <GridLayout>
                   <Barcode:BarcodeScannerView
                       class="scanner-round"

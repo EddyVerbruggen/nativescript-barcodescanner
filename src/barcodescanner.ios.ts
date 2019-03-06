@@ -17,7 +17,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     this._hasSupport = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null;
     if (this._hasSupport) {
       // play nice with others
-      AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers)
+      AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers);
     }
   }
 
@@ -91,7 +91,7 @@ export class BarcodeScanner {
 
   constructor() {
     // play nice with others
-    AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers)
+    AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers);
 
     this._device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
     if (this._device && this._device.hasTorch && this._device.hasFlash) {
@@ -348,6 +348,7 @@ const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
   else if (nativeFormat === AVMetadataObjectTypeEAN8Code) return "EAN_8";
   else if (nativeFormat === AVMetadataObjectTypeITF14Code) return "ITF";
   else if (nativeFormat === AVMetadataObjectTypeEAN13Code) return "EAN_13";
+  else if (nativeFormat === AVMetadataObjectTypeInterleaved2of5Code) return "INTERLEAVED_2_OF_5";
   else {
     console.log("Unknown format scanned: " + nativeFormat + ", please report this at https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues");
     return <BarcodeFormat>nativeFormat;
@@ -371,6 +372,7 @@ const getBarcodeTypes = (formatsString: string): Array<string> => {
       else if (format === "DATA_MATRIX") types.push(AVMetadataObjectTypeDataMatrixCode);
       else if (format === "EAN_8") types.push(AVMetadataObjectTypeEAN8Code);
       else if (format === "ITF") types.push(AVMetadataObjectTypeITF14Code);
+      else if (format === "INTERLEAVED_2_OF_5") types.push(AVMetadataObjectTypeInterleaved2of5Code);
       // see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
       else if (format === "EAN_13" || format === "UPC_A") types.push(AVMetadataObjectTypeEAN13Code);
     }
@@ -378,7 +380,8 @@ const getBarcodeTypes = (formatsString: string): Array<string> => {
     types.push(AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
         AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code,
         AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
-        AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode);
+        AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode,
+        AVMetadataObjectTypeInterleaved2of5Code);
   }
   return types;
 };

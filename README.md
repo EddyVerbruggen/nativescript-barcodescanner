@@ -57,6 +57,7 @@ npm run demo-ng.ios (or demo.ios.device)
 
 ### iOS only
 * CODE_39_MOD_43
+* INTERLEAVED_2_OF_5
 
 ### A note about `UPC_A` and `EAN_13`
 When either (or both) of these are specified, both can be returned.
