@@ -15,6 +15,10 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
   constructor() {
     super();
     this._hasSupport = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) !== null;
+    if (this._hasSupport) {
+      // play nice with others
+      AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers)
+    }
   }
 
   createNativeView(): Object {
@@ -86,6 +90,9 @@ export class BarcodeScanner {
   private _device: AVCaptureDevice;
 
   constructor() {
+    // play nice with others
+    AVAudioSession.sharedInstance().setCategoryModeOptionsError(AVAudioSessionCategoryPlayback, AVAudioSessionModeDefault, AVAudioSessionCategoryOptions.MixWithOthers)
+
     this._device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
     if (this._device && this._device.hasTorch && this._device.hasFlash) {
       this._observer = VolumeObserverClass.alloc();
