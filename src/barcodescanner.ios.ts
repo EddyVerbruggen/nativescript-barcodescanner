@@ -228,7 +228,7 @@ export class BarcodeScanner {
             isContinuous,
             arg.reportDuplicates,
             arg.formats,
-            (text: string, format: string) => {
+            (text: string, barcodeFormat: BarcodeFormat) => {
               // invoke the callback / promise
               if (text === undefined) {
                 this._removeVolumeObserver();
@@ -236,7 +236,6 @@ export class BarcodeScanner {
                 reject("Scan aborted");
               } else {
 
-                let barcodeFormat = getBarcodeFormat(format);
                 let value = text;
 
                 if (shouldReturnEAN13AsUPCA(barcodeFormat, value, arg.formats)) {
@@ -401,7 +400,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
     return delegate;
   }
 
-  private _callback: (text?: string, format?: string) => void;
+  private _callback: (text?: string, format?: BarcodeFormat) => void;
   private _beepOnScan: boolean;
   private _isContinuous: boolean;
   private _reportDuplicates: boolean;
@@ -411,7 +410,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   // initializing this value may prevent recognizing too quickly
   private _lastScanResultTs: number = new Date().getTime();
 
-  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, requestedFormats: string, callback: (text?: string, format?: string) => void): void {
+  public setCallback(beepOnScan: boolean, isContinuous: boolean, reportDuplicates: boolean, requestedFormats: string, callback: (text?: string, format?: BarcodeFormat) => void): void {
     this._isContinuous = isContinuous;
     this._reportDuplicates = reportDuplicates;
     this._requestedFormats = requestedFormats;
