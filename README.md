@@ -37,7 +37,6 @@ npm run demo-ng.ios (or demo.ios.device)
 ## Supported barcode types
 
 ### iOS and Android
-* AZTEC (on Android only when passed in explicity via `formats`)
 * CODE_39
 * CODE_93
 * CODE_128
@@ -56,6 +55,7 @@ npm run demo-ng.ios (or demo.ios.device)
 * RSS_14
 
 ### iOS only
+* AZTEC
 * CODE_39_MOD_43
 * INTERLEAVED_2_OF_5
 
