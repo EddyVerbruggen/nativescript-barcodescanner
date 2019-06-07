@@ -36,11 +36,9 @@ export class HelloWorldModel extends Observable {
   }
 
   public doRequestCameraPermission() {
-    this.barcodeScanner.requestCameraPermission().then(
-        function () {
-          console.log("Camera permission requested");
-        }
-    );
+    this.barcodeScanner.requestCameraPermission()
+        .then(() => console.log("Camera permission granted"))
+        .catch(() => console.log("Camera permission not granted"));
   }
 
   public doScanWithBackCamera() {

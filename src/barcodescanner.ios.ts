@@ -165,9 +165,27 @@ export class BarcodeScanner {
   }
 
   public requestCameraPermission(): Promise<boolean> {
-    return new Promise((resolve) => {
-      // this will trigger the prompt on iOS 10+
-      resolve(QRCodeReader.isAvailable());
+    return new Promise((resolve, reject) => {
+      const cameraStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
+
+      switch (cameraStatus) {
+        case AVAuthorizationStatus.NotDetermined: {
+          AVCaptureDevice.requestAccessForMediaTypeCompletionHandler(
+              AVMediaTypeVideo,
+              granted => granted ? resolve() : reject()
+          );
+          break;
+        }
+        case AVAuthorizationStatus.Authorized: {
+          resolve();
+          break;
+        }
+        case AVAuthorizationStatus.Restricted:
+        case AVAuthorizationStatus.Denied: {
+          reject();
+          break;
+        }
+      }
     });
   }
 
@@ -335,7 +353,7 @@ const shouldReturnEAN13AsUPCA = (barcodeFormat: BarcodeFormat, value: string, re
   return barcodeFormat === "EAN_13" &&
       value.indexOf("0") === 0;
   // why not add the line below? Well, see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
-      // && (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
+  // && (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
 };
 
 const getBarcodeFormat = (nativeFormat: string): BarcodeFormat => {
