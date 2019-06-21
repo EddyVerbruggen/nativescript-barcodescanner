@@ -5,10 +5,17 @@ import * as utils from "tns-core-modules/utils/utils";
 
 let SCANNER_REQUEST_CODE = 444;
 
-declare let com, android: any;
+declare let com, android, global: any;
+
+const AppPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
+const ContentPackageName = useAndroidX() ? global.androidx.core.content : android.support.v4.content;
 
 let _onScanReceivedCallback = undefined;
 let _onContinuousScanResult = undefined;
+
+function useAndroidX () {
+  return global.androidx && global.androidx.appcompat;
+}
 
 export class BarcodeScanner {
   private broadcastManager: any = null;
@@ -39,7 +46,7 @@ export class BarcodeScanner {
     let hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
     if (!hasPermission) {
       hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ===
-        android.support.v4.content.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
+          ContentPackageName.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
     }
     return hasPermission;
   }
@@ -47,7 +54,7 @@ export class BarcodeScanner {
   private requestCameraPermissionInternal(onPermissionGranted, reject) {
     this.onPermissionGranted = onPermissionGranted;
     this.onPermissionRejected = reject;
-    android.support.v4.app.ActivityCompat.requestPermissions(
+    AppPackageName.ActivityCompat.requestPermissions(
       appModule.android.foregroundActivity,
       [android.Manifest.permission.CAMERA],
       234 // irrelevant since we simply invoke onPermissionGranted
@@ -156,7 +163,7 @@ export class BarcodeScanner {
 
         // required for the 'stop' function
         if (!this.broadcastManager) {
-          this.broadcastManager = android.support.v4.content.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
+          this.broadcastManager = ContentPackageName.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
         }
 
         const isContinuous = typeof arg.continuousScanCallback === "function";
