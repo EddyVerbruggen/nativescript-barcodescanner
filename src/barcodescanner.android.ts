@@ -9,6 +9,7 @@ declare let com, android, global: any;
 
 const AppPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
 const ContentPackageName = useAndroidX() ? global.androidx.core.content : android.support.v4.content;
+const LocalBroadcastManagerPackageName = useAndroidX() ? global.androidx.localbroadcastmanager.content : android.support.v4.content;
 
 let _onScanReceivedCallback = undefined;
 let _onContinuousScanResult = undefined;
@@ -163,7 +164,7 @@ export class BarcodeScanner {
 
         // required for the 'stop' function
         if (!this.broadcastManager) {
-          this.broadcastManager = ContentPackageName.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
+          this.broadcastManager = LocalBroadcastManagerPackageName.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
         }
 
         const isContinuous = typeof arg.continuousScanCallback === "function";
