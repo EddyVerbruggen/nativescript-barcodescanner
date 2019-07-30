@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Scan QR/barcodes with your NativeScript app.",
   "main": "barcodescanner",
   "typings": "index.d.ts",
@@ -69,9 +69,9 @@
   },
   "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
   "devDependencies": {
-    "tns-core-modules": "~5.2.2",
-    "tns-platform-declarations": "~5.2.2",
-    "typescript": "~2.8.0",
+    "tns-core-modules": "~6.0.0",
+    "tns-platform-declarations": "~6.0.0",
+    "typescript": "3.4.5",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",

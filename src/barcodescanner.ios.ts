@@ -4,7 +4,6 @@ import {
   ScanOptions,
   ScanResult
 } from "./barcodescanner-common";
-import * as utils from "tns-core-modules/utils/utils";
 
 export class BarcodeScannerView extends BarcodeScannerBaseView {
 
@@ -119,7 +118,7 @@ export class BarcodeScanner {
       return;
     }
 
-    this._audioSession = utils.ios.getter(AVAudioSession, AVAudioSession.sharedInstance);
+    this._audioSession = AVAudioSession.sharedInstance();
     this._audioSession.setActiveError(true);
     this._currentVolume = this._audioSession.outputVolume;
     if (!this._observerActive) {
@@ -208,7 +207,7 @@ export class BarcodeScanner {
         // only need for denied permission as conveniently, this method will auto-request permission upon scan
         if (this._hasDeniedCameraPermission()) {
           if (arg.openSettingsIfPermissionWasPreviouslyDenied) {
-            utils.ios.getter(UIApplication, UIApplication.sharedApplication).openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
+            UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
           }
           reject("The user previously denied permission to access the camera.");
           return;
@@ -491,7 +490,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
 class VolumeObserverClass extends NSObject {
   observeValueForKeyPathOfObjectChangeContext(path: string, obj: Object, change: NSDictionary<any, any>, context: any) {
     if (path === "outputVolume") {
-      let volumeLevel = utils.ios.getter(MPMusicPlayerController, MPMusicPlayerController.applicationMusicPlayer).volume;
+      let volumeLevel = MPMusicPlayerController.applicationMusicPlayer.volume;
       if (volumeLevel > this["_owner"]._currentVolume) {
         // volume up button pressed, so enable torch
         this["_owner"]._enableTorch();
