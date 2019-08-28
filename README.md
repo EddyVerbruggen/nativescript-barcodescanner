@@ -310,41 +310,42 @@ but if for some reason you want to handle permissions yourself you can use these
 
 ### Usage with `nativescript-angular`
 
-When using Angular 2, it is best to inject dependencies into your classes.  Here is an example of how you
-can set up `nativescript-barcodescanner` in an Angular 2 app with dependency injection.
+You may have injected the `BarcodeScanner` class in your component constructor in the past,
+but please don't do that anymore because in release builds you may experience a crash.
 
-1. Register the provider with your module
-    ```typescript
-    //app.module.ts
-    import { NgModule, ValueProvider } from '@angular/core';
-    import { BarcodeScanner } from 'nativescript-barcodescanner';
-    //other imports
+So instead of:
 
-    @NgModule({
-      //bootstrap, declarations, imports, etc.
-      providers: [
-        BarcodeScanner
-      ]
-    })
-    export class AppModule {}
-    ```
-1. Inject it into your component
-    ```typescript
-    // my-component.ts
-    import { Component, Inject } from '@angular/core';
-    import { BarcodeScanner } from 'nativescript-barcodescanner';
+```typescript
+// my-component.ts
+import { Component, Inject } from '@angular/core';
+import { BarcodeScanner } from 'nativescript-barcodescanner';
 
-    @Component({ ... })
-    export class MyComponent {
-      constructor(private barcodeScanner: BarcodeScanner) {
-      }
+@Component({ ... })
+  export class MyComponent {
+    constructor(private barcodeScanner: BarcodeScanner) {
+  }
 
-      //use the barcodescanner wherever you need it. See general usage above.
-      scanBarcode() {
-        this.barcodeScanner.scan({ ... });
-      }
-    }
-    ```
+  //use the barcodescanner wherever you need it. See general usage above.
+  scanBarcode() {
+    this.barcodeScanner.scan({ ... });
+  }
+}
+```
+
+Simply do:
+
+```typescript
+// my-component.ts
+import { Component, Inject } from '@angular/core';
+import { BarcodeScanner } from 'nativescript-barcodescanner';
+
+@Component({ ... })
+  //use the barcodescanner wherever you need it. See general usage above.
+  scanBarcode() {
+    new BarcodeScanner().scan({ ... });
+  }
+}
+```
 
 #### Webpack usage
 If you run into an error when Webpacking, open `app.module.ts` and add this:
