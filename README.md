@@ -185,7 +185,8 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     closeCallback: () => { console.log("Scanner closed")}, // invoked when the scanner was closed (success or abort)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
     orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
-    openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
+    openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
+    presentInRootViewController: true // iOS-only; If you're sure you're not presenting the (non embedded) scanner in a modal, or are experiencing issues with fi. the navigationbar, set this to 'true' and see if it works better for your app (default false).
   }).then((result) => {
       // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
       alert({

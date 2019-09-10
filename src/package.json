@@ -1,6 +1,6 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "Scan QR/barcodes with your NativeScript app.",
   "main": "barcodescanner",
   "typings": "index.d.ts",
@@ -23,7 +23,7 @@
     "plugin.tscwatch": "npm run tsc -- -w",
     "demo.ios": "npm run build && cd ../demo && tns run ios",
     "demo.reset": "cd ../demo && rimraf platforms",
-    "demo-ng.ios": "npm run build && cd ../demo-ng && tns run ios",
+    "demo-ng.ios": "npm run build && cd ../publish && ./pack.sh && cd ../demo-ng && tns plugin remove nativescript-barcodescanner && tns plugin add ../publish/package/*.tgz && tns run ios",
     "demo.android": "npm run build && cd ../demo && tns run android",
     "demo-vue.ios": "npm run tsc && cd ../demo-vue && tns run ios --bundle",
     "demo-vue.android": "npm run tsc && cd ../demo-vue && tns run android --bundle",
@@ -69,8 +69,8 @@
   },
   "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
   "devDependencies": {
-    "tns-core-modules": "~6.0.0",
-    "tns-platform-declarations": "~6.0.0",
+    "tns-core-modules": "~6.1.0",
+    "tns-platform-declarations": "~6.1.0",
     "typescript": "3.4.5",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",

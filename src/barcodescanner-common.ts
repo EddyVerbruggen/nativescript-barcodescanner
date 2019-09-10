@@ -100,6 +100,12 @@ export interface IOS extends CommonScanOptions {
    * Default: false
    */
   openSettingsIfPermissionWasPreviouslyDenied?: boolean;
+  /**
+   * If you're sure you're not presenting the (non embedded) scanner in a modal,
+   * or are experiencing issues with fi. the navigationbar, please set this to 'true'.
+   * Default: false
+   */
+  presentInRootViewController?: boolean;
 }
 
 export interface Android extends CommonScanOptions {

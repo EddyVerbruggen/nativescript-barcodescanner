@@ -100,6 +100,7 @@ export class HelloWorldModel extends Observable {
 
   private scan(front: boolean, flip: boolean, torch?: boolean, orientation?: string) {
     this.barcodeScanner.scan({
+      presentInRootViewController: true, // not needed here, but added it just for show
       cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
       cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
       message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'

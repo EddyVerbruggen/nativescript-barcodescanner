@@ -285,7 +285,7 @@ export class BarcodeScanner {
         }
 
         setTimeout(() => {
-          this.getViewControllerToPresentFrom().presentViewControllerAnimatedCompletion(this._scanner, true, () => {
+          this.getViewControllerToPresentFrom(arg.presentInRootViewController).presentViewControllerAnimatedCompletion(this._scanner, true, () => {
             if (arg.torchOn) {
               this._enableTorch();
             }
@@ -319,12 +319,12 @@ export class BarcodeScanner {
     return false;
   }
 
-  private getViewControllerToPresentFrom(): UIViewController {
+  private getViewControllerToPresentFrom(presentInRootViewController?: boolean): UIViewController {
     let frame = require("tns-core-modules/ui/frame");
     let viewController: UIViewController;
     let topMostFrame = frame.topmost();
 
-    if (topMostFrame) {
+    if (topMostFrame && presentInRootViewController !== true) {
       viewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
 
       if (viewController) {
