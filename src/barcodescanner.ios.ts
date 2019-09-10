@@ -192,12 +192,7 @@ export class BarcodeScanner {
   public stop(): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        if (this._lastScanViewController) {
-          this._lastScanViewController.dismissViewControllerAnimatedCompletion(true, null);
-          this._lastScanViewController = undefined;
-        } else {
-          this.getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
-        }
+        this.close();
         this._removeVolumeObserver();
         this._closeCallback && this._closeCallback();
         resolve();
@@ -326,6 +321,15 @@ export class BarcodeScanner {
     return false;
   }
 
+  private close(): void {
+    if (this._lastScanViewController) {
+      this._lastScanViewController.dismissViewControllerAnimatedCompletion(true, null);
+      this._lastScanViewController = undefined;
+    } else {
+      this.getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
+    }
+  }
+
   private getViewControllerToPresentFrom(presentInRootViewController?: boolean): UIViewController {
     let frame = require("tns-core-modules/ui/frame");
     let viewController: UIViewController;
@@ -451,7 +455,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   }
 
   public readerDidCancel(reader: QRCodeReaderViewController): void {
-    this._owner.get().getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
+    this._owner.get().close();
     this._callback();
   }
 
@@ -485,7 +489,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
       }
     } else {
       validResult = true;
-      this._owner.get().getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
+      this._owner.get().close();
       this._callback(value, barcodeFormat);
     }
 
