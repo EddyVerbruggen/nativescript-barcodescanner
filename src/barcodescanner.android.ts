@@ -3,9 +3,9 @@ import { AndroidActivityRequestPermissionsEventData} from "tns-core-modules/appl
 import * as appModule from "tns-core-modules/application";
 import * as utils from "tns-core-modules/utils/utils";
 
-let SCANNER_REQUEST_CODE = 444;
+const SCANNER_REQUEST_CODE = 444;
 
-declare let com, android, global: any;
+declare const com, android, global: any;
 
 const AppPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
 const ContentPackageName = useAndroidX() ? global.androidx.core.content : android.support.v4.content;
