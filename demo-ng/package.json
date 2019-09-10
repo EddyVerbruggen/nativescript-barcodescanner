@@ -6,36 +6,38 @@
 	"nativescript": {
 		"id": "org.nativescript.demong",
 		"tns-android": {
-			"version": "5.0.0"
+			"version": "6.0.0"
 		},
 		"tns-ios": {
-			"version": "5.0.0"
+			"version": "6.0.1"
 		}
 	},
 	"dependencies": {
-		"@angular/animations": "~5.2.0",
-		"@angular/common": "~5.2.0",
-		"@angular/compiler": "~5.2.0",
-		"@angular/core": "~5.2.0",
-		"@angular/forms": "~5.2.0",
-		"@angular/http": "~5.2.0",
-		"@angular/platform-browser": "~5.2.0",
-		"@angular/platform-browser-dynamic": "~5.2.0",
-		"@angular/router": "~5.2.0",
-		"nativescript-angular": "~5.3.0",
-		"nativescript-barcodescanner": "file:../src",
+		"@angular/animations": "8.0.0",
+		"@angular/common": "8.0.0",
+		"@angular/compiler": "8.0.0",
+		"@angular/core": "8.0.0",
+		"@angular/forms": "8.0.0",
+		"@angular/http": "8.0.0-beta.10",
+		"@angular/platform-browser": "8.0.0",
+		"@angular/platform-browser-dynamic": "8.0.0",
+		"@angular/router": "8.0.0",
+		"nativescript-angular": "8.0.2",
+		"nativescript-barcodescanner": "file:../publish/package/nativescript-barcodescanner-3.3.0.tgz",
 		"nativescript-theme-core": "~1.0.4",
 		"reflect-metadata": "~0.1.8",
-		"rxjs": "~5.5.2",
-		"tns-core-modules": "~5.0.0",
-		"zone.js": "~0.8.2"
+		"rxjs": "6.3.3",
+		"tns-core-modules": "6.0.1",
+		"zone.js": "0.9.1"
 	},
 	"devDependencies": {
 		"babel-traverse": "6.4.5",
 		"babel-types": "6.4.5",
 		"babylon": "6.4.5",
 		"lazy": "1.0.11",
-		"nativescript-dev-typescript": "~0.7.0",
-		"typescript": "~2.7.2"
+		"typescript": "3.4.5",
+		"nativescript-dev-webpack": "1.0.1",
+		"@angular/compiler-cli": "8.0.0",
+		"@ngtools/webpack": "8.0.0"
 	}
 }
