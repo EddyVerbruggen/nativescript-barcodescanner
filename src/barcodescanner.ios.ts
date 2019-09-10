@@ -89,7 +89,7 @@ export class BarcodeScanner {
   private _audioSession: AVAudioSession;
   private _closeCallback: any;
   private _device: AVCaptureDevice;
-  private _lastScanOptions: ScanOptions;
+  private _lastScanViewController: UIViewController;
 
   constructor() {
     if (typeof AVAudioSession.sharedInstance().setCategoryModeOptionsError === "function") {
@@ -192,7 +192,12 @@ export class BarcodeScanner {
   public stop(): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        this.getViewControllerToPresentFrom(this._lastScanOptions ? this._lastScanOptions.presentInRootViewController : false).dismissViewControllerAnimatedCompletion(true, null);
+        if (this._lastScanViewController) {
+          this._lastScanViewController.dismissViewControllerAnimatedCompletion(true, null);
+          this._lastScanViewController = undefined;
+        } else {
+          this.getViewControllerToPresentFrom().dismissViewControllerAnimatedCompletion(true, null);
+        }
         this._removeVolumeObserver();
         this._closeCallback && this._closeCallback();
         resolve();
@@ -217,7 +222,6 @@ export class BarcodeScanner {
         this._addVolumeObserver();
 
         arg = arg || {};
-        this._lastScanOptions = arg;
 
         let closeButtonLabel = arg.cancelLabel || "Close";
         let isContinuous = typeof arg.continuousScanCallback === "function";
@@ -347,6 +351,7 @@ export class BarcodeScanner {
       viewController = UIApplication.sharedApplication.keyWindow.rootViewController;
     }
 
+    this._lastScanViewController = viewController;
     return viewController;
   }
 }
