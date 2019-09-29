@@ -183,6 +183,12 @@ export const reportDuplicatesProperty = new Property<BarcodeScannerView, boolean
   valueConverter: booleanConverter
 });
 
+export const pauseProperty = new Property<BarcodeScannerView, boolean>({
+  name: "pause",
+  defaultValue: false,
+  valueConverter: booleanConverter
+});
+
 export abstract class BarcodeScannerView extends ContentView {
 
   static scanResultEvent: string = "scanResult";
@@ -191,6 +197,17 @@ export abstract class BarcodeScannerView extends ContentView {
   protected preferFrontCamera: boolean;
   protected beepOnScan: boolean;
   protected reportDuplicates: boolean;
+  protected pause: boolean;
+
+  protected pauseScanning(): void {
+    // implemented in concrete classes
+    console.log(">>> abstract pause");
+  }
+
+  protected resumeScanning(): void {
+    // implemented in concrete classes
+    console.log(">>> abstract resume");
+  }
 
   [formatsProperty.setNative](value: string) {
     this.formats = value;
@@ -207,8 +224,15 @@ export abstract class BarcodeScannerView extends ContentView {
   [reportDuplicatesProperty.setNative](value: boolean) {
     this.reportDuplicates = value;
   }
+
+  [pauseProperty.setNative](value: boolean) {
+    console.log(">> pause: " + value);
+    this.pause = value;
+    this.pause ? this.pauseScanning() : this.resumeScanning();
+  }
 }
 
+pauseProperty.register(BarcodeScannerView);
 formatsProperty.register(BarcodeScannerView);
 preferFrontCameraProperty.register(BarcodeScannerView);
 beepOnScanProperty.register(BarcodeScannerView);

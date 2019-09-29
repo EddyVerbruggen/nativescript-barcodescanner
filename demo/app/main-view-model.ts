@@ -11,6 +11,10 @@ export class HelloWorldModel extends Observable {
     this.barcodeScanner = new BarcodeScanner();
   }
 
+  public onScanResult(scanResult: any) {
+    console.log(`onScanResult: ${scanResult.text} (${scanResult.format})`);
+  }
+
   public doCheckAvailable() {
     this.barcodeScanner.available().then(avail => {
       alert({

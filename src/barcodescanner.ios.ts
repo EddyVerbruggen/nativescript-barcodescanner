@@ -67,7 +67,9 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     setTimeout(() => {
       if (this.ios && this.ios.layer) {
         this.ios.layer.insertSublayerAtIndex(this._reader.previewLayer, 0);
-        this._reader.startScanning();
+        if (!this.pause) {
+          this._reader.startScanning();
+        }
       }
     }, 0);
   }
@@ -76,6 +78,18 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     super.onLayout(left, top, right, bottom);
     if (this._hasSupport && this.ios && this._reader) {
       this._reader.previewLayer.frame = this.ios.layer.bounds;
+    }
+  }
+
+  protected pauseScanning(): void {
+    if (this._reader && this._reader.running()) {
+      this._reader.stopScanning();
+    }
+  }
+
+  protected resumeScanning(): void {
+    if (this._reader && !this._reader.running()) {
+      this._reader.startScanning();
     }
   }
 }
@@ -194,6 +208,7 @@ export class BarcodeScanner {
       try {
         this.close();
         this._removeVolumeObserver();
+        this._scanner.stopScanning();
         this._closeCallback && this._closeCallback();
         resolve();
       } catch (ex) {

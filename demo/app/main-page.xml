@@ -24,7 +24,7 @@
                       beepOnScan="true"
                       reportDuplicates="true"
                       preferFrontCamera="false"
-                      scanResult="onScanResult" />
+                      scanResult="{{ onScanResult }}" />
                   <Image src="~/images/crosshair.png" width="140" height="140" style="margin-top: 14; opacity: 0.3" horizontalAlignment="center" verticalAlignment="center"/>
                   <!--<Label text="......................................." style="margin-top: 8; color: #FFF; opacity: 0.5" horizontalAlignment="center" verticalAlignment="center"/>-->
                 </GridLayout>

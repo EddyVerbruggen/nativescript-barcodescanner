@@ -12,11 +12,15 @@ import {BarcodeScanner} from 'nativescript-barcodescanner';
 })
 export class ItemDetailComponent implements OnInit {
   item: Item;
+  pause = true;
 
   constructor(
       private itemService: ItemService,
       private route: ActivatedRoute,
       private barcodeScanner: BarcodeScanner) {
+    setTimeout(() => {
+      this.pause = false;
+    }, 2000);
   }
 
   ngOnInit(): void {
@@ -27,6 +31,13 @@ export class ItemDetailComponent implements OnInit {
   public onScanResult(evt) {
     // console.log(evt.object);
     console.log(`onScanResult: ${evt.text} (${evt.format})`);
+
+    this.pause = true;
+    console.log("Paused");
+    setTimeout(() => {
+      this.pause = false;
+      console.log("Unpaused");
+    }, 4000);
   }
 
   public scanTapped(): void {
