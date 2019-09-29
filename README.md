@@ -79,6 +79,8 @@ tns plugin add nativescript-barcodescanner
 As you can see, you can style the view any way you like, and even overlay it with an image or button.
 To recreate the layout above, look at [these lines in the demo app](https://github.com/EddyVerbruggen/nativescript-barcodescanner/blob/23395bec3e5a26622146daea96dd6407a8413f70/demo/app/main-page.xml#L17-L31).
 
+> 💡 TIP: If you don't destroy the component/page which embed the scanner (but instead show a modal, or navigate "forward") you can "pause" the scanner (since plugin version 3.4.0). Simply set that `pause` property to `true` when applicable.
+ 
 ### XML
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Barcode="nativescript-barcodescanner">
@@ -94,7 +96,8 @@ Here's an example tag, showing all currently supported options. The property def
       beepOnScan="true"
       reportDuplicates="true"
       preferFrontCamera="false"
-      scanResult="onScanResult" />
+      pause="{{ pause }}"
+      scanResult="{{ onScanResult }}" />
 </iOS>
 ```
 
@@ -115,6 +118,7 @@ View:
       beepOnScan="true"
       reportDuplicates="true"
       preferFrontCamera="false"
+      [pause]="pause"
       (scanResult)="onScanResult($event)">
 </BarcodeScanner>
 ```
@@ -138,6 +142,7 @@ View:
     beepOnScan="true"
     reportDuplicates="true"
     preferFrontCamera="false"
+    :pause="pause"
     @scanResult="onScanResult"
     v-if="isIOS">
 </BarcodeScanner>
