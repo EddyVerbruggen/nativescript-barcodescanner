@@ -201,12 +201,10 @@ export abstract class BarcodeScannerView extends ContentView {
 
   protected pauseScanning(): void {
     // implemented in concrete classes
-    console.log(">>> abstract pause");
   }
 
   protected resumeScanning(): void {
     // implemented in concrete classes
-    console.log(">>> abstract resume");
   }
 
   [formatsProperty.setNative](value: string) {
@@ -226,7 +224,6 @@ export abstract class BarcodeScannerView extends ContentView {
   }
 
   [pauseProperty.setNative](value: boolean) {
-    console.log(">> pause: " + value);
     this.pause = value;
     this.pause ? this.pauseScanning() : this.resumeScanning();
   }
