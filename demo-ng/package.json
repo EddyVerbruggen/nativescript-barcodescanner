@@ -23,7 +23,7 @@
 		"@angular/platform-browser-dynamic": "8.0.0",
 		"@angular/router": "8.0.0",
 		"nativescript-angular": "8.0.2",
-		"nativescript-barcodescanner": "file:../publish/package/nativescript-barcodescanner-3.3.2.tgz",
+		"nativescript-barcodescanner": "file:../publish/package/nativescript-barcodescanner-3.4.1.tgz",
 		"nativescript-theme-core": "~1.0.4",
 		"reflect-metadata": "~0.1.8",
 		"rxjs": "6.3.3",
