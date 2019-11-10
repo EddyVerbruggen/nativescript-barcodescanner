@@ -253,7 +253,7 @@ export class BarcodeScanner {
         this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(
             closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
 
-        this._scanner.modalPresentationStyle = UIModalPresentationStyle.FormSheet;
+        this._scanner.modalPresentationStyle = arg.fullScreen ? UIModalPresentationStyle.FullScreen : UIModalPresentationStyle.FormSheet;
 
         this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
         this._scanner.delegate = this._scanDelegate;

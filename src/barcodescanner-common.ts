@@ -73,6 +73,13 @@ export interface CommonScanOptions {
   showTorchButton?: boolean;
 
   /**
+   * Currently only used on iOS; with iOS 13 modals are no longer shown fullScreen by default,
+   * which may be actually preferred. But to use the old fullScreen appearance, set this to 'true'.
+   * Default: false
+   */
+  fullScreen?: boolean;
+
+  /**
    * Launch the scanner with the flashlight turned on.
    */
   torchOn?: boolean;

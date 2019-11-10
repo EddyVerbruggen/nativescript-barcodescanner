@@ -115,6 +115,7 @@ export class HelloWorldModel extends Observable {
       resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
       orientation: orientation,     // Android only, default undefined (sensor-driven orientation), other options: portrait|landscape
       beepOnScan: true,             // Play or Suppress beep on scan (default true)
+      fullScreen: true,             // iOS 13+ modal appearance changed so they can be swiped down when this is false (default false)
       openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
       closeCallback: () => {
         console.log("Scanner closed @ " + new Date().getTime());

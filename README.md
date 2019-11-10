@@ -186,6 +186,7 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
     beepOnScan: true,             // Play or Suppress beep on scan (default true)
+    fullScreen: true,             // Currently only used on iOS; with iOS 13 modals are no longer shown fullScreen by default, which may be actually preferred. But to use the old fullScreen appearance, set this to 'true'. Default 'false'.
     torchOn: false,               // launch with the flashlight on (default false)
     closeCallback: () => { console.log("Scanner closed")}, // invoked when the scanner was closed (success or abort)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
@@ -221,6 +222,7 @@ Tip: during a scan you can use the volume up/down buttons to toggle the torch.
     preferFrontCamera: false,     // default false
     showTorchButton: true,        // default false
     beepOnScan: true,             // Play or Suppress beep on scan (default true)
+    fullScreen: true,             // Currently only used on iOS; with iOS 13 modals are no longer shown fullScreen by default, which may be actually preferred. But to use the old fullScreen appearance, set this to 'true'. Default 'false'.
     torchOn: false,               // launch with the flashlight on (default false)
     closeCallback: function () { console.log("Scanner closed"); }, // invoked when the scanner was closed (success or abort)
     resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
