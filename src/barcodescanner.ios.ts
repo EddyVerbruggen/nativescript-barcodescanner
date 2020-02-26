@@ -208,7 +208,9 @@ export class BarcodeScanner {
       try {
         this.close();
         this._removeVolumeObserver();
-        this._scanner.stopScanning();
+        if (this._scanner) {
+          this._scanner.stopScanning();
+        }
         this._closeCallback && this._closeCallback();
         resolve();
       } catch (ex) {
