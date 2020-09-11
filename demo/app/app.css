@@ -1,4 +1,5 @@
-﻿@import '~nativescript-theme-core/css/core.light.css';
+﻿@import "~@nativescript/theme/css/core.css";
+@import "~@nativescript/theme/css/default.css";
 
 .h3 {
   margin-top: 18;

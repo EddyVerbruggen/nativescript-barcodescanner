@@ -1,8 +1,0 @@
-{
-  "android": {
-    "v8Flags": "--expose_gc"
-  },
-  "main": "main",
-  "name": "demo-vue",
-  "version": "1.0.0"
-}

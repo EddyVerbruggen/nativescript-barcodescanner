@@ -1,5 +1,4 @@
-import { Observable } from "tns-core-modules/data/observable";
-import { alert } from "tns-core-modules/ui/dialogs";
+import { Observable, alert } from "@nativescript/core";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 
 export class HelloWorldModel extends Observable {

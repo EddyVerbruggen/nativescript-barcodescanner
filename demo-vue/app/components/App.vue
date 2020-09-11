@@ -16,15 +16,15 @@
           v-if="isIOS">
       </BarcodeScanner>
 
-      <Button row="2" class="btn btn-primary btn-rounded-sm" text="back camera, with flip" @tap="doScanWithBackCamera"></Button>
-      <Button row="3" class="btn btn-primary btn-rounded-sm" text="front camera, no flip" @tap="doScanWithFrontCamera"></Button>
+      <Button row="2" class="btn btn-primary btn-rounded-sm" text="back camera, with flip" @tap="doScanWithBackCameraWithFlip"></Button>
+      <Button row="3" class="btn btn-primary btn-rounded-sm" text="front camera, no flip" @tap="doScanWithFrontCameraNoFlip"></Button>
 
     </GridLayout>
   </Page>
 </template>
 
 <script>
-  import {isIOS} from "tns-core-modules/platform";
+  import {isIOS} from "@nativescript/core";
   import {BarcodeScanner} from "nativescript-barcodescanner";
 
   export default {
@@ -37,19 +37,19 @@
       onScanResult(evt) {
         console.log(`onScanResult: ${evt.text} (${evt.format})`);
       },
-      doScanWithBackCamera() {
-        this.scan(false);
+      doScanWithBackCameraWithFlip() {
+        this.scan(false, true);
       },
-      doScanWithFrontCamera() {
-        this.scan(true);
+      doScanWithFrontCameraNoFlip() {
+        this.scan(true, false);
       },
-      scan(front) {
+      scan(preferFrontCamera, showFlipCameraButton) {
         new BarcodeScanner().scan({
           cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
           cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
           message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
-          preferFrontCamera: front,     // Android only, default false
-          showFlipCameraButton: true,   // default false
+          preferFrontCamera,            // Android only, default false
+          showFlipCameraButton,         // default false
           showTorchButton: true,        // iOS only, default false
           torchOn: false,               // launch with the flashlight on (default false)
           resultDisplayDuration: 500,   // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text

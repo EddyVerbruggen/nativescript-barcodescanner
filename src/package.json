@@ -1,13 +1,13 @@
 {
   "name": "nativescript-barcodescanner",
-  "version": "3.4.2",
+  "version": "4.0.0",
   "description": "Scan QR/barcodes with your NativeScript app.",
   "main": "barcodescanner",
   "typings": "index.d.ts",
   "nativescript": {
     "platforms": {
-      "android": "2.3.0",
-      "ios": "2.3.0"
+      "android": "7.0.0",
+      "ios": "7.0.0"
     }
   },
   "scripts": {
@@ -19,11 +19,9 @@
     "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
     "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude '**/platforms/**' --exclude '**/tns_modules/**' --exclude '**/node_modules/**' --exclude '**/typings/**'",
     "plugin.link": "npm link && cd ../demo && npm link nativescript-barcodescanner && cd ../src",
-    "plugin.link.ng": "npm link && cd ../demo-ng && npm link nativescript-barcodescanner && cd ../src",
     "plugin.tscwatch": "npm run tsc -- -w",
     "demo.ios": "npm run build && cd ../demo && tns run ios",
     "demo.reset": "cd ../demo && rimraf platforms",
-    "demo-ng.ios": "npm run build && cd ../publish && ./pack.sh && cd ../demo-ng && tns plugin remove nativescript-barcodescanner && tns plugin add ../publish/package/*.tgz && tns run ios",
     "demo.android": "npm run build && cd ../demo && tns run android",
     "demo-vue.ios": "npm run tsc && cd ../demo-vue && tns run ios --bundle",
     "demo-vue.android": "npm run tsc && cd ../demo-vue && tns run android --bundle",
@@ -69,12 +67,12 @@
   },
   "homepage": "https://github.com/eddyverbruggen/nativescript-barcodescanner",
   "devDependencies": {
-    "tns-core-modules": "~6.1.0",
-    "tns-platform-declarations": "~6.1.0",
-    "typescript": "3.4.5",
+    "@nativescript/core": "^7.0.0",
+    "@nativescript/types": "^7.0.0",
+    "typescript": "~3.9.7",
     "prompt": "^1.0.0",
-    "rimraf": "^2.6.2",
-    "tslint": "^5.11.0",
+    "rimraf": "^2.6.3",
+    "tslint": "^5.12.1",
     "semver": "^5.6.0"
   }
 }

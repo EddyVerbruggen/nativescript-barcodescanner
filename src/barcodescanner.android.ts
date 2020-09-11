@@ -1,7 +1,5 @@
 import { ScanOptions, ScanResult } from "./barcodescanner-common";
-import { AndroidActivityRequestPermissionsEventData} from "tns-core-modules/application";
-import * as appModule from "tns-core-modules/application";
-import * as utils from "tns-core-modules/utils/utils";
+import { AndroidActivityRequestPermissionsEventData, AndroidApplication, Application, Utils } from "@nativescript/core";
 
 const SCANNER_REQUEST_CODE = 444;
 
@@ -25,7 +23,7 @@ export class BarcodeScanner {
   private uniquelyScannedCodes: Array<string> = [];
 
   constructor() {
-    appModule.android.on(appModule.AndroidApplication.activityRequestPermissionsEvent, (args: AndroidActivityRequestPermissionsEventData) => {
+    Application.android.on(AndroidApplication.activityRequestPermissionsEvent, (args: AndroidActivityRequestPermissionsEventData) => {
       for (let i = 0; i < args.permissions.length; i++) {
         if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_DENIED) {
           if (this.onPermissionRejected) {
@@ -47,7 +45,7 @@ export class BarcodeScanner {
     let hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
     if (!hasPermission) {
       hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED ===
-          ContentPackageName.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
+          ContentPackageName.ContextCompat.checkSelfPermission(Utils.ad.getApplicationContext(), android.Manifest.permission.CAMERA);
     }
     return hasPermission;
   }
@@ -56,7 +54,7 @@ export class BarcodeScanner {
     this.onPermissionGranted = onPermissionGranted;
     this.onPermissionRejected = reject;
     AppPackageName.ActivityCompat.requestPermissions(
-      appModule.android.foregroundActivity,
+      Application.android.foregroundActivity,
       [android.Manifest.permission.CAMERA],
       234 // irrelevant since we simply invoke onPermissionGranted
     );
@@ -65,7 +63,7 @@ export class BarcodeScanner {
   public available(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        resolve(utils.ad.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA));
+        resolve(Utils.ad.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA));
       } catch (ex) {
         console.log("Error in barcodescanner.available: " + ex);
         // let's just assume it's ok
@@ -122,7 +120,7 @@ export class BarcodeScanner {
         const intent = new android.content.Intent("com.google.zxing.client.android.SCAN");
 
         // limit searching for a valid Intent to this package only
-        intent.setPackage(appModule.android.context.getPackageName());
+        intent.setPackage(Application.android.context.getPackageName());
 
         arg = arg || {};
 
@@ -164,7 +162,7 @@ export class BarcodeScanner {
 
         // required for the 'stop' function
         if (!this.broadcastManager) {
-          this.broadcastManager = LocalBroadcastManagerPackageName.LocalBroadcastManager.getInstance(utils.ad.getApplicationContext());
+          this.broadcastManager = LocalBroadcastManagerPackageName.LocalBroadcastManager.getInstance(Utils.ad.getApplicationContext());
         }
 
         const isContinuous = typeof arg.continuousScanCallback === "function";
@@ -193,7 +191,7 @@ export class BarcodeScanner {
           this.broadcastManager.registerReceiver(_onScanReceivedCallback, new android.content.IntentFilter("bulk-barcode-result"));
         }
 
-        if (intent.resolveActivity(utils.ad.getApplicationContext().getPackageManager()) !== null) {
+        if (intent.resolveActivity(Utils.ad.getApplicationContext().getPackageManager()) !== null) {
           const onScanResult = (data) => {
             if (data.requestCode === SCANNER_REQUEST_CODE) {
               this.onPermissionGranted = null;
@@ -216,11 +214,11 @@ export class BarcodeScanner {
                 }
               }
               arg.closeCallback && arg.closeCallback();
-              appModule.android.off('activityResult', onScanResult);
+              Application.android.off('activityResult', onScanResult);
             }
           };
-          appModule.android.on('activityResult', onScanResult);
-          appModule.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
+          Application.android.on('activityResult', onScanResult);
+          Application.android.foregroundActivity.startActivityForResult(intent, SCANNER_REQUEST_CODE);
         } else {
           // this is next to impossible
           reject("Configuration error");

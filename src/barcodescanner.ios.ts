@@ -10,6 +10,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
   private _reader: QRCodeReader;
   private _scanner: QRCodeReaderViewController;
   private _hasSupport;
+  private _delegate: QRCodeReaderDelegateImpl;
 
   constructor() {
     super();
@@ -48,8 +49,8 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     this._scanner.modalPresentationStyle = UIModalPresentationStyle.CurrentContext;
 
     const that = this;
-    let delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
-    delegate.setCallback(
+    this._delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
+    this._delegate.setCallback(
         this.beepOnScan,
         true,
         this.reportDuplicates,
@@ -62,7 +63,7 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
             text: text
           });
         });
-    this._scanner.delegate = delegate;
+    this._scanner.delegate = this._delegate;
 
     setTimeout(() => {
       if (this.ios && this.ios.layer) {
@@ -435,6 +436,7 @@ const getBarcodeTypes = (formatsString: string): Array<string> => {
   return types;
 };
 
+@NativeClass
 class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate {
   public static ObjCProtocols = [QRCodeReaderDelegate];
 
@@ -478,6 +480,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
 
   readerDidScanResultForType(reader: QRCodeReaderViewController, result: string, type: string): void {
     let validResult: boolean = false;
+    console.log(1);
 
     let barcodeFormat = getBarcodeFormat(type);
     let value = result;
@@ -486,28 +489,40 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
       barcodeFormat = "UPC_A";
       value = value.substring(1);
     }
+    console.log(2);
 
     if (this._isContinuous) {
+      console.log(6);
       if (!this._scannedArray) {
         this._scannedArray = Array<string>();
       }
+      console.log(7);
       // don't report duplicates unless explicitly requested
       let newResult: boolean = this._scannedArray.indexOf("[" + value + "][" + barcodeFormat + "]") === -1;
+      console.log(8);
       if (newResult || this._reportDuplicates) {
         let now: number = new Date().getTime();
         // prevent flooding the callback
+        console.log(9);
         if (now - this._lastScanResultTs < 1700) {
           return;
         }
         this._lastScanResultTs = now;
         validResult = true;
+        console.log(10);
         this._scannedArray.push("[" + value + "][" + barcodeFormat + "]");
+        console.log(11);
         this._callback(value, barcodeFormat);
+        console.log(12);
       }
     } else {
       validResult = true;
+      console.log(3);
       this._owner.get().close();
+      console.log(4);
+      console.log(this._callback);
       this._callback(value, barcodeFormat);
+      console.log(5);
     }
 
     if (validResult && this._player) {
