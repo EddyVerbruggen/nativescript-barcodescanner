@@ -5,7 +5,7 @@
   "author": "EddyVerbruggen <eddyverbruggen@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "nativescript-barcodescanner": "file:../src",
+    "nativescript-barcodescanner": "file:../publish/package/nativescript-barcodescanner-4.0.0.tgz",
     "@nativescript/theme": "~2.3.3",
     "@nativescript/core": "~7.0.0",
     "@nativescript/types": "~7.0.0",
