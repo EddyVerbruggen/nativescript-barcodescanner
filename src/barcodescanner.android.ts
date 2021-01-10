@@ -200,6 +200,7 @@ export class BarcodeScanner {
                   this.broadcastManager.unregisterReceiver(_onScanReceivedCallback);
                   _onScanReceivedCallback = undefined;
                 }
+                resolve(null);
               } else {
                 if (data.resultCode === android.app.Activity.RESULT_OK) {
                   const format = data.intent.getStringExtra(com.google.zxing.client.android.Intents.Scan.RESULT_FORMAT);
@@ -213,10 +214,7 @@ export class BarcodeScanner {
                   reject("Scan aborted");
                 }
               }
-              if (arg.closeCallback) {
-                arg.closeCallback();
-                resolve(null);
-              }
+              arg.closeCallback && arg.closeCallback();
               Application.android.off('activityResult', onScanResult);
             }
           };
