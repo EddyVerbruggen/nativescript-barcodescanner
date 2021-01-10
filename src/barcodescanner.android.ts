@@ -213,7 +213,10 @@ export class BarcodeScanner {
                   reject("Scan aborted");
                 }
               }
-              arg.closeCallback && arg.closeCallback();
+              if (arg.closeCallback) {
+                arg.closeCallback();
+                resolve(null);
+              }
               Application.android.off('activityResult', onScanResult);
             }
           };
