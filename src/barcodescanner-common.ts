@@ -156,9 +156,9 @@ export declare class BarcodeScanner {
 
   hasCameraPermission(): Promise<boolean>;
 
-  requestCameraPermission(): Promise<boolean>;
+  requestCameraPermission(): Promise<void>;
 
-  stop(): Promise<any>;
+  stop(): Promise<void>;
 
   scan(arg: ScanOptions): Promise<ScanResult>;
 }

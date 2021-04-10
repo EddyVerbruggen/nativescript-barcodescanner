@@ -1,9 +1,5 @@
-import {
-  BarcodeFormat,
-  BarcodeScannerView as BarcodeScannerBaseView,
-  ScanOptions,
-  ScanResult
-} from "./barcodescanner-common";
+import { Frame } from "@nativescript/core";
+import { BarcodeFormat, BarcodeScannerView as BarcodeScannerBaseView, ScanOptions, ScanResult } from "./barcodescanner-common";
 
 export class BarcodeScannerView extends BarcodeScannerBaseView {
 
@@ -179,8 +175,8 @@ export class BarcodeScanner {
     });
   }
 
-  public requestCameraPermission(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+  public requestCameraPermission(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       const cameraStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
 
       switch (cameraStatus) {
@@ -204,8 +200,8 @@ export class BarcodeScanner {
     });
   }
 
-  public stop(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public stop(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       try {
         this.close();
         this._removeVolumeObserver();
@@ -320,11 +316,10 @@ export class BarcodeScanner {
   }
 
   private isPresentingModally(): boolean {
-    let frame = require("@nativescript/core/ui/frame");
     let viewController: UIViewController;
-    let topMostFrame = frame.topmost();
+    const topMostFrame = Frame.topmost();
 
-    if (frame.topmost()) {
+    if (topMostFrame) {
       viewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
 
       if (viewController) {
@@ -349,9 +344,8 @@ export class BarcodeScanner {
   }
 
   private getViewControllerToPresentFrom(presentInRootViewController?: boolean): UIViewController {
-    let frame = require("@nativescript/core/ui/frame");
     let viewController: UIViewController;
-    let topMostFrame = frame.topmost();
+    const topMostFrame = Frame.topmost();
 
     if (topMostFrame && presentInRootViewController !== true) {
       viewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
@@ -454,7 +448,6 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   private _reportDuplicates: boolean;
   private _requestedFormats: string;
   private _scannedArray: Array<string>;
-  private _player: AVAudioPlayer;
   // initializing this value may prevent recognizing too quickly
   private _lastScanResultTs: number = new Date().getTime();
 
@@ -464,13 +457,6 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
     this._requestedFormats = requestedFormats;
     this._callback = callback;
     this._beepOnScan = beepOnScan;
-    if (this._beepOnScan) {
-      const barcodeBundlePath = NSBundle.bundleWithIdentifier("com.telerik.BarcodeScannerFramework").bundlePath;
-      this._player = new AVAudioPlayer({contentsOfURL: NSURL.fileURLWithPath(barcodeBundlePath + "/beep.caf")});
-      this._player.numberOfLoops = 1;
-      this._player.volume = 0.7; // this is not the actual volume, as that really depends on the device volume
-      this._player.prepareToPlay();
-    }
   }
 
   public readerDidCancel(reader: QRCodeReaderViewController): void {
@@ -480,7 +466,6 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
 
   readerDidScanResultForType(reader: QRCodeReaderViewController, result: string, type: string): void {
     let validResult: boolean = false;
-    console.log(1);
 
     let barcodeFormat = getBarcodeFormat(type);
     let value = result;
@@ -489,44 +474,37 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
       barcodeFormat = "UPC_A";
       value = value.substring(1);
     }
-    console.log(2);
 
     if (this._isContinuous) {
-      console.log(6);
       if (!this._scannedArray) {
         this._scannedArray = Array<string>();
       }
-      console.log(7);
       // don't report duplicates unless explicitly requested
       let newResult: boolean = this._scannedArray.indexOf("[" + value + "][" + barcodeFormat + "]") === -1;
-      console.log(8);
       if (newResult || this._reportDuplicates) {
         let now: number = new Date().getTime();
         // prevent flooding the callback
-        console.log(9);
         if (now - this._lastScanResultTs < 1700) {
           return;
         }
         this._lastScanResultTs = now;
         validResult = true;
-        console.log(10);
         this._scannedArray.push("[" + value + "][" + barcodeFormat + "]");
-        console.log(11);
         this._callback(value, barcodeFormat);
-        console.log(12);
       }
     } else {
       validResult = true;
-      console.log(3);
       this._owner.get().close();
-      console.log(4);
-      console.log(this._callback);
       this._callback(value, barcodeFormat);
-      console.log(5);
     }
 
-    if (validResult && this._player) {
-      this._player.play();
+    if (validResult && this._beepOnScan) {
+      // tone
+      AudioServicesPlaySystemSound(1200);
+      // weak-boom (taptic feedback)
+      setTimeout(() => {
+        AudioServicesPlaySystemSound(1519);
+      });
     }
   }
 }

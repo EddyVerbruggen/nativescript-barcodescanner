@@ -21,7 +21,7 @@
                   <Barcode:BarcodeScannerView
                       class="scanner-round"
                       formats="QR_CODE, EAN_13, CODE_128"
-                      beepOnScan="false"
+                      beepOnScan="true"
                       reportDuplicates="true"
                       preferFrontCamera="false"
                       scanResult="{{ onScanResult }}" />

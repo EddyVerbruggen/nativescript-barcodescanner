@@ -78,8 +78,8 @@ export class BarcodeScanner {
     });
   }
 
-  public requestCameraPermission(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+  public requestCameraPermission(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       try {
         this.requestCameraPermissionInternal(resolve, reject);
       } catch (ex) {
@@ -89,8 +89,8 @@ export class BarcodeScanner {
     });
   }
 
-  public stop(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public stop(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       try {
         if (!this.broadcastManager) {
           reject("You found a bug in the plugin, please report that calling stop() failed with this message.");
