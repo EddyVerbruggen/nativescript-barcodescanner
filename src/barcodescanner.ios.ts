@@ -320,7 +320,7 @@ export class BarcodeScanner {
   }
 
   private isPresentingModally(): boolean {
-    let frame = require("tns-core-modules/ui/frame");
+    let frame = require("@nativescript/core/ui/frame");
     let viewController: UIViewController;
     let topMostFrame = frame.topmost();
 
@@ -349,7 +349,7 @@ export class BarcodeScanner {
   }
 
   private getViewControllerToPresentFrom(presentInRootViewController?: boolean): UIViewController {
-    let frame = require("tns-core-modules/ui/frame");
+    let frame = require("@nativescript/core/ui/frame");
     let viewController: UIViewController;
     let topMostFrame = frame.topmost();
 
