@@ -41,24 +41,24 @@ export class BarcodeScannerView extends BarcodeScannerBaseView {
     }
 
     this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(
-        closeButtonLabel, this._reader, true, flip, torch, cancelLabelBackgroundColor);
+      closeButtonLabel, this._reader, true, flip, torch, cancelLabelBackgroundColor);
     this._scanner.modalPresentationStyle = UIModalPresentationStyle.CurrentContext;
 
     const that = this;
     this._delegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
     this._delegate.setCallback(
-        this.beepOnScan,
-        true,
-        this.reportDuplicates,
-        this.formats,
-        (text: string, format: string) => {
-          that.notify({
-            eventName: BarcodeScannerBaseView.scanResultEvent,
-            object: that,
-            format: format,
-            text: text
-          });
+      this.beepOnScan,
+      true,
+      this.reportDuplicates,
+      this.formats,
+      (text: string, format: string) => {
+        that.notify({
+          eventName: BarcodeScannerBaseView.scanResultEvent,
+          object: that,
+          format: format,
+          text: text
         });
+      });
     this._scanner.delegate = this._delegate;
 
     setTimeout(() => {
@@ -182,8 +182,8 @@ export class BarcodeScanner {
       switch (cameraStatus) {
         case AVAuthorizationStatus.NotDetermined: {
           AVCaptureDevice.requestAccessForMediaTypeCompletionHandler(
-              AVMediaTypeVideo,
-              granted => granted ? resolve() : reject()
+            AVMediaTypeVideo,
+            granted => granted ? resolve() : reject()
           );
           break;
         }
@@ -250,46 +250,46 @@ export class BarcodeScanner {
         let startScanningAtLoad = true;
 
         this._scanner = QRCodeReaderViewController.readerWithCancelButtonTitleCodeReaderStartScanningAtLoadShowSwitchCameraButtonShowTorchButtonCancelButtonBackgroundColor(
-            closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
+          closeButtonLabel, reader, startScanningAtLoad, flip, torch, arg.cancelLabelBackgroundColor);
 
         this._scanner.modalPresentationStyle = arg.fullScreen ? UIModalPresentationStyle.FullScreen : UIModalPresentationStyle.FormSheet;
 
         this._scanDelegate = QRCodeReaderDelegateImpl.initWithOwner(new WeakRef(this));
         this._scanner.delegate = this._scanDelegate;
         this._scanDelegate.setCallback(
-            arg.beepOnScan !== false,
-            isContinuous,
-            arg.reportDuplicates,
-            arg.formats,
-            (text: string, barcodeFormat: BarcodeFormat) => {
-              // invoke the callback / promise
-              if (text === undefined) {
+          arg.beepOnScan !== false,
+          isContinuous,
+          arg.reportDuplicates,
+          arg.formats,
+          (text: string, barcodeFormat: BarcodeFormat) => {
+            // invoke the callback / promise
+            if (text === undefined) {
+              this._removeVolumeObserver();
+              this._closeCallback && this._closeCallback();
+              reject("Scan aborted");
+            } else {
+
+              let value = text;
+
+              if (shouldReturnEAN13AsUPCA(barcodeFormat, value, arg.formats)) {
+                barcodeFormat = "UPC_A";
+                value = value.substring(1);
+              }
+
+              const result: ScanResult = {
+                format: barcodeFormat,
+                text: value
+              };
+
+              if (isContinuous) {
+                arg.continuousScanCallback(result);
+              } else {
                 this._removeVolumeObserver();
                 this._closeCallback && this._closeCallback();
-                reject("Scan aborted");
-              } else {
-
-                let value = text;
-
-                if (shouldReturnEAN13AsUPCA(barcodeFormat, value, arg.formats)) {
-                  barcodeFormat = "UPC_A";
-                  value = value.substring(1);
-                }
-
-                const result: ScanResult = {
-                  format: barcodeFormat,
-                  text: value
-                };
-
-                if (isContinuous) {
-                  arg.continuousScanCallback(result);
-                } else {
-                  this._removeVolumeObserver();
-                  this._closeCallback && this._closeCallback();
-                  resolve(result);
-                }
+                resolve(result);
               }
-            });
+            }
+          });
 
         if (this._device && this._device.autoFocusRangeRestrictionSupported) {
           this._device.lockForConfiguration();
@@ -374,7 +374,7 @@ export class BarcodeScanner {
 
 const shouldReturnEAN13AsUPCA = (barcodeFormat: BarcodeFormat, value: string, requestedFormats?: string): boolean => {
   return barcodeFormat === "EAN_13" &&
-      value.indexOf("0") === 0;
+    value.indexOf("0") === 0;
   // why not add the line below? Well, see https://github.com/EddyVerbruggen/nativescript-barcodescanner/issues/176
   // && (!requestedFormats || requestedFormats.indexOf("UPC_A") > -1);
 };
@@ -422,10 +422,10 @@ const getBarcodeTypes = (formatsString: string): Array<string> => {
     }
   } else {
     types.push(AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-        AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code,
-        AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
-        AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode,
-        AVMetadataObjectTypeInterleaved2of5Code);
+      AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code,
+      AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeITF14Code,
+      AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode,
+      AVMetadataObjectTypeInterleaved2of5Code);
   }
   return types;
 };
@@ -509,6 +509,7 @@ class QRCodeReaderDelegateImpl extends NSObject implements QRCodeReaderDelegate 
   }
 }
 
+@NativeClass()
 class VolumeObserverClass extends NSObject {
   observeValueForKeyPathOfObjectChangeContext(path: string, obj: Object, change: NSDictionary<any, any>, context: any) {
     if (path === "outputVolume") {
