@@ -1,5 +1,5 @@
-﻿@import "~@nativescript/theme/css/core.css";
-@import "~@nativescript/theme/css/default.css";
+﻿@import "@nativescript/theme/css/core.css";
+@import "@nativescript/theme/css/default.css";
 
 .h3 {
   margin-top: 18;

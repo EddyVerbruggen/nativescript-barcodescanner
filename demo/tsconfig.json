@@ -4,7 +4,7 @@
         "target": "es2017",
         "moduleResolution": "node",
         "declaration": false,
-        "removeComments": true,
+        "removeComments": false,
         "noLib": false,
         "skipLibCheck": true,
         "emitDecoratorMetadata": true,
