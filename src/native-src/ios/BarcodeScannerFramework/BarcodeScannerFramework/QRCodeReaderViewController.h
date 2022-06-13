@@ -1,3 +1,29 @@
+/*
+ * QRCodeReaderViewController
+ *
+ * Copyright 2014-present Yannick Loriot.
+ * http://yannickloriot.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 #import <UIKit/UIKit.h>
 #import "QRCodeReaderDelegate.h"
 #import "QRCodeReader.h"
@@ -128,6 +154,7 @@
  * scanning the codes when the view will appear.
  * @since 4.0.0
  */
+- (nonnull id)initWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton;
 - (nonnull id)initWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton cancelButtonBackgroundColor:(nullable NSString *)cancelButtonBackgroundColor;
 
 /**
@@ -139,11 +166,11 @@
  * scanning the codes when the view will appear.
  * @param showSwitchCameraButton Flag to display the switch camera button.
  * @param showTorchButton Flag to know whether the view controller start
- * @param showTorchButton Flag to know whether the view controller start
  * scanning the codes when the view will appear.
  * @see initWithCancelButtonTitle:codeReader:startScanningAtLoad:showSwitchCameraButton:showTorchButton:
  * @since 4.0.0
  */
++ (nonnull instancetype)readerWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton;
 + (nonnull instancetype)readerWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton cancelButtonBackgroundColor:(nullable NSString *)cancelButtonBackgroundColor;
 
 #pragma mark - Controlling the Reader
@@ -180,6 +207,7 @@
  * is nil.
  * @since 1.0.1
  */
+// - (void)setCompletionWithBlock:(nullable void (^) (NSString * __nullable resultAsString))completionBlock;
 - (void)setCompletionWithBlock:(nullable void (^) (NSString * __nullable resultAsString, NSString * __nullable typeAsString))completionBlock;
 
 #pragma mark - Managing the Reader

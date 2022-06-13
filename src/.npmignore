@@ -6,3 +6,4 @@
 !index.d.ts
 tsconfig.json
 platforms/android/AndroidManifest.xml
+native-src
