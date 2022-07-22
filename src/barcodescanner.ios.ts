@@ -110,7 +110,7 @@ export class BarcodeScanner {
 
     this._device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo);
     if (this._device && this._device.hasTorch && this._device.hasFlash) {
-      this._observer = VolumeObserverClass.alloc();
+      this._observer = VolumeObserverClass.alloc().init();
       this._observer["_owner"] = this;
     }
   }
